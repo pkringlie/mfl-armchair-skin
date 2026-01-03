@@ -2,12 +2,16 @@
 @import url("responsive.css");
 
 /* ==========================================================
-   ARMCHAIR FANTASY LEAGUE — “Midnight Steakhouse” v1
-   Goal: Remove DraftBeer orange + modernize UI consistently
-   Palette: Oxblood + Brass + Bone on Charcoal
+   ARMCHAIR FANTASY LEAGUE — Midnight Steakhouse v1 (FULL RESET)
+   Purpose:
+   - Eliminate ALL DraftBeer orange chrome (nav/module/footer)
+   - Standardize accents to Oxblood + Brass + Bone
+   - Reduce “box within box within box” framing
+   Notes:
+   - This file is written to be a LAST-LAYER override. Keep it as the final CSS.
    ========================================================== */
 
-/* --------- Palette / tokens --------- */
+/* ---------- Palette / tokens ---------- */
 :root{
   --bg: #0B0B0D;
 
@@ -24,17 +28,20 @@
   --brass2:#E0C27A;
 
   --bone:#F3EBDC;
+  --bone2:#EFE3CF;
 
   --hairline: rgba(255,255,255,.06);
-  --brassline: rgba(200,162,74,.20);
+  --brassline: rgba(200,162,74,.18);
+  --brassline2: rgba(200,162,74,.26);
 
   --radius: 14px;
   --radius2: 12px;
 
   --shadow: 0 18px 45px rgba(0,0,0,.55);
+  --shadow2: 0 12px 28px rgba(0,0,0,.45);
 }
 
-/* --------- Global base --------- */
+/* ---------- Global base ---------- */
 html, body{
   background: var(--bg) !important;
   color: var(--text) !important;
@@ -46,7 +53,7 @@ td, th, p, li, div{
   line-height: 1.35 !important;
 }
 
-/* Subtle smoke overlay (classy, not busy) */
+/* Subtle smoke overlay */
 body:before{
   content:"";
   position: fixed;
@@ -56,7 +63,7 @@ body:before{
     radial-gradient(700px 220px at 18% 12%, rgba(255,255,255,.06), transparent 60%),
     radial-gradient(900px 260px at 82% 14%, rgba(255,255,255,.05), transparent 60%),
     radial-gradient(850px 240px at 50% 82%, rgba(255,255,255,.03), transparent 60%);
-  opacity: .33;
+  opacity: .30;
   z-index: 0;
 }
 
@@ -64,134 +71,201 @@ body:before{
 .pagebody, #withmenus, .homepagetabcontent, .contentBody{
   position: relative;
   z-index: 1;
-
   background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%) !important;
   border: 1px solid var(--brassline) !important;
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow) !important;
-
   padding: 18px !important;
 }
 
 /* Links */
-a{
-  color: var(--brass) !important;
-  text-decoration: none;
-}
-a:hover{
-  color: var(--brass2) !important;
-  text-decoration: underline;
-}
+a{ color: var(--brass) !important; text-decoration: none !important; }
+a:hover{ color: var(--brass2) !important; text-decoration: underline !important; }
 
 /* Headings */
-h1, h2, h3, .pagetitle h1{
-  color: var(--text) !important;
-  letter-spacing: .3px;
-}
-h2{
-  border-bottom: 1px solid var(--hairline) !important;
-  padding-bottom: 6px;
-}
+h1, h2, h3, .pagetitle h1{ color: var(--text) !important; letter-spacing: .3px; }
+h2{ border-bottom: 1px solid var(--hairline) !important; padding-bottom: 6px; }
 
-/* --------- Common modules become “cards” --------- */
-.homepagemodule,
-.report,
-.two_column_layout,
-.module,
-.mobilemodule,
-table.report,
-table.homepagemodule{
-  border-radius: var(--radius2) !important;
-  overflow: hidden !important;
+/* ==========================================================
+   HARD KILL: DraftBeer Orange (backgrounds, borders, images)
+   ========================================================== */
 
-  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%) !important;
-  border: 1px solid var(--brassline) !important;
-  box-shadow: 0 14px 40px rgba(0,0,0,.45) !important;
+/* Kill common DraftBeer orange backgrounds/borders by selector patterns */
+*[style*="#d86000"], *[style*="#D86000"],
+*[style*="#ff9900"], *[style*="#FF9900"],
+*[style*="rgb(216"],  *[style*="rgb(255"]{
+  border-color: var(--brassline) !important;
+  background-image: none !important;
 }
 
-/* Kill any legacy “outline” effects */
-*{
-  outline-color: transparent !important;
+/* If DraftBeer uses background images for orange strips, this prevents them from showing */
+.caption, td.caption, tr.caption > td, caption{
+  background-image: none !important;
 }
 
 /* ==========================================================
-   NAVIGATION (remove orange, go brass + oxblood)
+   TOP NAV (the orange strip: Home / Submit Lineup / etc.)
    ========================================================== */
 
-/* Top nav bars */
-.myfantasyleague_menu,
-.myfantasyleague_tabmenu,
-.myfantasyleague_submenu{
+/* IMPORTANT: do NOT wildcard the entire subtree. Only target the nav elements. */
+.myfantasyleague_menu{
   background: linear-gradient(180deg, #141015 0%, var(--bg) 100%) !important;
-  border-bottom: 2px solid var(--brass) !important;
+  border-bottom: 2px solid var(--brassline2) !important;
 }
 
-/* Menu containers */
-.myfantasyleague_menu ul,
-.myfantasyleague_tabmenu ul,
-.myfantasyleague_tabmenu ul#homepagetabs{
+.myfantasyleague_menu ul{
   background: transparent !important;
-  border-bottom-color: var(--brass) !important;
 }
 
-/* Menu items */
-.myfantasyleague_menu ul li a,
-.myfantasyleague_tabmenu ul li a,
-.myfantasyleague_tabmenu ul#homepagetabs li a{
+.myfantasyleague_menu ul li{
+  background: transparent !important;
+  border-right: 1px solid rgba(255,255,255,.06) !important;
+}
+
+.myfantasyleague_menu ul li a{
+  background: transparent !important;
   color: var(--text) !important;
-  background: transparent !important;
-  border-top-color: rgba(200,162,74,.15) !important;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-weight: 700;
 }
 
-/* Hover */
-.myfantasyleague_menu li:hover > a,
-.myfantasyleague_tabmenu li:hover > a,
-.myfantasyleague_tabmenu #homepagetabs li:hover a{
+.myfantasyleague_menu ul li:hover > a{
   background: rgba(200,162,74,.10) !important;
   color: var(--brass2) !important;
 }
 
-/* Active tab = oxblood */
-.myfantasyleague_tabmenu #homepagetabs li.currenttab,
-.myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
-  background: rgba(90,15,20,.92) !important;
+/* ==========================================================
+   HOME PAGE TAB MENU (Main / My Team / Schedule / Gameday)
+   ========================================================== */
+.myfantasyleague_tabmenu{
+  background: transparent !important;
+  border: 0 !important;
 }
-.myfantasyleague_tabmenu #homepagetabs li.currenttab a{
+
+.myfantasyleague_tabmenu ul#homepagetabs{
+  background: transparent !important;
+  border-bottom: 2px solid var(--brassline2) !important;
+}
+
+.myfantasyleague_tabmenu ul#homepagetabs li{
+  background: transparent !important;
+  border-right: 1px solid rgba(255,255,255,.06) !important;
+}
+
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  background: transparent !important;
+  color: var(--text) !important;
+  letter-spacing: .5px;
+  font-weight: 800;
+}
+
+.myfantasyleague_tabmenu ul#homepagetabs li:hover a{
+  background: rgba(200,162,74,.10) !important;
+  color: var(--brass2) !important;
+}
+
+.myfantasyleague_tabmenu ul#homepagetabs li.currenttab{
+  background: rgba(90,15,20,.90) !important;
+}
+.myfantasyleague_tabmenu ul#homepagetabs li.currenttab a{
   color: var(--brass2) !important;
 }
 
 /* ==========================================================
-   TABLES (bone surfaces, modern borders)
+   MODULES / REPORTS (this is where orange “boxes” live)
    ========================================================== */
 
+/* Make every module/report a unified “card” */
+.homepagemodule,
+.report,
+table.report,
+table.homepagemodule{
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%) !important;
+  border: 1px solid var(--brassline) !important;
+  border-radius: var(--radius2) !important;
+  box-shadow: var(--shadow2) !important;
+  overflow: hidden !important;
+}
+
+/* Remove extra inner borders that cause “double frames” */
+.homepagemodule table,
+.report table{
+  border: 0 !important;
+}
+
+/* MODULE HEADERS:
+   MFL uses TD.caption / .caption more often than <caption>.
+   This is the main orange source in DraftBeer skins. */
+.caption,
+td.caption,
+tr.caption > td,
+caption{
+  background: linear-gradient(180deg, #1A1210 0%, var(--bg) 100%) !important;
+  border: 1px solid var(--brassline2) !important;
+  color: var(--brass2) !important;
+
+  text-transform: uppercase !important;
+  letter-spacing: .7px !important;
+  font-weight: 900 !important;
+
+  /* keep rounded top edges looking clean */
+  border-top-left-radius: var(--radius2) !important;
+  border-top-right-radius: var(--radius2) !important;
+}
+
+/* [+] [-] controls in header */
+.caption a, .caption span,
+td.caption a, td.caption span,
+caption a, caption span{
+  color: var(--brass2) !important;
+  background: transparent !important;
+  font-weight: 900 !important;
+}
+.caption a:hover, td.caption a:hover, caption a:hover{
+  color: var(--brass) !important;
+}
+
+/* If DraftBeer is putting orange borders on random TDs inside modules, force brass */
+.homepagemodule td,
+.homepagemodule th,
+.report td,
+.report th,
+table.report td,
+table.report th,
+table.homepagemodule td,
+table.homepagemodule th{
+  border-color: var(--brassline) !important;
+}
+
+/* ==========================================================
+   TABLES (dark headers + bone data surfaces)
+   ========================================================== */
 table{
   border-collapse: separate !important;
   border-spacing: 0 !important;
-  color: var(--text) !important;
 }
 
-/* Table headers */
+/* Header cells */
 th{
   background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
   color: var(--brass2) !important;
-
-  border: 1px solid rgba(200,162,74,.22) !important;
-  border-bottom: 1px solid rgba(200,162,74,.25) !important;
-
+  border: 1px solid var(--brassline2) !important;
   text-transform: uppercase;
   letter-spacing: .7px;
   font-size: 12px !important;
 }
 
-/* Data cells default (dark pages) */
+/* Default td */
 td{
   border-bottom: 1px solid var(--hairline) !important;
   border-left: 0 !important;
   border-right: 0 !important;
   border-top: 0 !important;
+  color: var(--text) !important;
 }
 
-/* On many MFL modules, the table body is “bone” colored (keep it, but make it intentional) */
+/* Bone surfaces inside module tables (standings, chat, etc.) */
 table.report tbody td,
 table.homepagemodule tbody td{
   background: var(--bone) !important;
@@ -199,13 +273,12 @@ table.homepagemodule tbody td{
   border-bottom: 1px solid rgba(0,0,0,.08) !important;
 }
 
-/* Alternating rows on bone */
 table.report tbody tr:nth-child(even) td,
 table.homepagemodule tbody tr:nth-child(even) td{
-  background: #EFE3CF !important;
+  background: var(--bone2) !important;
 }
 
-/* Links on bone areas */
+/* Links inside bone tables */
 table.report tbody td a,
 table.homepagemodule tbody td a{
   color: #7A5B12 !important;
@@ -216,13 +289,12 @@ table.homepagemodule tbody td a:hover{
 }
 
 /* ==========================================================
-   FORMS + BUTTONS (premium, no orange)
+   FORMS + BUTTONS
    ========================================================== */
-
 input, select, textarea{
   background: #0E0E12 !important;
   color: var(--text) !important;
-  border: 1px solid rgba(200,162,74,.18) !important;
+  border: 1px solid var(--brassline) !important;
   border-radius: 10px !important;
   padding: 8px 10px !important;
 }
@@ -230,160 +302,53 @@ input, select, textarea{
 input[type="submit"], button, .btn, a.button{
   background: linear-gradient(180deg, var(--oxblood) 0%, var(--oxblood2) 100%) !important;
   border: 1px solid rgba(200,162,74,.25) !important;
-
   color: var(--text) !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   letter-spacing: .4px;
-
   border-radius: 12px !important;
   box-shadow: 0 10px 22px rgba(0,0,0,.35);
-
   padding: 10px 14px !important;
 }
-
 input[type="submit"]:hover, button:hover, .btn:hover, a.button:hover{
   filter: brightness(1.08);
 }
 
-/* Accessible focus */
+/* Focus */
 input:focus, select:focus, textarea:focus, button:focus{
   outline: 2px solid rgba(200,162,74,.35) !important;
   outline-offset: 2px !important;
 }
 
 /* ==========================================================
-   THE BIG ONE: Kill ALL DraftBeer Orange Everywhere
+   FOOTER (DraftBeer orange bar at bottom)
    ========================================================== */
-
-/* Any element that still has orange backgrounds or borders from the old skin */
-*[style*="#d86000"],
-*[style*="#D86000"],
-*[style*="#ff9900"],
-*[style*="#FF9900"]{
+#footer, .footer, #backtotop{
+  background: var(--bg) !important;
+  border: 0 !important;
+  color: rgba(233,227,212,.45) !important;
+}
+#footer *, .footer *, #backtotop *{
   background: transparent !important;
-  border-color: var(--brassline) !important;
+  border: 0 !important;
+  color: rgba(233,227,212,.45) !important;
+}
+#footer a, .footer a, #backtotop a{
+  color: rgba(200,162,74,.60) !important;
+}
+#footer a:hover, .footer a:hover, #backtotop a:hover{
+  color: rgba(224,194,122,.85) !important;
 }
 
-/* Module header bars are often TD.caption (not <caption>) */
-caption,
-.caption,
-td.caption,
-tr.caption > td,
-.report .caption,
-.report td.caption,
-.homepagemodule .caption,
-.homepagemodule td.caption,
-.homepagecolumn .caption,
-.homepagecolumn td.caption{
-  border: 1px solid rgba(200,162,74,.22) !important;
-  background: linear-gradient(180deg, #1A1210 0%, var(--bg) 100%) !important;
-  background-image: none !important; /* kills caption-bg.png */
-  color: var(--brass2) !important;
-
-  text-transform: uppercase !important;
-  letter-spacing: .7px !important;
+/* ==========================================================
+   CLEANUP: reduce excessive nested frames (optional but nice)
+   ========================================================== */
+.homepagecolumn,
+.homepagerow,
+.homepagetabcontent{
+  border-color: rgba(255,255,255,.06) !important;
 }
-
-/* [+] [-] controls on the right of module headers */
-.caption a, .caption span,
-td.caption a, td.caption span,
-caption a, caption span{
-  color: var(--brass2) !important;
-  background: transparent !important;
-  font-weight: 800 !important;
-}
-.caption a:hover, td.caption a:hover, caption a:hover{
-  color: var(--brass) !important;
-}
-
-/* Remove orange border “frames” around module tables */
-table.report,
-table.homepagemodule,
-.report,
-.homepagemodule{
-  border-color: var(--brassline) !important;
-}
-
-/* Nuke any orange-ish borders inside modules */
-.report * , .homepagemodule *{
-  border-color: rgba(200,162,74,.18) !important;
-}
-
-/* Soften HR lines */
 hr{
   border: 0 !important;
   height: 1px !important;
   background: rgba(255,255,255,.08) !important;
-}
-/* ======================================================
-   STEP 1 (SAFE): Mute top bar + footer
-   AND hard-kill any orange borders that reappear
-   ====================================================== */
-
-/* --- Top orange nav strip (don’t wildcard *) --- */
-.myfantasyleague_menu{
-  background: linear-gradient(180deg, #141015 0%, #0B0B0D 100%) !important;
-  border-bottom: 2px solid rgba(200,162,74,.35) !important;
-}
-.myfantasyleague_menu ul{
-  background: transparent !important;
-}
-.myfantasyleague_menu ul li a{
-  background: transparent !important;
-  color: var(--text) !important;
-}
-.myfantasyleague_menu ul li:hover > a{
-  background: rgba(200,162,74,.10) !important;
-  color: var(--brass2) !important;
-}
-
-/* --- Footer strip --- */
-#footer, .footer{
-  background: #0B0B0D !important;
-  border: 0 !important;
-  color: rgba(233,227,212,.45) !important;
-}
-#footer a, .footer a{
-  color: rgba(200,162,74,.6) !important;
-}
-
-/* ======================================================
-   ORANGE BORDER KILL SWITCH (modules)
-   This prevents the DraftBeer orange frames from returning.
-   ====================================================== */
-
-/* Any lingering orange border definitions get replaced */
-.homepagemodule,
-.report,
-table.report,
-table.homepagemodule,
-.caption,
-td.caption,
-tr.caption > td,
-caption{
-  border-color: rgba(200,162,74,.18) !important;
-}
-
-/* The thin orange “box” around module bodies */
-.homepagemodule > tbody > tr > td,
-.report > tbody > tr > td,
-.homepagemodule td,
-.report td{
-  border-color: rgba(200,162,74,.18) !important;
-}
-
-/* If the old skin is painting orange via background images, kill them */
-.caption,
-td.caption,
-tr.caption > td,
-caption{
-  background-image: none !important;
-}
-
-/* Extra: some modules put an outline/shadow in orange */
-.homepagemodule,
-.report,
-table.report,
-table.homepagemodule{
-  outline: none !important;
 }
