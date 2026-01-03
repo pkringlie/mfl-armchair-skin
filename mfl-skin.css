@@ -260,3 +260,54 @@ caption + thead tr:first-child th,
 caption + tbody tr:first-child td{
   border-top: 0 !important;
 }
+/* ============================================================
+   FINAL CATCH-ALL: remove the legacy orange “box” on modules
+   Many MFL modules use TD.caption (not <caption>)
+   ============================================================ */
+
+/* Module header bars (the orange strip you circled) */
+.caption,
+td.caption,
+tr.caption > td,
+.report .caption,
+.report td.caption,
+.homepagemodule .caption,
+.homepagemodule td.caption,
+.homepagecolumn .caption,
+.homepagecolumn td.caption{
+  border: 1px solid rgba(200,162,74,.22) !important;   /* brass border */
+  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
+  background-image: none !important;                   /* kills caption-bg.png */
+  color: var(--afl-brass2) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .7px !important;
+}
+
+/* The little [+] / [-] control on the right of headers */
+.caption a,
+.caption span,
+td.caption a,
+td.caption span{
+  color: var(--afl-brass2) !important;
+  background: transparent !important;
+  font-weight: 800 !important;
+}
+.caption a:hover,
+td.caption a:hover{
+  color: var(--afl-brass) !important;
+}
+
+/* Module outer frame (some are tables with their own borders) */
+table.report,
+table.homepagemodule,
+.homepagemodule,
+.report{
+  border-color: rgba(200,162,74,.18) !important;
+  outline: none !important;
+}
+
+/* Some skins apply border to the first/last cells, so nuke those too */
+table.report td,
+table.homepagemodule td{
+  outline: none !important;
+}
