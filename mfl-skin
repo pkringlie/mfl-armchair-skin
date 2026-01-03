@@ -1,0 +1,198 @@
+/* MFL Starter Skin
+   - Save as mfl-skin.css and paste into your repo (then enable GitHub Pages)
+   - Edit the :root variables to change colors, fonts, and sizing.
+*/
+
+/* === Theme variables (edit these) === */
+:root{
+  --primary: #0b6ef6;       /* main accent color (links, buttons) */
+  --accent:  #ffba08;       /* secondary accent */
+  --bg:      #f7f9fc;       /* page background */
+  --panel:   #ffffff;       /* panel / card background */
+  --muted:   #6b7280;       /* secondary text */
+  --text:    #0f1724;       /* main text */
+  --success: #16a34a;
+  --danger:  #ef4444;
+  --radius: 8px;
+  --max-width: 1100px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* === Global / layout === */
+html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height: 1.45;
+}
+
+/* Constrain main content area if desired */
+#MainContent, .MainContent, .site-content {
+  max-width: var(--max-width);
+  margin: 18px auto;
+  padding: 14px;
+}
+
+/* Panels / cards used across MFL pages */
+.panel, .box, .contentBox, .module {
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(15,23,36,0.04);
+}
+
+/* Page headings and titles */
+h1, h2, h3 {
+  color: var(--text);
+  margin: 0 0 10px 0;
+}
+.pageTitle, .Title, .moduleTitle {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Links and action buttons */
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* Buttons (tweak selectors to match MFL button classes if needed) */
+button, input[type="button"], .btn, .button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+button.secondary, .btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid rgba(11,110,246,0.12);
+}
+
+/* Tables (standings, schedule, roster) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+  font-size: 14px;
+}
+th, td {
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(15,23,36,0.06);
+}
+th {
+  background: linear-gradient(180deg, rgba(11,110,246,0.04), transparent);
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 13px;
+}
+tbody tr:hover {
+  background: rgba(11,110,246,0.03);
+}
+
+/* Standings table — highlight top teams */
+.standingsTable tr.topTeam {
+  background: linear-gradient(90deg, rgba(11,110,246,0.04), transparent);
+  font-weight: 600;
+}
+
+/* Team header card */
+.teamHeader {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+}
+.teamLogo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(15,23,36,0.06);
+  display: inline-block;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(2,6,23,0.06);
+}
+.teamName { font-weight:700; font-size: 16px; }
+
+/* Roster and player rows */
+.rosterTable .playerRow td {
+  padding: 8px 10px;
+}
+.playerName { font-weight: 600; color: var(--text); }
+.playerPos { color: var(--muted); font-size: 13px; }
+
+/* Boxes (boxscore, matchups) */
+.matchupBox {
+  display:flex;
+  gap:12px;
+  align-items: stretch;
+  padding: 10px;
+}
+.matchupBox .team {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,252,0.7));
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* Badges and small UI */
+.badge {
+  display:inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(11,110,246,0.12);
+  color: var(--primary);
+  font-weight:700;
+  font-size: 12px;
+}
+
+/* Alerts */
+.alert {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.alert.info { background: rgba(11,110,246,0.06); color: var(--primary); }
+.alert.success { background: rgba(22,163,74,0.06); color: var(--success); }
+.alert.warn { background: rgba(255,186,8,0.06); color: var(--accent); }
+
+/* Footer */
+footer, .siteFooter {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 860px) {
+  #MainContent, .MainContent {
+    padding: 8px;
+    margin: 8px;
+  }
+  .matchupBox { flex-direction: column; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+}
+
+/* ===== Utility classes you can reuse ===== */
+.kv { display:flex; gap:8px; align-items:center; }
+.align-right { text-align: right; }
+.small { font-size: 13px; color: var(--muted); }
+.center { text-align:center; }
+
+/* === End of starter skin === */
