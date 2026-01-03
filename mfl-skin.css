@@ -1,194 +1,145 @@
+@import url("base.css");
+@import url("responsive.css");
+
+/* =========================
+   AFL – Steakhouse / Goodfellas Overrides
+   Paste BELOW imports
+   ========================= */
 :root{
-  --primary: #0b6ef6;
-  --accent:  #ffba08;
-  --bg:      #f7f9fc;
-  --panel:   #ffffff;
-  --muted:   #6b7280;
-  --text:    #0f1724;
-  --success: #16a34a;
-  --danger:  #ef4444;
-  --radius: 8px;
-  --max-width: 1100px;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --afl-bg: #0B0B0D;
+  --afl-panel: #121216;
+  --afl-panel2: #16161C;
+  --afl-border: #2A2A33;
+
+  --afl-oxblood: #5A0F14;
+  --afl-brass: #C8A24A;
+  --afl-brass2: #E0C27A;
+
+  --afl-text: #E9E3D4;
+  --afl-muted: #A7A195;
 }
 
-/* Global page basics (leave MFL header/navigation untouched) */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-sans);
-  background-color: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height: 1.45;
+/* Global */
+html, body{
+  background: var(--afl-bg) !important;
+  color: var(--afl-text) !important;
 }
 
-/* Limit most customizations to the main content area so we don't override MFL banner/header */
-#MainContent, .MainContent, .site-content {
-  max-width: var(--max-width);
-  margin: 18px auto;
-  padding: 14px;
-}
-
-/* Panels / cards inside main content — use background-color (do not remove background-image) */
-#MainContent .panel,
-#MainContent .box,
-#MainContent .contentBox,
-#MainContent .module {
-  background-color: var(--panel);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
-  padding: 12px;
-  margin-bottom: 14px;
-  border: 1px solid rgba(15,23,36,0.04);
-}
-
-/* Headings and titles */
-#MainContent h1, #MainContent h2, #MainContent h3 {
-  color: var(--text);
-  margin: 0 0 10px 0;
-}
-#MainContent .pageTitle, #MainContent .Title, #MainContent .moduleTitle {
-  font-weight: 600;
-  color: var(--text);
-}
-
-/* Links and buttons (scoped) */
-#MainContent a {
-  color: var(--primary);
+a{
+  color: var(--afl-brass) !important;
   text-decoration: none;
 }
-#MainContent a:hover { text-decoration: underline; }
-
-#MainContent button,
-#MainContent input[type="button"],
-#MainContent .btn,
-#MainContent .button {
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-}
-#MainContent button.secondary, #MainContent .btn-secondary {
-  background-color: transparent;
-  color: var(--primary);
-  border: 1px solid rgba(11,110,246,0.12);
+a:hover{
+  color: var(--afl-brass2) !important;
+  text-decoration: underline;
 }
 
-/* Tables (standings, schedule, roster) - gentle styling, avoid replacing textured headers */
-#MainContent table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: transparent;
-  font-size: 14px;
-}
-#MainContent th, #MainContent td {
-  padding: 8px 10px;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid rgba(15,23,36,0.06);
-}
-#MainContent th {
-  /* don't override existing background-images MFL uses; keep only color and font tweaks */
-  background-color: rgba(11,110,246,0.03);
-  font-weight: 700;
-  color: var(--muted);
-  font-size: 13px;
-}
-#MainContent tbody tr:hover {
-  background-color: rgba(11,110,246,0.03);
+/* Main content “menu card” */
+.pagebody, #withmenus, .homepagetabcontent, .contentBody{
+  background: linear-gradient(180deg, var(--afl-panel) 0%, var(--afl-panel2) 100%) !important;
+  border: 1px solid var(--afl-border) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45) !important;
+  border-radius: 10px !important;
 }
 
-/* Standings highlight (scoped) */
-#MainContent .standingsTable tr.topTeam {
-  background: linear-gradient(90deg, rgba(11,110,246,0.04), transparent);
-  font-weight: 600;
+/* Headings */
+h1, h2, h3, .pagetitle h1{
+  color: var(--afl-text) !important;
+  letter-spacing: .3px;
+}
+h2{
+  border-bottom: 1px solid var(--afl-border) !important;
+  padding-bottom: 6px;
 }
 
-/* Team header card */
-#MainContent .teamHeader {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 10px;
+/* Tables */
+table, .report, .two_column_layout{
+  background: transparent !important;
+  color: var(--afl-text) !important;
 }
-#MainContent .teamLogo {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid rgba(15,23,36,0.06);
-  display: inline-block;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(2,6,23,0.06);
+th{
+  background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
+  color: var(--afl-brass2) !important;
+  border: 1px solid #3A2B1D !important;
+  text-transform: uppercase;
+  letter-spacing: .7px;
 }
-#MainContent .teamName { font-weight:700; font-size: 16px; }
-
-/* Roster / player rows */
-#MainContent .rosterTable .playerRow td { padding: 8px 10px; }
-#MainContent .playerName { font-weight: 600; color: var(--text); }
-#MainContent .playerPos { color: var(--muted); font-size: 13px; }
-
-/* Matchup boxes — use background-color so textures remain if present */
-#MainContent .matchupBox {
-  display:flex;
-  gap:12px;
-  align-items: stretch;
-  padding: 10px;
+td{
+  border: 1px solid var(--afl-border) !important;
 }
-#MainContent .matchupBox .team {
-  flex: 1;
-  background-color: rgba(255,255,255,0.75);
-  border-radius: 8px;
-  padding: 8px;
+tr:nth-child(even) td{
+  background: rgba(255,255,255,0.02) !important;
 }
 
-/* Badges and small UI */
-#MainContent .badge {
-  display:inline-block;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background-color: rgba(11,110,246,0.12);
-  color: var(--primary);
-  font-weight:700;
-  font-size: 12px;
+/* Buttons / inputs */
+input, select, textarea{
+  background: #0E0E12 !important;
+  color: var(--afl-text) !important;
+  border: 1px solid var(--afl-border) !important;
+  border-radius: 8px !important;
+}
+input[type="submit"], button, .btn, a.button{
+  background: linear-gradient(180deg, var(--afl-oxblood) 0%, #3B0A0D 100%) !important;
+  border: 1px solid #7A1A22 !important;
+  color: var(--afl-text) !important;
+  font-weight: 700 !important;
+  letter-spacing: .4px;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+}
+input[type="submit"]:hover, button:hover, .btn:hover, a.button:hover{
+  filter: brightness(1.08);
 }
 
-/* Alerts */
-#MainContent .alert {
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-#MainContent .alert.info { background-color: rgba(11,110,246,0.06); color: var(--primary); }
-#MainContent .alert.success { background-color: rgba(22,163,74,0.06); color: var(--success); }
-#MainContent .alert.warn { background-color: rgba(255,186,8,0.06); color: var(--accent); }
-
-/* Footer (scoped) */
-#MainContent footer, #MainContent .siteFooter {
-  color: var(--muted);
-  font-size: 13px;
-  padding: 16px;
-  text-align: center;
+/* Top menus (MFL menu + home tabs) */
+.myfantasyleague_menu,
+.myfantasyleague_tabmenu{
+  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
+  border-bottom: 3px solid var(--afl-brass) !important;
 }
 
-/* Responsive tweaks */
-@media (max-width: 860px) {
-  #MainContent, .MainContent {
-    padding: 8px;
-    margin: 8px;
-  }
-  #MainContent .matchupBox { flex-direction: column; }
-  #MainContent th, #MainContent td { padding: 8px 6px; font-size: 13px; }
+/* Menu items */
+.myfantasyleague_menu ul,
+.myfantasyleague_tabmenu ul#homepagetabs{
+  background: transparent !important;
+  border-bottom-color: var(--afl-brass) !important;
 }
 
-/* Utilities */
-#MainContent .kv { display:flex; gap:8px; align-items:center; }
-#MainContent .align-right { text-align: right; }
-#MainContent .small { font-size: 13px; color: var(--muted); }
-#MainContent .center { text-align:center; }
+.myfantasyleague_menu ul li a,
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  color: var(--afl-text) !important;
+  border-top-color: rgba(200,162,74,.15) !important;
+}
+
+.myfantasyleague_menu li:hover > a,
+.myfantasyleague_tabmenu #homepagetabs li:hover a{
+  background: rgba(200,162,74,.10) !important;
+  color: var(--afl-brass2) !important;
+}
+
+.myfantasyleague_tabmenu #homepagetabs li.currenttab,
+.myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
+  background: rgba(90,15,20,.85) !important;
+}
+.myfantasyleague_tabmenu #homepagetabs li.currenttab a{
+  color: var(--afl-brass2) !important;
+}
+
+/* Small “smoke” effect behind page (subtle, safe) */
+body:before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(700px 200px at 20% 10%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(900px 260px at 80% 15%, rgba(255,255,255,.05), transparent 60%),
+    radial-gradient(800px 240px at 50% 80%, rgba(255,255,255,.03), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: .35;
+  z-index: 0;
+}
+.pagebody, #withmenus, .homepagetabcontent{
+  position: relative;
+  z-index: 1;
+}
