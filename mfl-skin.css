@@ -1,38 +1,52 @@
 @import url("base.css");
 @import url("responsive.css");
 
-/* =========================
-   AFL – Steakhouse (Option A) + Modern UI polish
-   Mostly solid black + subtle smoke + cards + clean type
-   ========================= */
+/* ==========================================================
+   ARMCHAIR FANTASY LEAGUE — “Midnight Steakhouse” v1
+   Goal: Remove DraftBeer orange + modernize UI consistently
+   Palette: Oxblood + Brass + Bone on Charcoal
+   ========================================================== */
+
+/* --------- Palette / tokens --------- */
 :root{
-  --afl-bg: #0B0B0D;
-  --afl-panel: #121216;
-  --afl-panel2: #16161C;
-  --afl-border: #2A2A33;
+  --bg: #0B0B0D;
 
-  --afl-oxblood: #5A0F14;
-  --afl-oxblood2: #3B0A0D;
+  --panel: #121216;
+  --panel2:#16161C;
 
-  --afl-brass: #C8A24A;
-  --afl-brass2: #E0C27A;
+  --text: #E9E3D4;
+  --muted:#A7A195;
 
-  --afl-text: #E9E3D4;
-  --afl-muted: #A7A195;
+  --oxblood:#5A0F14;
+  --oxblood2:#3B0A0D;
 
-  --afl-radius: 14px;
-  --afl-shadow: 0 18px 45px rgba(0,0,0,.55);
+  --brass:#C8A24A;
+  --brass2:#E0C27A;
+
+  --bone:#F3EBDC;
+
+  --hairline: rgba(255,255,255,.06);
+  --brassline: rgba(200,162,74,.20);
+
+  --radius: 14px;
+  --radius2: 12px;
+
+  --shadow: 0 18px 45px rgba(0,0,0,.55);
 }
 
-/* Base page */
+/* --------- Global base --------- */
 html, body{
-  background: var(--afl-bg) !important;
-  color: var(--afl-text) !important;
+  background: var(--bg) !important;
+  color: var(--text) !important;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   letter-spacing: .15px;
 }
 
-/* Subtle smoke overlay */
+td, th, p, li, div{
+  line-height: 1.35 !important;
+}
+
+/* Subtle smoke overlay (classy, not busy) */
 body:before{
   content:"";
   position: fixed;
@@ -42,140 +56,182 @@ body:before{
     radial-gradient(700px 220px at 18% 12%, rgba(255,255,255,.06), transparent 60%),
     radial-gradient(900px 260px at 82% 14%, rgba(255,255,255,.05), transparent 60%),
     radial-gradient(850px 240px at 50% 82%, rgba(255,255,255,.03), transparent 60%);
-  opacity: .35;
+  opacity: .33;
   z-index: 0;
 }
 
-/* Typography breathing room */
-td, th, p, li, div{
-  line-height: 1.35 !important;
-}
-
-/* Keep content above the smoke + turn main content into a “card” */
+/* Main content “card” */
 .pagebody, #withmenus, .homepagetabcontent, .contentBody{
   position: relative;
   z-index: 1;
 
-  background: linear-gradient(180deg, var(--afl-panel) 0%, var(--afl-panel2) 100%) !important;
-  border: 1px solid rgba(200,162,74,.18) !important;
-  border-radius: var(--afl-radius) !important;
-  box-shadow: var(--afl-shadow) !important;
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%) !important;
+  border: 1px solid var(--brassline) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
 
   padding: 18px !important;
 }
 
-/* Make common modules/containers feel card-like */
-.homepagemodule, .report, .two_column_layout, .module, .mobilemodule{
-  border-radius: 12px !important;
-  overflow: hidden;
-}
-
 /* Links */
 a{
-  color: var(--afl-brass) !important;
+  color: var(--brass) !important;
   text-decoration: none;
 }
 a:hover{
-  color: var(--afl-brass2) !important;
+  color: var(--brass2) !important;
   text-decoration: underline;
 }
 
 /* Headings */
 h1, h2, h3, .pagetitle h1{
-  color: var(--afl-text) !important;
+  color: var(--text) !important;
   letter-spacing: .3px;
 }
 h2{
-  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  border-bottom: 1px solid var(--hairline) !important;
   padding-bottom: 6px;
 }
 
-/* =========================
-   NAV + TABS (clean + brass rule)
-   ========================= */
-.myfantasyleague_menu,
-.myfantasyleague_tabmenu{
-  background: linear-gradient(180deg, #141015 0%, #0B0B0D 100%) !important;
-  border-bottom: 2px solid var(--afl-brass) !important;
+/* --------- Common modules become “cards” --------- */
+.homepagemodule,
+.report,
+.two_column_layout,
+.module,
+.mobilemodule,
+table.report,
+table.homepagemodule{
+  border-radius: var(--radius2) !important;
+  overflow: hidden !important;
+
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%) !important;
+  border: 1px solid var(--brassline) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,.45) !important;
 }
 
+/* Kill any legacy “outline” effects */
+*{
+  outline-color: transparent !important;
+}
+
+/* ==========================================================
+   NAVIGATION (remove orange, go brass + oxblood)
+   ========================================================== */
+
+/* Top nav bars */
+.myfantasyleague_menu,
+.myfantasyleague_tabmenu,
+.myfantasyleague_submenu{
+  background: linear-gradient(180deg, #141015 0%, var(--bg) 100%) !important;
+  border-bottom: 2px solid var(--brass) !important;
+}
+
+/* Menu containers */
 .myfantasyleague_menu ul,
+.myfantasyleague_tabmenu ul,
 .myfantasyleague_tabmenu ul#homepagetabs{
   background: transparent !important;
-  border-bottom-color: var(--afl-brass) !important;
+  border-bottom-color: var(--brass) !important;
 }
 
+/* Menu items */
 .myfantasyleague_menu ul li a,
+.myfantasyleague_tabmenu ul li a,
 .myfantasyleague_tabmenu ul#homepagetabs li a{
-  color: var(--afl-text) !important;
+  color: var(--text) !important;
+  background: transparent !important;
   border-top-color: rgba(200,162,74,.15) !important;
 }
 
+/* Hover */
 .myfantasyleague_menu li:hover > a,
+.myfantasyleague_tabmenu li:hover > a,
 .myfantasyleague_tabmenu #homepagetabs li:hover a{
   background: rgba(200,162,74,.10) !important;
-  color: var(--afl-brass2) !important;
+  color: var(--brass2) !important;
 }
 
+/* Active tab = oxblood */
 .myfantasyleague_tabmenu #homepagetabs li.currenttab,
 .myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
-  background: rgba(90,15,20,.90) !important;
+  background: rgba(90,15,20,.92) !important;
 }
-
 .myfantasyleague_tabmenu #homepagetabs li.currenttab a{
-  color: var(--afl-brass2) !important;
+  color: var(--brass2) !important;
 }
 
-/* =========================
-   TABLES (modern dashboard tables)
-   ========================= */
+/* ==========================================================
+   TABLES (bone surfaces, modern borders)
+   ========================================================== */
+
 table{
   border-collapse: separate !important;
   border-spacing: 0 !important;
+  color: var(--text) !important;
 }
 
+/* Table headers */
 th{
   background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
-  color: var(--afl-brass2) !important;
+  color: var(--brass2) !important;
 
-  border: 1px solid rgba(200,162,74,.18) !important;
-  border-bottom: 1px solid rgba(200,162,74,.22) !important;
+  border: 1px solid rgba(200,162,74,.22) !important;
+  border-bottom: 1px solid rgba(200,162,74,.25) !important;
 
   text-transform: uppercase;
   letter-spacing: .7px;
   font-size: 12px !important;
 }
 
+/* Data cells default (dark pages) */
 td{
-  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  border-bottom: 1px solid var(--hairline) !important;
   border-left: 0 !important;
   border-right: 0 !important;
   border-top: 0 !important;
-  color: var(--afl-text) !important;
 }
 
-tr:nth-child(even) td{
-  background: rgba(255,255,255,0.02) !important;
+/* On many MFL modules, the table body is “bone” colored (keep it, but make it intentional) */
+table.report tbody td,
+table.homepagemodule tbody td{
+  background: var(--bone) !important;
+  color: #1B1B1E !important;
+  border-bottom: 1px solid rgba(0,0,0,.08) !important;
 }
 
-/* =========================
-   FORMS + BUTTONS (premium)
-   ========================= */
+/* Alternating rows on bone */
+table.report tbody tr:nth-child(even) td,
+table.homepagemodule tbody tr:nth-child(even) td{
+  background: #EFE3CF !important;
+}
+
+/* Links on bone areas */
+table.report tbody td a,
+table.homepagemodule tbody td a{
+  color: #7A5B12 !important;
+}
+table.report tbody td a:hover,
+table.homepagemodule tbody td a:hover{
+  color: #4F3A0A !important;
+}
+
+/* ==========================================================
+   FORMS + BUTTONS (premium, no orange)
+   ========================================================== */
+
 input, select, textarea{
   background: #0E0E12 !important;
-  color: var(--afl-text) !important;
-
+  color: var(--text) !important;
   border: 1px solid rgba(200,162,74,.18) !important;
   border-radius: 10px !important;
-
   padding: 8px 10px !important;
 }
 
 input[type="submit"], button, .btn, a.button{
-  background: linear-gradient(180deg, var(--afl-oxblood) 0%, var(--afl-oxblood2) 100%) !important;
+  background: linear-gradient(180deg, var(--oxblood) 0%, var(--oxblood2) 100%) !important;
   border: 1px solid rgba(200,162,74,.25) !important;
 
-  color: var(--afl-text) !important;
+  color: var(--text) !important;
   font-weight: 700 !important;
   letter-spacing: .4px;
 
@@ -189,83 +245,27 @@ input[type="submit"]:hover, button:hover, .btn:hover, a.button:hover{
   filter: brightness(1.08);
 }
 
-/* Optional: soften horizontal rules */
-hr{
-  border: 0 !important;
-  height: 1px !important;
-  background: rgba(255,255,255,.08) !important;
-}
-
-/* Optional: accessible focus */
+/* Accessible focus */
 input:focus, select:focus, textarea:focus, button:focus{
   outline: 2px solid rgba(200,162,74,.35) !important;
   outline-offset: 2px !important;
 }
 
-/* ============================================================
-   FIX: Remove legacy ORANGE outline around rounded module edges
-   (DraftBeer-style caption borders and report wrapper borders)
-   ============================================================ */
+/* ==========================================================
+   THE BIG ONE: Kill ALL DraftBeer Orange Everywhere
+   ========================================================== */
 
-/* Module headers (captions) often have border: 1px solid #d86000 + caption-bg.png */
-caption,
-.homepagemodule caption,
-.homepagecolumn .homepagemodule caption{
-  border: 1px solid rgba(200,162,74,.22) !important;
-  border-bottom: 1px solid rgba(200,162,74,.22) !important;
-
-  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
-  background-image: none !important; /* kill caption-bg.png */
-  color: var(--afl-brass2) !important;
-
-  border-top-left-radius: 12px !important;
-  border-top-right-radius: 12px !important;
-}
-
-/* Wrapper border around modules/tables often inherits orange */
-.report,
-.homepagemodule,
-.homepagecolumn .homepagemodule,
-.playoffbracket,
-#monthly_calendar,
-div.mobile-wrap,
-table.report{
-  border: 1px solid rgba(200,162,74,.18) !important;
-  border-radius: 12px !important;
-  background: linear-gradient(180deg, var(--afl-panel) 0%, var(--afl-panel2) 100%) !important;
-  box-shadow: 0 14px 40px rgba(0,0,0,.45) !important;
-}
-
-/* Make sure the inside of modules doesn’t reintroduce the orange frame */
-.homepagemodule table,
-.report table{
-  border: 0 !important;
-}
-
-/* The little [+] / [-] expander on the right */
-caption > span,
-caption > span.module_expand{
-  color: var(--afl-brass2) !important;
+/* Any element that still has orange backgrounds or borders from the old skin */
+*[style*="#d86000"],
+*[style*="#D86000"],
+*[style*="#ff9900"],
+*[style*="#FF9900"]{
   background: transparent !important;
-  font-weight: 800 !important;
-  padding-right: 10px !important;
-}
-caption > span:hover,
-caption > span.module_expand:hover{
-  color: var(--afl-brass) !important;
+  border-color: var(--brassline) !important;
 }
 
-/* Some skins add a top border to the first row after caption */
-caption + thead tr:first-child th,
-caption + tbody tr:first-child td{
-  border-top: 0 !important;
-}
-/* ============================================================
-   FINAL CATCH-ALL: remove the legacy orange “box” on modules
-   Many MFL modules use TD.caption (not <caption>)
-   ============================================================ */
-
-/* Module header bars (the orange strip you circled) */
+/* Module header bars are often TD.caption (not <caption>) */
+caption,
 .caption,
 td.caption,
 tr.caption > td,
@@ -275,39 +275,43 @@ tr.caption > td,
 .homepagemodule td.caption,
 .homepagecolumn .caption,
 .homepagecolumn td.caption{
-  border: 1px solid rgba(200,162,74,.22) !important;   /* brass border */
-  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
-  background-image: none !important;                   /* kills caption-bg.png */
-  color: var(--afl-brass2) !important;
+  border: 1px solid rgba(200,162,74,.22) !important;
+  background: linear-gradient(180deg, #1A1210 0%, var(--bg) 100%) !important;
+  background-image: none !important; /* kills caption-bg.png */
+  color: var(--brass2) !important;
+
   text-transform: uppercase !important;
   letter-spacing: .7px !important;
 }
 
-/* The little [+] / [-] control on the right of headers */
-.caption a,
-.caption span,
-td.caption a,
-td.caption span{
-  color: var(--afl-brass2) !important;
+/* [+] [-] controls on the right of module headers */
+.caption a, .caption span,
+td.caption a, td.caption span,
+caption a, caption span{
+  color: var(--brass2) !important;
   background: transparent !important;
   font-weight: 800 !important;
 }
-.caption a:hover,
-td.caption a:hover{
-  color: var(--afl-brass) !important;
+.caption a:hover, td.caption a:hover, caption a:hover{
+  color: var(--brass) !important;
 }
 
-/* Module outer frame (some are tables with their own borders) */
+/* Remove orange border “frames” around module tables */
 table.report,
 table.homepagemodule,
-.homepagemodule,
-.report{
-  border-color: rgba(200,162,74,.18) !important;
-  outline: none !important;
+.report,
+.homepagemodule{
+  border-color: var(--brassline) !important;
 }
 
-/* Some skins apply border to the first/last cells, so nuke those too */
-table.report td,
-table.homepagemodule td{
-  outline: none !important;
+/* Nuke any orange-ish borders inside modules */
+.report * , .homepagemodule *{
+  border-color: rgba(200,162,74,.18) !important;
+}
+
+/* Soften HR lines */
+hr{
+  border: 0 !important;
+  height: 1px !important;
+  background: rgba(255,255,255,.08) !important;
 }
