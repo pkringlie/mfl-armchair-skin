@@ -1,6 +1,8 @@
 @import url("base.css");
 @import url("responsive.css");
 
+html, body { background: hotpink !important; }
+
 /* ==========================================================
    ARMCHAIR FANTASY LEAGUE — Midnight Steakhouse v1 (FULL RESET)
    Purpose:
