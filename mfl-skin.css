@@ -2,12 +2,9 @@
 @import url("responsive.css");
 
 /* =========================
-   AFL – Steakhouse (Option A) + Modern UI Upgrades
-   Mostly solid black + subtle smoke
-   Cards + spacing + cleaner tables + premium controls
+   AFL – Steakhouse (Option A) + Modern UI polish
+   Mostly solid black + subtle smoke + cards + clean type
    ========================= */
-
-/* Theme tokens */
 :root{
   --afl-bg: #0B0B0D;
   --afl-panel: #121216;
@@ -23,39 +20,19 @@
   --afl-text: #E9E3D4;
   --afl-muted: #A7A195;
 
-  --afl-line: rgba(255,255,255,.06);
-  --afl-line2: rgba(200,162,74,.18);
+  --afl-radius: 14px;
+  --afl-shadow: 0 18px 45px rgba(0,0,0,.55);
 }
 
-/* -------------------------
-   Global base / typography
-   ------------------------- */
+/* Base page */
 html, body{
   background: var(--afl-bg) !important;
   color: var(--afl-text) !important;
-
-  /* Modern, readable defaults (safe on all machines) */
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
   letter-spacing: .15px;
 }
 
-td, th, p, li, div{
-  line-height: 1.35 !important;
-}
-
-/* Links */
-a{
-  color: var(--afl-brass) !important;
-  text-decoration: none;
-}
-a:hover{
-  color: var(--afl-brass2) !important;
-  text-decoration: underline;
-}
-
-/* -------------------------
-   Subtle smoke overlay
-   ------------------------- */
+/* Subtle smoke overlay */
 body:before{
   content:"";
   position: fixed;
@@ -69,84 +46,99 @@ body:before{
   z-index: 0;
 }
 
-/* -------------------------
-   Main page “card” layout
-   ------------------------- */
+/* Typography breathing room */
+td, th, p, li, div{
+  line-height: 1.35 !important;
+}
+
+/* Keep content above the smoke + turn main content into a “card” */
 .pagebody, #withmenus, .homepagetabcontent, .contentBody{
   position: relative;
   z-index: 1;
 
   background: linear-gradient(180deg, var(--afl-panel) 0%, var(--afl-panel2) 100%) !important;
-  border: 1px solid var(--afl-line2) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 18px 45px rgba(0,0,0,.55) !important;
+  border: 1px solid rgba(200,162,74,.18) !important;
+  border-radius: var(--afl-radius) !important;
+  box-shadow: var(--afl-shadow) !important;
 
-  /* More breathing room (modern feel) */
-  padding: 18px 18px !important;
+  padding: 18px !important;
 }
 
-/* Make common “boxes/modules” feel like cards too */
-.report, .two_column_layout, .homepagemodule, .module, .container{
+/* Make common modules/containers feel card-like */
+.homepagemodule, .report, .two_column_layout, .module, .mobilemodule{
   border-radius: 12px !important;
   overflow: hidden;
 }
 
-/* -------------------------
-   Navigation / Tabs
-   ------------------------- */
+/* Links */
+a{
+  color: var(--afl-brass) !important;
+  text-decoration: none;
+}
+a:hover{
+  color: var(--afl-brass2) !important;
+  text-decoration: underline;
+}
+
+/* Headings (subtle luxury feel) */
+h1, h2, h3, .pagetitle h1{
+  color: var(--afl-text) !important;
+  letter-spacing: .3px;
+}
+h2{
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  padding-bottom: 6px;
+}
+
+/* =========================
+   NAV + TABS (clean + brass rule)
+   ========================= */
 .myfantasyleague_menu,
 .myfantasyleague_tabmenu{
   background: linear-gradient(180deg, #141015 0%, #0B0B0D 100%) !important;
   border-bottom: 2px solid var(--afl-brass) !important;
 }
 
-/* Base ULs */
 .myfantasyleague_menu ul,
 .myfantasyleague_tabmenu ul#homepagetabs{
   background: transparent !important;
   border-bottom-color: var(--afl-brass) !important;
 }
 
-/* Links */
 .myfantasyleague_menu ul li a,
 .myfantasyleague_tabmenu ul#homepagetabs li a{
   color: var(--afl-text) !important;
   border-top-color: rgba(200,162,74,.15) !important;
 }
 
-/* Hover */
 .myfantasyleague_menu li:hover > a,
 .myfantasyleague_tabmenu #homepagetabs li:hover a{
   background: rgba(200,162,74,.10) !important;
   color: var(--afl-brass2) !important;
 }
 
-/* Active tab */
 .myfantasyleague_tabmenu #homepagetabs li.currenttab,
 .myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
-  background: rgba(90,15,20,.90) !important;
+  background: rgba(90,15,20,.90) !important; /* oxblood */
 }
+
 .myfantasyleague_tabmenu #homepagetabs li.currenttab a{
   color: var(--afl-brass2) !important;
 }
 
-/* -------------------------
-   Tables – modern dashboard style
-   ------------------------- */
+/* =========================
+   TABLES (modern dashboard tables)
+   ========================= */
 table{
   border-collapse: separate !important;
   border-spacing: 0 !important;
-  background: transparent !important;
-  color: var(--afl-text) !important;
 }
 
-/* Header cells */
 th{
   background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
   color: var(--afl-brass2) !important;
 
-  /* Less “grid paper”, more “panel” */
-  border: none !important;
+  border: 1px solid rgba(200,162,74,.18) !important;
   border-bottom: 1px solid rgba(200,162,74,.22) !important;
 
   text-transform: uppercase;
@@ -154,83 +146,58 @@ th{
   font-size: 12px !important;
 }
 
-/* Data cells */
 td{
-  /* Remove heavy box borders */
-  border: none !important;
-  border-bottom: 1px solid var(--afl-line) !important;
-
-  /* Slightly more padding reads modern */
-  padding: 10px 10px !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  color: var(--afl-text) !important;
 }
 
-/* Zebra subtle */
 tr:nth-child(even) td{
   background: rgba(255,255,255,0.02) !important;
 }
 
-/* If a table still looks “boxed”, soften it */
-table, .report{
-  border-radius: 12px !important;
-  overflow: hidden;
-}
-
-/* -------------------------
-   Inputs / controls
-   ------------------------- */
+/* =========================
+   FORMS + BUTTONS (premium)
+   ========================= */
 input, select, textarea{
   background: #0E0E12 !important;
   color: var(--afl-text) !important;
-  border: 1px solid var(--afl-line2) !important;
+
+  border: 1px solid rgba(200,162,74,.18) !important;
   border-radius: 10px !important;
 
   padding: 8px 10px !important;
-  outline: none !important;
 }
 
-/* Focus state (subtle brass) */
-input:focus, select:focus, textarea:focus{
-  border-color: rgba(224,194,122,.55) !important;
-  box-shadow: 0 0 0 3px rgba(200,162,74,.12) !important;
-}
-
-/* -------------------------
-   Buttons / CTAs
-   ------------------------- */
 input[type="submit"], button, .btn, a.button{
   background: linear-gradient(180deg, var(--afl-oxblood) 0%, var(--afl-oxblood2) 100%) !important;
   border: 1px solid rgba(200,162,74,.25) !important;
-  color: var(--afl-text) !important;
 
+  color: var(--afl-text) !important;
   font-weight: 700 !important;
-  letter-spacing: .35px;
+  letter-spacing: .4px;
+
   border-radius: 12px !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
 
   padding: 10px 14px !important;
-  box-shadow: 0 10px 22px rgba(0,0,0,.35);
-  cursor: pointer;
 }
 
 input[type="submit"]:hover, button:hover, .btn:hover, a.button:hover{
   filter: brightness(1.08);
 }
 
-/* -------------------------
-   Headings / section titles
-   ------------------------- */
-h1, h2, h3, .pagetitle h1{
-  color: var(--afl-text) !important;
-  letter-spacing: .3px;
+/* Optional: soften horizontal rules */
+hr{
+  border: 0 !important;
+  height: 1px !important;
+  background: rgba(255,255,255,.08) !important;
 }
 
-h2{
-  border-bottom: 1px solid var(--afl-border) !important;
-  padding-bottom: 6px;
+/* Optional: reduce harsh outlines on focus (keep accessible) */
+input:focus, select:focus, textarea:focus, button:focus{
+  outline: 2px solid rgba(200,162,74,.35) !important;
+  outline-offset: 2px !important;
 }
-
-/* -------------------------
-   Optional “tighten clutter” helpers
-   (safe defaults — remove if you don’t like)
-   ------------------------- */
-
-/* Reduce overly bright*
