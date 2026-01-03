@@ -316,30 +316,74 @@ hr{
   background: rgba(255,255,255,.08) !important;
 }
 /* ======================================================
-   MUTE SYSTEM ORANGE CHROME (TOP NAV + FOOTER)
+   STEP 1 (SAFE): Mute top bar + footer
+   AND hard-kill any orange borders that reappear
    ====================================================== */
 
-/* Top horizontal bar (Home / Submit Lineup / etc.) */
-.myfantasyleague_menu,
-.myfantasyleague_menu *,
-.myfantasyleague_tabmenu{
+/* --- Top orange nav strip (don’t wildcard *) --- */
+.myfantasyleague_menu{
   background: linear-gradient(180deg, #141015 0%, #0B0B0D 100%) !important;
-  border-color: rgba(200,162,74,.35) !important;
+  border-bottom: 2px solid rgba(200,162,74,.35) !important;
+}
+.myfantasyleague_menu ul{
+  background: transparent !important;
+}
+.myfantasyleague_menu ul li a{
+  background: transparent !important;
+  color: var(--text) !important;
+}
+.myfantasyleague_menu ul li:hover > a{
+  background: rgba(200,162,74,.10) !important;
+  color: var(--brass2) !important;
 }
 
-/* Footer kill-switch */
-.footer,
-.footer *,
-#footer,
-#footer *{
+/* --- Footer strip --- */
+#footer, .footer{
   background: #0B0B0D !important;
   border: 0 !important;
-  color: #666 !important;
+  color: rgba(233,227,212,.45) !important;
+}
+#footer a, .footer a{
+  color: rgba(200,162,74,.6) !important;
 }
 
-/* Back to top bar */
-#backtotop,
-#backtotop *{
-  background: #0B0B0D !important;
-  color: #666 !important;
+/* ======================================================
+   ORANGE BORDER KILL SWITCH (modules)
+   This prevents the DraftBeer orange frames from returning.
+   ====================================================== */
+
+/* Any lingering orange border definitions get replaced */
+.homepagemodule,
+.report,
+table.report,
+table.homepagemodule,
+.caption,
+td.caption,
+tr.caption > td,
+caption{
+  border-color: rgba(200,162,74,.18) !important;
+}
+
+/* The thin orange “box” around module bodies */
+.homepagemodule > tbody > tr > td,
+.report > tbody > tr > td,
+.homepagemodule td,
+.report td{
+  border-color: rgba(200,162,74,.18) !important;
+}
+
+/* If the old skin is painting orange via background images, kill them */
+.caption,
+td.caption,
+tr.caption > td,
+caption{
+  background-image: none !important;
+}
+
+/* Extra: some modules put an outline/shadow in orange */
+.homepagemodule,
+.report,
+table.report,
+table.homepagemodule{
+  outline: none !important;
 }
