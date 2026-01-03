@@ -2,8 +2,8 @@
 @import url("responsive.css");
 
 /* =========================
-   AFL – Steakhouse / Goodfellas Overrides
-   Paste BELOW imports
+   AFL – Steakhouse (Option A)
+   Mostly solid black + subtle smoke
    ========================= */
 :root{
   --afl-bg: #0B0B0D;
@@ -19,44 +19,70 @@
   --afl-muted: #A7A195;
 }
 
-/* Global */
+/* Base page */
 html, body{
   background: var(--afl-bg) !important;
   color: var(--afl-text) !important;
 }
 
-a{
-  color: var(--afl-brass) !important;
-  text-decoration: none;
-}
-a:hover{
-  color: var(--afl-brass2) !important;
-  text-decoration: underline;
+/* Subtle smoke overlay */
+body:before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(700px 220px at 18% 12%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(900px 260px at 82% 14%, rgba(255,255,255,.05), transparent 60%),
+    radial-gradient(850px 240px at 50% 82%, rgba(255,255,255,.03), transparent 60%);
+  opacity: .35;
+  z-index: 0;
 }
 
-/* Main content “menu card” */
+/* Keep content above the smoke */
 .pagebody, #withmenus, .homepagetabcontent, .contentBody{
+  position: relative;
+  z-index: 1;
   background: linear-gradient(180deg, var(--afl-panel) 0%, var(--afl-panel2) 100%) !important;
   border: 1px solid var(--afl-border) !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,.45) !important;
   border-radius: 10px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45) !important;
 }
 
-/* Headings */
-h1, h2, h3, .pagetitle h1{
-  color: var(--afl-text) !important;
-  letter-spacing: .3px;
+/* Links */
+a{ color: var(--afl-brass) !important; text-decoration: none; }
+a:hover{ color: var(--afl-brass2) !important; text-decoration: underline; }
+
+/* Menu + tabs */
+.myfantasyleague_menu,
+.myfantasyleague_tabmenu{
+  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
+  border-bottom: 3px solid var(--afl-brass) !important;
 }
-h2{
-  border-bottom: 1px solid var(--afl-border) !important;
-  padding-bottom: 6px;
+.myfantasyleague_menu ul,
+.myfantasyleague_tabmenu ul#homepagetabs{
+  background: transparent !important;
+  border-bottom-color: var(--afl-brass) !important;
+}
+.myfantasyleague_menu ul li a,
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  color: var(--afl-text) !important;
+  border-top-color: rgba(200,162,74,.15) !important;
+}
+.myfantasyleague_menu li:hover > a,
+.myfantasyleague_tabmenu #homepagetabs li:hover a{
+  background: rgba(200,162,74,.10) !important;
+  color: var(--afl-brass2) !important;
+}
+.myfantasyleague_tabmenu #homepagetabs li.currenttab,
+.myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
+  background: rgba(90,15,20,.85) !important;
+}
+.myfantasyleague_tabmenu #homepagetabs li.currenttab a{
+  color: var(--afl-brass2) !important;
 }
 
 /* Tables */
-table, .report, .two_column_layout{
-  background: transparent !important;
-  color: var(--afl-text) !important;
-}
 th{
   background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
   color: var(--afl-brass2) !important;
@@ -64,14 +90,10 @@ th{
   text-transform: uppercase;
   letter-spacing: .7px;
 }
-td{
-  border: 1px solid var(--afl-border) !important;
-}
-tr:nth-child(even) td{
-  background: rgba(255,255,255,0.02) !important;
-}
+td{ border: 1px solid var(--afl-border) !important; }
+tr:nth-child(even) td{ background: rgba(255,255,255,0.02) !important; }
 
-/* Buttons / inputs */
+/* Buttons */
 input, select, textarea{
   background: #0E0E12 !important;
   color: var(--afl-text) !important;
@@ -83,63 +105,9 @@ input[type="submit"], button, .btn, a.button{
   border: 1px solid #7A1A22 !important;
   color: var(--afl-text) !important;
   font-weight: 700 !important;
-  letter-spacing: .4px;
   border-radius: 10px !important;
   box-shadow: 0 8px 18px rgba(0,0,0,.35);
 }
 input[type="submit"]:hover, button:hover, .btn:hover, a.button:hover{
   filter: brightness(1.08);
-}
-
-/* Top menus (MFL menu + home tabs) */
-.myfantasyleague_menu,
-.myfantasyleague_tabmenu{
-  background: linear-gradient(180deg, #1A1210 0%, #0B0B0D 100%) !important;
-  border-bottom: 3px solid var(--afl-brass) !important;
-}
-
-/* Menu items */
-.myfantasyleague_menu ul,
-.myfantasyleague_tabmenu ul#homepagetabs{
-  background: transparent !important;
-  border-bottom-color: var(--afl-brass) !important;
-}
-
-.myfantasyleague_menu ul li a,
-.myfantasyleague_tabmenu ul#homepagetabs li a{
-  color: var(--afl-text) !important;
-  border-top-color: rgba(200,162,74,.15) !important;
-}
-
-.myfantasyleague_menu li:hover > a,
-.myfantasyleague_tabmenu #homepagetabs li:hover a{
-  background: rgba(200,162,74,.10) !important;
-  color: var(--afl-brass2) !important;
-}
-
-.myfantasyleague_tabmenu #homepagetabs li.currenttab,
-.myfantasyleague_tabmenu #homepagetabs li.currenttab:hover{
-  background: rgba(90,15,20,.85) !important;
-}
-.myfantasyleague_tabmenu #homepagetabs li.currenttab a{
-  color: var(--afl-brass2) !important;
-}
-
-/* Small “smoke” effect behind page (subtle, safe) */
-body:before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(700px 200px at 20% 10%, rgba(255,255,255,.06), transparent 60%),
-    radial-gradient(900px 260px at 80% 15%, rgba(255,255,255,.05), transparent 60%),
-    radial-gradient(800px 240px at 50% 80%, rgba(255,255,255,.03), transparent 60%);
-  mix-blend-mode: screen;
-  opacity: .35;
-  z-index: 0;
-}
-.pagebody, #withmenus, .homepagetabcontent{
-  position: relative;
-  z-index: 1;
 }
