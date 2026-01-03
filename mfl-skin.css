@@ -315,3 +315,31 @@ hr{
   height: 1px !important;
   background: rgba(255,255,255,.08) !important;
 }
+/* ======================================================
+   MUTE SYSTEM ORANGE CHROME (TOP NAV + FOOTER)
+   ====================================================== */
+
+/* Top horizontal bar (Home / Submit Lineup / etc.) */
+.myfantasyleague_menu,
+.myfantasyleague_menu *,
+.myfantasyleague_tabmenu{
+  background: linear-gradient(180deg, #141015 0%, #0B0B0D 100%) !important;
+  border-color: rgba(200,162,74,.35) !important;
+}
+
+/* Footer kill-switch */
+.footer,
+.footer *,
+#footer,
+#footer *{
+  background: #0B0B0D !important;
+  border: 0 !important;
+  color: #666 !important;
+}
+
+/* Back to top bar */
+#backtotop,
+#backtotop *{
+  background: #0B0B0D !important;
+  color: #666 !important;
+}
