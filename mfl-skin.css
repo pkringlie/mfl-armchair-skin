@@ -608,3 +608,48 @@ li.menu ul li a:hover,
   }
 
 }
+/* ==========================================================
+   AFL — DROPDOWN PANEL SOLID BACKGROUND (NO SEE-THROUGH)
+   Fixes bleed-through (selected tab red showing behind dropdown)
+   ========================================================== */
+
+/* Dropdown container (most MFL nav dropdowns) */
+.myfantasyleague_menu ul ul,
+.myfantasyleague_menu li ul,
+.myfantasyleague_menu ul li ul,
+.myfantasyleague_menu ul li:hover ul,
+.myfantasyleague_menu ul li.sfHover ul{
+  background: #111115 !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(200,162,74,.35) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.70) !important;
+  z-index: 99999 !important;
+}
+
+/* Sometimes the LI itself is translucent */
+.myfantasyleague_menu ul ul li,
+.myfantasyleague_menu li ul li{
+  background: #111115 !important;
+  opacity: 1 !important;
+}
+
+/* The clickable rows */
+.myfantasyleague_menu ul ul li a,
+.myfantasyleague_menu li ul li a{
+  background: #111115 !important;   /* <-- key: make each row solid */
+  color: #E9E3D4 !important;
+  opacity: 1 !important;
+}
+
+/* Hover row */
+.myfantasyleague_menu ul ul li a:hover,
+.myfantasyleague_menu li ul li a:hover{
+  background: rgba(200,162,74,.20) !important;
+  color: #E0C27A !important;
+}
+
+/* If a parent wrapper is applying opacity, force it off */
+.myfantasyleague_menu ul ul *{
+  opacity: 1 !important;
+}
