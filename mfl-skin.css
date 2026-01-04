@@ -1035,3 +1035,44 @@ li.menu ul li a:hover,
   overflow-x: hidden !important;
   overflow-y: hidden !important;
 }
+/* =========================================================
+   FIX: brass separator line sticking past rounded corners
+   (NO scrollbars)
+   ========================================================= */
+
+/* A) Make anything that LOOKS like a rounded “card” clip children */
+.homepagetabcontent > table,
+.contentBody > table,
+.pagebody > table,
+#withmenus > table,
+.homepagetabcontent .report,
+.contentBody .report,
+.homepagetabcontent .reportform,
+.contentBody .reportform{
+  overflow: hidden !important;
+  border-radius: 14px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+/* B) Clamp common separator elements that cause the little “sticking out” rule */
+.homepagetabcontent hr,
+.contentBody hr,
+.pagebody hr,
+#withmenus hr{
+  max-width: 100% !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border: 0 !important;
+  height: 2px !important;
+  background: rgba(200,162,74,.35) !important; /* your brass */
+}
+
+/* C) If the line is a border-top on some inner row/div, keep it inside the box model */
+.homepagetabcontent * ,
+.contentBody * ,
+.pagebody * ,
+#withmenus *{
+  box-sizing: border-box !important;
+}
