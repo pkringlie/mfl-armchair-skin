@@ -266,3 +266,163 @@ body > center:last-of-type table td{
   th, td{ font-size: 13px !important; }
   .myfantasyleague_menu ul li a{ letter-spacing: .3px !important; }
 }
+/* ==========================================================
+   AFL — DEPTH + WARM PARCHMENT (Overrides for Back In Black)
+   Paste at END of mfl-skin.css
+   ========================================================== */
+
+:root{
+  --afl-canvasTop: #141419;
+  --afl-canvasBot: #070709;
+
+  --afl-frameTop: #15151A;
+  --afl-frameBot: #0E0E12;
+
+  --afl-cardTop: #1A1A1F;
+  --afl-cardBot: #111115;
+
+  --afl-brass: #C8A24A;
+  --afl-brass2:#E0C27A;
+
+  --afl-hair: rgba(255,255,255,.06);
+  --afl-line: rgba(200,162,74,.18);
+  --afl-line2: rgba(200,162,74,.30);
+
+  /* Warm parchment surfaces */
+  --afl-parch:  #F1E7D6;
+  --afl-parch2: #EBDDCA;
+  --afl-parch3: #E3D2BB;
+
+  --afl-ink: #1B1B1B;
+}
+
+/* 1) Canvas: break up “pure black” */
+html, body{
+  background: radial-gradient(circle at top, var(--afl-canvasTop) 0%, var(--afl-canvasBot) 72%) !important;
+}
+
+/* 2) Main frame lift (the page “sits” on the canvas) */
+.pagebody, #withmenus, .contentBody, .homepagetabcontent{
+  background: linear-gradient(180deg, var(--afl-frameTop) 0%, var(--afl-frameBot) 100%) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.04) !important;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.65),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+}
+
+/* 3) Kill extra nested frames that create the “Russian doll” look */
+.pagebody .pagebody,
+.contentBody .contentBody,
+.homepagetabcontent .homepagetabcontent,
+#withmenus #withmenus{
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 4) Make each homepage module a real “card” */
+.homepagemodule, table.homepagemodule, .report, table.report{
+  background: linear-gradient(180deg, var(--afl-cardTop) 0%, var(--afl-cardBot) 100%) !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--afl-line) !important;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.50),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+  overflow: hidden !important;
+  margin-bottom: 18px !important;
+}
+
+/* Remove inner borders that stack up */
+.homepagemodule table,
+.report table{
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 5) Module headers: steakhouse brass, not orange */
+.caption, td.caption, tr.caption > td, caption{
+  background: linear-gradient(180deg, #261C12 0%, #14110C 100%) !important;
+  background-image: none !important;
+  color: var(--afl-brass2) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--afl-line2) !important;
+  letter-spacing: .06em !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+/* +/- controls */
+.caption a, td.caption a, caption a{
+  color: var(--afl-brass2) !important;
+  font-weight: 900 !important;
+}
+.caption a:hover, td.caption a:hover, caption a:hover{
+  color: var(--afl-brass) !important;
+}
+
+/* 6) Tables: warm parchment surfaces for readability */
+table.report, table.homepagemodule{
+  background: #1F1B16 !important; /* dark “shell” around parchment */
+  border-radius: 12px !important;
+}
+
+/* Table headers */
+th{
+  background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
+  color: var(--afl-brass2) !important;
+  border-bottom: 1px solid var(--afl-line2) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .07em !important;
+  font-size: 12px !important;
+}
+
+/* Cells */
+table.report td,
+table.homepagemodule td{
+  background: var(--afl-parch) !important;
+  color: var(--afl-ink) !important;
+  border-bottom: 1px solid rgba(0,0,0,.08) !important;
+}
+
+/* Zebra rows */
+table.report tr:nth-child(even) td,
+table.homepagemodule tr:nth-child(even) td{
+  background: var(--afl-parch2) !important;
+}
+
+/* Hover row for scanability (standings, scores) */
+table.report tr:hover td,
+table.homepagemodule tr:hover td{
+  background: var(--afl-parch3) !important;
+}
+
+/* Links on parchment */
+table.report td a,
+table.homepagemodule td a{
+  color: #6B4E10 !important;
+  font-weight: 750 !important;
+  text-decoration: none !important;
+}
+table.report td a:hover,
+table.homepagemodule td a:hover{
+  color: #3E2C08 !important;
+  text-decoration: underline !important;
+}
+
+/* 7) Subtle dividers (reduce harsh outlines) */
+hr, .divider{
+  border: 0 !important;
+  height: 1px !important;
+  background: rgba(255,255,255,.06) !important;
+}
+
+/* 8) Mobile safety */
+@media (max-width: 900px){
+  .pagebody, #withmenus, .contentBody, .homepagetabcontent{
+    border-radius: 14px !important;
+  }
+  .homepagemodule, table.homepagemodule, .report, table.report{
+    border-radius: 12px !important;
+  }
+}
