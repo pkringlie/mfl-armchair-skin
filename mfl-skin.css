@@ -855,3 +855,43 @@ li.menu ul li a:hover,
 .myfantasyleague_tabmenu ul#homepagetabs li a:hover{
   background: rgba(200,162,74,.15) !important;
 }
+/* ==================================================
+   AFL — Kill the “different black strip” behind tabs
+   (force same surface on the tab rail + wrappers)
+   ================================================== */
+
+/* Your target surface color */
+:root{ --afl-surface: #121216; }
+
+/* The tab rail + UL */
+.myfantasyleague_tabmenu,
+.myfantasyleague_tabmenu ul#homepagetabs{
+  background: var(--afl-surface) !important;
+  background-image: none !important;
+}
+
+/* Common MFL wrappers that create the darker/lighter strip */
+.myfantasyleague_tabmenu *{
+  background-image: none !important;
+}
+
+/* Sometimes tabs sit inside generic containers/cells */
+#homepagetabs,
+#homepagetabs_wrapper,
+.homepagetabs,
+.homepagetabmenu,
+.homepagetabcontent,
+#withmenus .myfantasyleague_tabmenu{
+  background: var(--afl-surface) !important;
+  background-image: none !important;
+}
+
+/* Keep inactive tabs blended in */
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  background: var(--afl-surface) !important;
+}
+
+/* Active tab stays oxblood */
+.myfantasyleague_tabmenu ul#homepagetabs li.currenttab a{
+  background: #6a1518 !important;
+}
