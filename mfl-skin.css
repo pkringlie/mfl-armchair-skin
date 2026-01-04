@@ -1138,3 +1138,56 @@ li.menu ul li a:hover,
 
 /* Safety: do NOT create any horizontal scrollbars */
 html, body{ overflow-x: hidden !important; }
+/* =========================================================
+   FIX: header bar / divider peeking out past rounded corners
+   (both left + right)
+   ========================================================= */
+
+/* 1) Make module containers clip their children */
+.homepagemodule,
+.homepagemodulecontent,
+.homepagetabcontent .homepagemodule,
+.homepagetabcontent .homepagemodulecontent,
+.contentBody .homepagemodule,
+.contentBody .homepagemodulecontent{
+  overflow: hidden !important;
+  border-radius: 14px !important; /* match your card radius */
+}
+
+/* 2) Any “caption line / title bar” must also be rounded + clipped */
+.homepagemodulecaption,
+.homepagemodulecaptionline,
+.homepagetabcontent .homepagemodulecaption,
+.homepagetabcontent .homepagemodulecaptionline,
+.contentBody .homepagemodulecaption,
+.contentBody .homepagemodulecaptionline{
+  overflow: hidden !important;
+  border-top-left-radius: 14px !important;
+  border-top-right-radius: 14px !important;
+  background-clip: padding-box !important;
+}
+
+/* 3) If the bar is drawn with pseudo-elements, force them to respect radius */
+.homepagemodulecaption:before,
+.homepagemodulecaption:after,
+.homepagemodulecaptionline:before,
+.homepagemodulecaptionline:after,
+.homepagetabcontent .homepagemodulecaption:before,
+.homepagetabcontent .homepagemodulecaption:after,
+.homepagetabcontent .homepagemodulecaptionline:before,
+.homepagetabcontent .homepagemodulecaptionline:after,
+.contentBody .homepagemodulecaption:before,
+.contentBody .homepagemodulecaption:after,
+.contentBody .homepagemodulecaptionline:before,
+.contentBody .homepagemodulecaptionline:after{
+  border-top-left-radius: 14px !important;
+  border-top-right-radius: 14px !important;
+  overflow: hidden !important;
+}
+
+/* 4) If the “line” is actually a background-image gradient, prevent bleed */
+.homepagemodulecaption,
+.homepagemodulecaptionline{
+  background-origin: padding-box !important;
+  background-clip: padding-box !important;
+}
