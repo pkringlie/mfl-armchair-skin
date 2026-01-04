@@ -1076,3 +1076,65 @@ li.menu ul li a:hover,
 #withmenus *{
   box-sizing: border-box !important;
 }
+/* =========================================================
+   FIX: header divider line bleeding past rounded corners
+   (inset divider + clip corners, NO scrollbars)
+   ========================================================= */
+
+/* 1) Force module boxes to clip their children */
+.homepagetabcontent .homepagemodule,
+.homepagetabcontent .homepagemodule > table,
+.homepagetabcontent .report,
+.homepagetabcontent .reportform,
+.contentBody .homepagemodule,
+.contentBody .homepagemodule > table,
+.contentBody .report,
+.contentBody .reportform{
+  overflow: hidden !important;
+  border-radius: 16px !important;
+}
+
+/* 2) Kill the “full width” divider that’s coming from borders on header rows/cells */
+.homepagetabcontent .homepagemodulecaption,
+.homepagetabcontent .homepagemodulecaption td,
+.homepagetabcontent .homepagemodulecaption th,
+.homepagetabcontent .homepagemodulecaptionline,
+.homepagetabcontent .homepagemodulecaptionline td,
+.homepagetabcontent .homepagemodulecaptionline th,
+.contentBody .homepagemodulecaption,
+.contentBody .homepagemodulecaption td,
+.contentBody .homepagemodulecaption th,
+.contentBody .homepagemodulecaptionline,
+.contentBody .homepagemodulecaptionline td,
+.contentBody .homepagemodulecaptionline th{
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* 3) Re-add a divider that is INSET so it can’t “stick out” into the rounded corners */
+.homepagetabcontent .homepagemodulecaption,
+.homepagetabcontent .homepagemodulecaptionline,
+.contentBody .homepagemodulecaption,
+.contentBody .homepagemodulecaptionline{
+  position: relative !important;
+}
+
+.homepagetabcontent .homepagemodulecaption:after,
+.homepagetabcontent .homepagemodulecaptionline:after,
+.contentBody .homepagemodulecaption:after,
+.contentBody .homepagemodulecaptionline:after{
+  content: "" !important;
+  position: absolute !important;
+  left: 16px !important;   /* inset */
+  right: 16px !important;  /* inset */
+  bottom: 0 !important;
+  height: 2px !important;
+  background: rgba(200,162,74,.30) !important; /* brass */
+  pointer-events: none !important;
+}
+
+/* Safety: do NOT create any horizontal scrollbars */
+html, body{ overflow-x: hidden !important; }
