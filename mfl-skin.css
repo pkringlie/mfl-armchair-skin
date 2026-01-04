@@ -1010,3 +1010,42 @@ div.report{
 table{
   max-width: 100% !important;
 }
+/* ---- FINAL EDGE ALIGNMENT FIX (DESKTOP + MOBILE) ---- */
+
+/* 1. Lock consistent box math */
+#body, #body * {
+  box-sizing: border-box;
+}
+
+/* 2. Define ONE radius variable */
+:root {
+  --mfl-radius: 14px;
+}
+
+/* 3. Outer shell */
+.pagebody,
+#withmenus {
+  border-radius: var(--mfl-radius) !important;
+  overflow: hidden;
+}
+
+/* 4. Inner cards – slightly smaller radius + inset */
+.homepagetabcontent,
+.report,
+.myfantasyleague_tabcontent,
+.mfl-module,
+table.report {
+  border-radius: calc(var(--mfl-radius) - 4px) !important;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+/* 5. Mobile correction (prevents edge hugging) */
+@media (max-width: 768px) {
+  .homepagetabcontent,
+  .report,
+  .myfantasyleague_tabcontent {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
