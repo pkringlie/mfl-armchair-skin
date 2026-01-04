@@ -426,3 +426,113 @@ hr, .divider{
     border-radius: 12px !important;
   }
 }
+/* ==========================================================
+   AFL — MOBILE DRAWER MENU FIX (LEAGUE MENU / LEAGUE TABS)
+   Fixes transparent +/- and unreadable menu items.
+   ========================================================== */
+
+@media (max-width: 900px){
+
+  /* 1) Make the mobile drawer headers readable */
+  .mobile_menu_title,
+  .mobilemenu_title,
+  .mobilemenuheader,
+  .mobile_menu_header,
+  .mobileHeader,
+  .mobile_header,
+  .mobileMenuHeader,
+  .mobileTabHeader,
+  .mobile_tab_header{
+    background: linear-gradient(180deg, #1B1B20 0%, #0D0D10 100%) !important;
+    color: #E0C27A !important;
+    border-bottom: 1px solid rgba(200,162,74,.35) !important;
+    text-shadow: 0 1px 0 rgba(0,0,0,.65) !important;
+  }
+
+  /* 2) Fix the big + / – toggle button (stop transparency) */
+  .mobile_menu_toggle,
+  .mobilemenu_toggle,
+  .mobileMenuToggle,
+  .mobileTabToggle,
+  .mobile_toggle,
+  .mobilemenuheader a,
+  .mobile_menu_header a,
+  .mobileMenuHeader a,
+  .mobileTabHeader a,
+  a.mobile_menu_toggle,
+  a.mobilemenu_toggle,
+  button.mobile_menu_toggle,
+  button.mobilemenu_toggle{
+    background: #F3F3F5 !important;     /* solid light button */
+    color: #121216 !important;
+    border: 1px solid rgba(0,0,0,.25) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,.45) !important;
+    opacity: 1 !important;
+  }
+
+  /* 3) Drawer body panel */
+  .mobile_menu,
+  .mobilemenu,
+  .mobileMenu,
+  .mobile_tab_menu,
+  .mobiletabmenu,
+  .mobileTabMenu{
+    background: linear-gradient(180deg, #17171C 0%, #0C0C10 100%) !important;
+    border: 1px solid rgba(255,255,255,.05) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 18px 45px rgba(0,0,0,.60) !important;
+  }
+
+  /* 4) Drawer list items (make readable + tappable) */
+  .mobile_menu a,
+  .mobilemenu a,
+  .mobileMenu a,
+  .mobile_tab_menu a,
+  .mobiletabmenu a,
+  .mobileTabMenu a,
+  .mobile_menu li a,
+  .mobilemenu li a,
+  .mobileMenu li a{
+    display: block !important;
+    padding: 12px 14px !important;
+    background: transparent !important;
+    color: #E9E3D4 !important;
+    font-weight: 800 !important;
+    letter-spacing: .02em !important;
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  }
+
+  /* hover/active */
+  .mobile_menu a:hover,
+  .mobilemenu a:hover,
+  .mobileMenu a:hover,
+  .mobile_tab_menu a:hover,
+  .mobiletabmenu a:hover,
+  .mobileTabMenu a:hover{
+    background: rgba(200,162,74,.12) !important;
+    color: #E0C27A !important;
+  }
+
+  /* current/selected tab item (often has a class like "currenttab") */
+  .mobile_menu .currenttab a,
+  .mobilemenu .currenttab a,
+  .mobileMenu .currenttab a,
+  .mobile_tab_menu .currenttab a,
+  .mobiletabmenu .currenttab a,
+  .mobileTabMenu .currenttab a{
+    background: rgba(90,15,20,.85) !important;
+    color: #E0C27A !important;
+    border-bottom-color: rgba(200,162,74,.28) !important;
+  }
+
+  /* 5) If the + symbol itself is in a pseudo-element, force it visible */
+  .mobile_menu_toggle:before,
+  .mobilemenu_toggle:before,
+  .mobileMenuToggle:before,
+  .mobileTabToggle:before{
+    color: #121216 !important;
+    opacity: 1 !important;
+  }
+}
