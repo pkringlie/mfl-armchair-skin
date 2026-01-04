@@ -979,3 +979,59 @@ li.menu ul li a:hover,
   background: transparent !important;
   opacity: 1 !important;
 }
+/* =========================================================
+   AFL – Fix: header/top-line bleeding past rounded corners
+   + NO scroll/slider bars
+   Paste at the VERY END of your override CSS
+   ========================================================= */
+
+/* 1) Make the “card” wrappers clip their children (prevents the line from sticking out) */
+.pagebody,
+#withmenus,
+.homepagetabcontent,
+.contentBody{
+  overflow: visible !important;  /* keep page wrappers from creating scrollbars */
+}
+
+/* These are the common MFL “report” tables/cards that generate the brass header line */
+.homepagetabcontent table.report,
+.homepagetabcontent table.reportform,
+.homepagetabcontent table.two_column_layout,
+.homepagetabcontent table,
+.contentBody table.report,
+.contentBody table.reportform,
+.pagebody table.report,
+.pagebody table.reportform{
+  border-radius: 14px !important;
+  overflow: hidden !important;              /* <- the actual clipping fix */
+  border-collapse: separate !important;     /* radius won’t behave with collapse */
+  border-spacing: 0 !important;
+  background-clip: padding-box !important;
+}
+
+/* 2) Ensure the header row itself doesn’t “paint” outside the rounded edges */
+.homepagetabcontent table.report thead,
+.homepagetabcontent table.report thead tr,
+.homepagetabcontent table.report thead th,
+.contentBody table.report thead,
+.contentBody table.report thead tr,
+.contentBody table.report thead th{
+  background-clip: padding-box !important;
+}
+
+/* 3) If any “top rule” is implemented as a box-shadow/outline, keep it inside */
+.homepagetabcontent table.report,
+.contentBody table.report,
+.pagebody table.report{
+  outline: none !important;
+  box-shadow: none !important; /* prevents an outer line from extending past radius */
+}
+
+/* 4) Hard stop: prevent “slider bar” behavior inside these modules */
+.homepagetabcontent table.report,
+.homepagetabcontent table.reportform,
+.contentBody table.report,
+.contentBody table.reportform{
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
