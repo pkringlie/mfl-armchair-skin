@@ -979,3 +979,34 @@ li.menu ul li a:hover,
   background: transparent !important;
   opacity: 1 !important;
 }
+/* =========================================
+   AFL — EDGE ALIGNMENT / CLIPPING FIX
+   Stops shadows/borders from "bleeding" past rounded corners
+   ========================================= */
+
+/* Make widths behave predictably */
+#body, #body * { box-sizing: border-box; }
+
+/* Clip inner glows/shadows to the rounded outer panel */
+.pagebody,
+#withmenus,
+.homepagetabcontent,
+.contentBody{
+  overflow: hidden !important;
+}
+
+/* Also clip common “module” wrappers (prevents the inner boxes from overhanging) */
+.homepagecolumn,
+.homepagemodule,
+.homepagemodules,
+.report,
+table.report,
+div.report{
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+
+/* Ensure tables don't push past their containers */
+table{
+  max-width: 100% !important;
+}
