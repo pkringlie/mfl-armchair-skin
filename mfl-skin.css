@@ -1077,3 +1077,106 @@ table.report {
 .myfantasyleague_tabcontent *::after {
   max-width: 100%;
 }
+/* =========================================================
+   PATCH: Fix transparent menus + align rounded edges
+   + remove unwanted horizontal scroll bars
+   Paste at VERY BOTTOM of your override CSS
+   ========================================================= */
+
+/* ---- 0) Stop the horizontal slider bars (caused by overflow-x:auto) ---- */
+html, body { overflow-x: hidden !important; }
+
+.mobile-wrap{
+  overflow-x: hidden !important;   /* overrides overflow-x:auto from earlier */
+  -webkit-overflow-scrolling: auto !important;
+}
+
+/* In case any tables are forcing width wider than the viewport */
+.mobile-wrap table,
+.mobile-wrap .table,
+.mobile-wrap .report,
+.mobile-wrap .homepagemodule table{
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* ---- 1) Clip inner header lines to the rounded card (fix “line extends past corner”) ---- */
+/* This forces the rounded parent to “mask” any child borders/lines */
+.homepagemodule,
+.homepagemodule > table,
+.homepagemodule .mobile-wrap,
+.pagebody, #withmenus, .homepagetabcontent, .contentBody{
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* If your module header is a TABLE CAPTION in some layouts */
+.homepagemodule caption{
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
+/* ---- 2) Fix TOP MENU (League Menu: My Account / Scores / etc) transparency ---- */
+/* Force solid backgrounds for the first level + dropdown levels */
+.myfantasyleague_menu,
+.myfantasyleague_menu ul,
+.myfantasyleague_menu li{
+  background: #0F0F12 !important;
+  opacity: 1 !important;
+}
+
+.myfantasyleague_menu a{
+  background: #0F0F12 !important;
+  color: var(--afl-text, #E9E3D4) !important;
+  opacity: 1 !important;
+}
+
+/* Hover/active states so it “reads” as a real menu (no see-through) */
+.myfantasyleague_menu li:hover > a,
+.myfantasyleague_menu a:hover,
+.myfantasyleague_menu a:focus{
+  background: #16161C !important;
+}
+
+/* Submenus (level 2+) */
+.myfantasyleague_menu ul ul,
+.myfantasyleague_menu li ul{
+  background: #121216 !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(200,162,74,.18) !important;
+  box-shadow: 0 14px 28px rgba(0,0,0,.55) !important;
+}
+
+/* ---- 3) Make LEAGUE TABS strip match (if you still see “different black”) ---- */
+.myfantasyleague_tabmenu,
+.myfantasyleague_tabmenu ul#homepagetabs,
+.myfantasyleague_tabmenu ul#homepagetabs li,
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  background: #0F0F12 !important;
+  opacity: 1 !important;
+}
+
+/* Current tab keeps your oxblood look */
+.myfantasyleague_tabmenu #homepagetabs li.currenttab,
+.myfantasyleague_tabmenu #homepagetabs li.currenttab a{
+  background: rgba(90,15,20,.90) !important;
+  color: var(--afl-brass2, #E0C27A) !important;
+}
+
+/* ---- 4) Mobile accordion “+” panels: make the OPEN panel background solid too ---- */
+/* (These selectors are intentionally broad because MFL varies markup by skin/year) */
+@media (max-width: 900px){
+  /* Most common: nested UL lists become the accordion content */
+  .myfantasyleague_menu ul li,
+  .myfantasyleague_menu ul li a{
+    background: #0F0F12 !important;
+  }
+
+  /* If the accordion content is inside generic containers */
+  .menu ul,
+  .menu li,
+  nav ul,
+  nav li{
+    background: #0F0F12 !important;
+  }
+}
