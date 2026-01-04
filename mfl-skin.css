@@ -248,3 +248,27 @@ hr, .divider{
   height: 1px !important;
   background: rgba(255,255,255,.06) !important;
 }
+/* --- AFL: solid league tab rail (no transparency) --- */
+.myfantasyleague_tabmenu,
+.myfantasyleague_tabmenu ul#homepagetabs{
+  background: #0F0F13 !important;      /* SOLID */
+  opacity: 1 !important;               /* prevents “glass” */
+}
+
+/* optional: a little depth + separation line */
+.myfantasyleague_tabmenu{
+  border: 1px solid rgba(255,255,255,.08) !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.55) !important;
+}
+
+/* keep tabs readable */
+.myfantasyleague_tabmenu ul#homepagetabs li a{
+  background: #14141A !important;
+  color: #E9E3D4 !important;
+}
+
+/* current tab */
+.myfantasyleague_tabmenu ul#homepagetabs li.currenttab a{
+  background: linear-gradient(180deg,#6a1518,#4c0f12) !important;
+  color: #EED08A !important;
+}
