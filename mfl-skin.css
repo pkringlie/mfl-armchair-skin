@@ -1049,3 +1049,31 @@ table.report {
     margin-right: 8px;
   }
 }
+/* --- Fix divider lines that extend past rounded cards --- */
+
+/* Ensure module/card wrappers clip their children (including divider lines) */
+.homepagetabcontent,
+.myfantasyleague_tabcontent,
+.homepagemodule,
+.report,
+table.report {
+  overflow: hidden !important;
+}
+
+/* Common “divider line” elements/pseudo-elements: force them to stay inside */
+.homepagetabcontent hr,
+.myfantasyleague_tabcontent hr,
+.homepagemodule hr,
+.report hr {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  max-width: 100% !important;
+}
+
+/* If the line is a pseudo-element divider, constrain it too */
+.homepagetabcontent *::before,
+.homepagetabcontent *::after,
+.myfantasyleague_tabcontent *::before,
+.myfantasyleague_tabcontent *::after {
+  max-width: 100%;
+}
