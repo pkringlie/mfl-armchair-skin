@@ -1191,3 +1191,90 @@ html, body{ overflow-x: hidden !important; }
   background-origin: padding-box !important;
   background-clip: padding-box !important;
 }
+/* ==========================================================
+   SUBMIT LINEUP PAGE FIXES
+   Targets: #body_submit_lineups
+   ========================================================== */
+
+/* -------- 1) Fix “Select Players / Current Roster” header looking transparent --------
+   Your global caption styling is fine, but on this page some wrappers/TDs end up
+   showing through. Force the card shell + caption to be solid here.
+*/
+#body_submit_lineups table.report,
+#body_submit_lineups .report{
+  background: linear-gradient(180deg, var(--card1) 0%, var(--card2) 100%) !important;
+}
+
+#body_submit_lineups caption,
+#body_submit_lineups .caption,
+#body_submit_lineups td.caption,
+#body_submit_lineups tr.caption > td{
+  background: linear-gradient(180deg, #1A1210 0%, var(--bg) 100%) !important;
+  opacity: 1 !important;
+}
+
+/* -------- 2) Make the player-name selection feel “interactive” again --------
+   Multi-selects in MFL are usually <select multiple>. Your global select styling
+   makes selected options too subtle. Force a clear selected + hover state.
+*/
+#body_submit_lineups select[multiple]{
+  background: #0E0E12 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line2) !important;
+  border-radius: 14px !important;
+  padding: 6px !important;
+}
+
+/* The magic: visible selection */
+#body_submit_lineups select[multiple] option{
+  padding: 6px 10px !important;
+}
+
+#body_submit_lineups select[multiple] option:checked{
+  background: linear-gradient(180deg, rgba(200,162,74,.55) 0%, rgba(200,162,74,.35) 100%) !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+}
+
+#body_submit_lineups select[multiple] option:hover{
+  background: rgba(200,162,74,.25) !important;
+  color: #111 !important;
+}
+
+/* Also make keyboard focus obvious */
+#body_submit_lineups select[multiple]:focus{
+  outline: 2px solid rgba(200,162,74,.55) !important;
+  outline-offset: 2px !important;
+}
+
+/* -------- 3) Current Roster list being taller than its box --------
+   Force both selects to the same height. (Adjust the 26rem if you want taller/shorter.)
+*/
+#body_submit_lineups #source_list,
+#body_submit_lineups #destination_list{
+  height: 26rem !important;
+  max-height: 26rem !important;
+  min-height: 26rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* If MFL uses name-based selectors instead of IDs in your league skin, keep these too */
+#body_submit_lineups select[name="source_list"],
+#body_submit_lineups select[name="destination_list"]{
+  height: 26rem !important;
+  max-height: 26rem !important;
+  min-height: 26rem !important;
+}
+
+/* -------- 4) Parchment area changing color when hovering outside the list --------
+   This is your global row-hover rule:
+   table.report tr:hover td { background: var(--afl-parch3) !important; }
+   It’s great for standings, but on Submit Lineup the main layout uses report tables,
+   so it flashes when your mouse crosses rows. Disable hover shading on this page.
+*/
+#body_submit_lineups table.report tr:hover td{
+  background: inherit !important;
+}
+
+/* But keep hover on the actual player list rows (inside the select), which we already handled via option:hover */
