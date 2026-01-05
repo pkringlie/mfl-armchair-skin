@@ -1237,3 +1237,33 @@ html, body{ overflow-x: hidden !important; }
 #body_submit_lineups .pagebody{
   overflow-x: hidden !important;
 }
+/* ==========================================================
+   SUBMIT LINEUPS — FIX “SEE-THROUGH” SUB-HEADERS + HOVER COLOR FLIP
+   Targets the two small headers: “SELECT PLAYERS” / “CURRENT ROSTER”
+   ========================================================== */
+
+#body_submit_lineups .report th,
+#body_submit_lineups table.report th,
+#body_submit_lineups th[colspan]{
+  background: linear-gradient(180deg, #1a1418 0%, #070608 100%) !important;
+  color: #E0C27A !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background-image: none !important; /* kills the washed/see-through image style */
+}
+
+/* Sometimes the transparency is coming from children inside the TH */
+#body_submit_lineups .report th *{
+  opacity: 1 !important;
+}
+
+/* Stop the parchment area from “color flipping” on hover (row hover / td hover rules) */
+#body_submit_lineups .report tr:hover td,
+#body_submit_lineups .report td:hover{
+  background: inherit !important;
+}
+
+/* Optional: if a global rule is tinting the whole panel on hover */
+#body_submit_lineups .report:hover{
+  background-color: transparent !important;
+}
