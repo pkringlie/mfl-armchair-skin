@@ -1512,3 +1512,23 @@ body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
   background-color: rgba(200,162,74,.35) !important;
   color: #111 !important;
 }
+/* ==========================================================
+   FINAL: STOP ALL HOVER-BASED COLOR INVERSION ON CONTEST LINEUP
+   Use `unset` so normal (non-hover) backgrounds remain.
+   ========================================================== */
+
+body#body_contest_lineup #contest_lineup table tr:hover > td,
+body#body_contest_lineup #contest_lineup table tr:hover > th,
+body#body_contest_lineup #contest_lineup table td:hover,
+body#body_contest_lineup #contest_lineup table th:hover {
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  filter: none !important;
+}
+
+/* Keep the picker option segmentation (the ONLY hover you want) */
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
+  background-color: rgba(200,162,74,.35) !important;
+  color: #111 !important;
+}
