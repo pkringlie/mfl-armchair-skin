@@ -1278,3 +1278,79 @@ html, body{ overflow-x: hidden !important; }
 }
 
 /* But keep hover on the actual player list rows (inside the select), which we already handled via option:hover */
+/* ==========================================================
+   CONTEST LINEUP (Submit Lineup) FIXES
+   Page: body#body_contest_lineup
+   Widget: table#picker.pickerbox
+   ========================================================== */
+
+/* 4) Stop the parchment “color shift” when hovering outside the selects
+   This comes from your global: table.report tr:hover td { background: var(--afl-parch3) !important; }
+   Disable it ONLY on this page.
+*/
+body#body_contest_lineup table.report tr:hover td,
+body#body_contest_lineup table.homepagemodule tr:hover td{
+  background: inherit !important;
+}
+
+/* 1) Fix “Select Players / Current Roster” header bars looking transparent
+   Force the pickerbox caption/header area to be opaque.
+*/
+body#body_contest_lineup table#picker.pickerbox caption,
+body#body_contest_lineup table#picker.pickerbox .caption,
+body#body_contest_lineup table#picker.pickerbox td.caption,
+body#body_contest_lineup table#picker.pickerbox th{
+  background: linear-gradient(180deg, #1A1210 0%, #0E0E12 100%) !important;
+  color: #C8A24A !important;
+  opacity: 1 !important;
+}
+
+/* Also ensure the picker box itself has a solid “card” surface */
+body#body_contest_lineup table#picker.pickerbox{
+  background: linear-gradient(180deg, var(--card1) 0%, var(--card2) 100%) !important;
+  border: 1px solid var(--line2) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+/* 2) Make the player selection visibly interactive again
+   Your global select styling makes selected options hard to see.
+   This forces strong checked/hover styles for the multi-select lists.
+*/
+body#body_contest_lineup table#picker.pickerbox select[multiple]{
+  background: #0E0E12 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line2) !important;
+  border-radius: 14px !important;
+  padding: 6px !important;
+  box-sizing: border-box !important;
+
+  /* helps browsers render a clear selection highlight */
+  color-scheme: dark;
+}
+
+/* IMPORTANT: use background-color (not gradients) for option:checked reliability */
+body#body_contest_lineup table#picker.pickerbox select[multiple] option{
+  padding: 6px 10px !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:checked{
+  background-color: #C8A24A !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
+  background-color: rgba(200,162,74,.35) !important;
+  color: #111 !important;
+}
+
+/* 3) If the Current Roster list is taller than its visible box,
+   hard-set both listboxes to the same height.
+   (Adjust 26rem if you want taller/shorter.)
+*/
+body#body_contest_lineup table#picker.pickerbox select[multiple]{
+  height: 26rem !important;
+  max-height: 26rem !important;
+  min-height: 26rem !important;
+}
