@@ -1354,3 +1354,62 @@ body#body_contest_lineup table#picker.pickerbox select[multiple]{
   max-height: 26rem !important;
   min-height: 26rem !important;
 }
+/* ==========================================================
+   CONTEST LINEUP – DEFINITIVE FIX
+   Page: body#body_contest_lineup
+   Widget: table#picker.pickerbox
+   ========================================================== */
+
+/* ---------- STOP global hover parchment ---------- */
+body#body_contest_lineup table.report tr:hover td {
+  background: inherit !important;
+}
+
+/* ---------- FIX header bars looking transparent ---------- */
+body#body_contest_lineup table#picker.pickerbox caption {
+  background: linear-gradient(180deg, #1A1210 0%, #0E0E12 100%) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+
+  color: var(--afl-brass) !important;
+  border-bottom: 3px solid var(--afl-brass) !important;
+}
+
+/* Kill any lingering caption background image */
+body#body_contest_lineup table#picker.pickerbox caption::before,
+body#body_contest_lineup table#picker.pickerbox caption::after {
+  content: none !important;
+}
+
+/* ---------- SOLID card surface for picker ---------- */
+body#body_contest_lineup table#picker.pickerbox {
+  background: linear-gradient(180deg, var(--afl-cardTop) 0%, var(--afl-cardBot) 100%) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+/* ---------- MAKE PLAYER SELECTION VISIBLY INTERACTIVE ---------- */
+body#body_contest_lineup table#picker.pickerbox select {
+  background: #0E0E12 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--afl-line2) !important;
+}
+
+/* Selected item (THIS is the missing piece) */
+body#body_contest_lineup table#picker.pickerbox option:checked {
+  background-color: #C8A24A !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+}
+
+/* Hover feedback */
+body#body_contest_lineup table#picker.pickerbox option:hover {
+  background-color: rgba(200,162,74,.35) !important;
+}
+
+/* ---------- FORCE BOTH LISTS TO SAME HEIGHT ---------- */
+body#body_contest_lineup table#picker.pickerbox select {
+  height: 26rem !important;
+  max-height: 26rem !important;
+}
