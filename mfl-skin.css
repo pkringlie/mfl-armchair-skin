@@ -1414,36 +1414,74 @@ body#body_contest_lineup table#picker.pickerbox select {
   max-height: 26rem !important;
 }
 /* ==========================================================
-   CONTEST LINEUP – STOP PAGE BACKGROUND FLIPPING ON HOVER
-   Keep: option hover segmentation
+   EMERGENCY FIX – CONTEST LINEUP USABILITY (DO THIS FIRST)
+   This neutralizes the global stacking rule that breaks hover layers.
    ========================================================== */
 
-/* 1) Nuke ALL row-hover backgrounds on this page (prevents parchment -> black flip) */
+/* 0) Undo the global stacking-context grenade on THIS page only */
+body#body_contest_lineup *,
+body#body_contest_lineup *::before,
+body#body_contest_lineup *::after {
+  z-index: auto !important;
+}
+
+/* Only keep z-index where you actually need it (menus) */
+body#body_contest_lineup #vsubmenu,
+body#body_contest_lineup #hsubmenu,
+body#body_contest_lineup .myfantasyleague_menu,
+body#body_contest_lineup .myfantasyleague_tabmenu {
+  position: relative !important;
+  z-index: 999 !important;
+}
+
+/* 1) Stop ALL table row hover background changes on this page */
 body#body_contest_lineup table.report tr:hover td,
 body#body_contest_lineup table.report tr:hover th,
 body#body_contest_lineup table.homepagemodule tr:hover td,
-body#body_contest_lineup table.homepagemodule tr:hover th{
+body#body_contest_lineup table.homepagemodule tr:hover th {
   background: transparent !important;
   background-image: none !important;
 }
 
-/* 2) Force the parchment “bands” on the lower section to stay parchment */
+/* 2) Hard-lock the parchment area (the big band under the picker) */
 body#body_contest_lineup #contest_lineup .pagebody,
+body#body_contest_lineup #contest_lineup .pagebody > table,
 body#body_contest_lineup #contest_lineup .pagebody table.report,
-body#body_contest_lineup #contest_lineup .pagebody table.report td{
+body#body_contest_lineup #contest_lineup .pagebody table.report td,
+body#body_contest_lineup #contest_lineup .pagebody table.report th {
   background-color: var(--afl-parch) !important;
   color: var(--afl-ink) !important;
 }
 
-/* 3) BUT keep the picker area dark (so it doesn’t turn parchment) */
+/* 3) Keep the picker itself dark and readable */
 body#body_contest_lineup table#picker.pickerbox,
-body#body_contest_lineup table#picker.pickerbox td{
+body#body_contest_lineup table#picker.pickerbox td,
+body#body_contest_lineup table#picker.pickerbox th {
   background: transparent !important;
   color: var(--text) !important;
 }
 
-/* 4) Keep your working segmented hover inside the listbox */
-body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
+/* 4) Keep the working segmented option hover/selection */
+body#body_contest_lineup table#picker.pickerbox select[multiple] {
+  background: #0E0E12 !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(200,162,74,.30) !important;
+  border-radius: 14px !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option {
+  background-color: #0E0E12 !important;
+  color: var(--text) !important;
+  padding: 6px 10px !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:checked {
+  background-color: #C8A24A !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover {
   background-color: rgba(200,162,74,.35) !important;
   color: #111 !important;
 }
