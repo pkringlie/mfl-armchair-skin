@@ -1191,3 +1191,49 @@ html, body{ overflow-x: hidden !important; }
   background-origin: padding-box !important;
   background-clip: padding-box !important;
 }
+/* =========================================
+   SUBMIT LINEUPS PAGE FIXES (scoped)
+   ========================================= */
+
+/* 1) Force ALL headers/bars inside Submit Lineups to have a solid header fill */
+#body_submit_lineups th,
+#body_submit_lineups .report th,
+#body_submit_lineups td.caption,
+#body_submit_lineups .caption,
+#body_submit_lineups caption{
+  background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
+  color: var(--afl-brass2) !important;
+  border-bottom: 1px solid var(--afl-line2) !important;
+  background-image: none !important;
+}
+
+/* The “KING KRING” style section header sometimes comes through as a plain cell */
+#body_submit_lineups td[bgcolor],
+#body_submit_lineups th[bgcolor]{
+  background: linear-gradient(180deg, #2A1C12 0%, #1A1210 100%) !important;
+  background-image: none !important;
+  color: var(--afl-brass2) !important;
+}
+
+/* 2) Kill hover inversion / parchment shifting on this page only */
+#body_submit_lineups table tr:hover td,
+#body_submit_lineups table.report tr:hover td,
+#body_submit_lineups table.homepagemodule tr:hover td{
+  background: inherit !important;
+  filter: none !important;
+}
+
+/* 3) Make sure we are NOT creating horizontal scrollbars on this page */
+#body_submit_lineups .report,
+#body_submit_lineups table.report,
+#body_submit_lineups .homepagemodule,
+#body_submit_lineups table.homepagemodule{
+  overflow: hidden !important;  /* keeps your clean “card” edges */
+}
+
+/* (Optional) If any inner wrapper is causing weird overflow lines, clamp it */
+#body_submit_lineups #content,
+#body_submit_lineups #withmenus,
+#body_submit_lineups .pagebody{
+  overflow-x: hidden !important;
+}
