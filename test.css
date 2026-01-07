@@ -930,3 +930,6 @@ tr[id^="picker_"].selected td{
   from{ background-color: rgba(161,42,41,.15); }
   to{   background-color: rgba(161,42,41,.30); }
 }
+tr[id^="picker_"].selected td{
+  color: #1a1a1a;
+}
