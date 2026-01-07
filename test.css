@@ -960,8 +960,8 @@ td{
 }
 
 /* BYE text emphasis */
-td:has(> span:contains("BYE")),
-td:contains("BYE"){
+td:has(> span:contains("Bye")),
+td:contains("Bye"){
   color: #ff2fa4 !important;              /* hot pink */
   font-weight: 800 !important;
   text-shadow: 0 0 6px rgba(255,47,164,.45);
