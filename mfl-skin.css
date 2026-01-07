@@ -56,7 +56,11 @@ body:before{
 }
 
 /* ensure page content above overlay */
-body *{ position: relative; z-index: 1; }
+
+/* keep smoke behind everything */
+body:before{ z-index: 0 !important; }
+#withmenus, .pagebody, .contentBody, .homepagetabcontent{ position: relative; z-index: 1 !important; }
+
 
 /* links */
 a{ color: var(--brass) !important; text-decoration: none !important; }
