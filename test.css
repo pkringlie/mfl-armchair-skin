@@ -148,7 +148,7 @@ a:hover{ color: var(--brass2) !important; text-decoration: underline !important;
 
 /* hard kill any “orange” remnants (border/background images) */
 .caption, td.caption, tr.caption > td, caption{
-  background-image: none !important;
+   background-image:url(caption-bg.png);
 }
 .homepagemodule *, .report *, table.report *, table.homepagemodule *{
   border-color: var(--line) !important;
