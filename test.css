@@ -156,7 +156,7 @@ a:hover{ color: var(--brass2) !important; text-decoration: underline !important;
 
 /* module headers */
 .caption, td.caption, tr.caption > td, caption{
-  background: linear-gradient(180deg, #1A1210 0%, var(--bg) 100%) !important;
+  background: #1A1210 !important;
   border: 0 !important;
   border-bottom: 1px solid var(--line2) !important;
   color: var(--brass2) !important;
