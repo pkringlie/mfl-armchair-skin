@@ -1485,3 +1485,77 @@ body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover {
   background-color: rgba(200,162,74,.35) !important;
   color: #111 !important;
 }
+/* ==========================================================
+   CONTEST LINEUP – FINAL STABLE STYLING
+   - Parchment area: black ink text always
+   - Picker captions: solid background (no see-through)
+   - No hover repaint/invert
+   ========================================================== */
+
+/* A) Parchment section (everything outside the picker): always ink text + parchment background */
+body#body_contest_lineup #contest_lineup .pagebody,
+body#body_contest_lineup #contest_lineup .pagebody table,
+body#body_contest_lineup #contest_lineup .pagebody table td,
+body#body_contest_lineup #contest_lineup .pagebody table th {
+  background-color: var(--afl-parch) !important;
+  color: var(--afl-ink) !important;
+}
+
+/* Links inside parchment should read like ink too */
+body#body_contest_lineup #contest_lineup .pagebody a,
+body#body_contest_lineup #contest_lineup .pagebody a:visited {
+  color: var(--afl-ink) !important;
+}
+
+/* B) Remove hover repaint/invert by forcing hover to KEEP parchment (never transparent) */
+body#body_contest_lineup #contest_lineup .pagebody table tr:hover > td,
+body#body_contest_lineup #contest_lineup .pagebody table tr:hover > th,
+body#body_contest_lineup #contest_lineup .pagebody table td:hover,
+body#body_contest_lineup #contest_lineup .pagebody table th:hover {
+  background-color: var(--afl-parch) !important;
+  background-image: none !important;
+  filter: none !important;
+}
+
+/* C) Picker box stays dark (so it doesn’t turn parchment from the rules above) */
+body#body_contest_lineup table#picker.pickerbox,
+body#body_contest_lineup table#picker.pickerbox td,
+body#body_contest_lineup table#picker.pickerbox th {
+  background-color: transparent !important;
+  color: var(--text) !important;
+}
+
+/* D) Fix SELECT PLAYERS / CURRENT ROSTER caption: solid, opaque background (no image/shadow bleed) */
+body#body_contest_lineup table#picker.pickerbox caption {
+  background: linear-gradient(180deg, #1A1210 0%, #0E0E12 100%) !important;
+  background-image: none !important; /* important because captions often get an image later in the cascade */
+  box-shadow: none !important;
+  color: var(--afl-brass) !important;
+  opacity: 1 !important;
+  border-bottom: 3px solid var(--afl-brass) !important;
+}
+
+/* E) Keep the picker list interaction readable */
+body#body_contest_lineup table#picker.pickerbox select[multiple]{
+  background: #0E0E12 !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(200,162,74,.30) !important;
+  border-radius: 14px !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option{
+  background-color: #0E0E12 !important;
+  color: var(--text) !important;
+  padding: 6px 10px !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:checked{
+  background-color: #C8A24A !important;
+  color: #111 !important;
+  font-weight: 900 !important;
+}
+
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
+  background-color: rgba(200,162,74,.35) !important;
+  color: #111 !important;
+}
