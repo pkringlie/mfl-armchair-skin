@@ -1532,3 +1532,34 @@ body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
   background-color: rgba(200,162,74,.35) !important;
   color: #111 !important;
 }
+
+/* ==========================================================
+   DEADLINE FIX: prevent contest-lineup layout tables from repainting on hover
+   ========================================================== */
+
+/* 1) Kill ALL hover background/filters inside the contest-lineup content area */
+body#body_contest_lineup #contest_lineup *:hover{
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 2) Specifically nuke table-cell hover repainting (this is what’s flipping the big blocks) */
+body#body_contest_lineup #contest_lineup table tr:hover > td,
+body#body_contest_lineup #contest_lineup table tr:hover > th,
+body#body_contest_lineup #contest_lineup table td:hover,
+body#body_contest_lineup #contest_lineup table th:hover{
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  filter: none !important;
+}
+
+/* 3) Put BACK the ONE hover you want: segmented option hover inside the picker */
+body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
+  background-color: rgba(200,162,74,.35) !important;
+  color: #111 !important;
+}
