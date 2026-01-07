@@ -1439,7 +1439,7 @@ body#body_contest_lineup table.report tr:hover td,
 body#body_contest_lineup table.report tr:hover th,
 body#body_contest_lineup table.homepagemodule tr:hover td,
 body#body_contest_lineup table.homepagemodule tr:hover th {
-  background: #0E0E12 !important;
+  background: transparent !important;
   background-image: none !important;
 }
 
