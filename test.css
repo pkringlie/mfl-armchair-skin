@@ -950,3 +950,19 @@ tr[id^="picker_"].selected td:last-child{
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
+/* ===============================
+   Highlight BYE weeks (Hot Pink)
+   =============================== */
+
+/* Target BYE cells in player picker + tables */
+td{
+  position: relative;
+}
+
+/* BYE text emphasis */
+td:has(> span:contains("BYE")),
+td:contains("BYE"){
+  color: #ff2fa4 !important;              /* hot pink */
+  font-weight: 800 !important;
+  text-shadow: 0 0 6px rgba(255,47,164,.45);
+}
