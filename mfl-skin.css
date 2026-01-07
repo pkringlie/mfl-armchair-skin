@@ -1563,3 +1563,10 @@ body#body_contest_lineup table#picker.pickerbox select[multiple] option:hover{
   background-color: rgba(200,162,74,.35) !important;
   color: #111 !important;
 }
+body#body_contest_lineup #withmenus table tr:hover > td,
+body#body_contest_lineup #withmenus table tr:hover > th{
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  filter: none !important;
+}
