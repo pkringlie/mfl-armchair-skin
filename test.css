@@ -881,3 +881,44 @@ li.menu ul li a:hover,
 #body_submit_lineups .report:hover{
   background-color: transparent !important;
 }
+
+/* ===== Easier "what am I about to Add?" highlighting (CSS-only) ===== */
+
+/* Target the picker rows (your earlier HTML had ids like picker_###) */
+tr[id^="picker_"] td{
+  transition: background-color .12s ease, box-shadow .12s ease, color .12s ease;
+}
+
+/* Strong hover (helps a lot even without "selected" memory) */
+tr[id^="picker_"]:hover td{
+  background: rgba(212,175,55,.22) !important;   /* subtle gold */
+  box-shadow: inset 4px 0 0 rgba(212,175,55,.95); /* left bar */
+}
+
+/* Mouse down feedback */
+tr[id^="picker_"]:active td{
+  background: rgba(212,175,55,.32) !important;
+}
+
+/* ===== Selected row detection (works IF the site marks it) =====
+   Covers: common "selected" classes, inline background styles, or bgcolor attr.
+*/
+tr[id^="picker_"].selected td,
+tr[id^="picker_"].sel td,
+tr[id^="picker_"].highlight td,
+tr[id^="picker_"].hilite td,
+tr[id^="picker_"].rowselected td,
+tr[id^="picker_"][bgcolor] td,
+tr[id^="picker_"][style*="background"] td,
+tr[id^="picker_"][style*="background-color"] td{
+  background: rgba(161,42,41,.30) !important;     /* LSB maroon tint */
+  box-shadow:
+    inset 5px 0 0 rgba(161,42,41,.95),            /* left maroon bar */
+    inset 0 0 0 1px rgba(212,175,55,.45);         /* faint gold outline */
+  font-weight: 700;
+}
+
+/* If names are links, make the hovered one pop */
+tr[id^="picker_"]:hover a{
+  text-decoration: underline;
+}
