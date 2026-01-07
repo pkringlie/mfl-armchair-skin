@@ -1,4 +1,4 @@
-/* ==========================================================
+S/* ==========================================================
    ARMCHAIR FANTASY LEAGUE — Option A (Independent CSS)
    No imports. Designed to run with MFL Selected Skin = None.
    ========================================================== */
@@ -1439,7 +1439,7 @@ body#body_contest_lineup table.report tr:hover td,
 body#body_contest_lineup table.report tr:hover th,
 body#body_contest_lineup table.homepagemodule tr:hover td,
 body#body_contest_lineup table.homepagemodule tr:hover th {
-  background: transparent !important;
+  background: #0E0E12 !important;
   background-image: none !important;
 }
 
