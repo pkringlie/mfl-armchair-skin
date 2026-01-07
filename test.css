@@ -922,3 +922,11 @@ tr[id^="picker_"][style*="background-color"] td{
 tr[id^="picker_"]:hover a{
   text-decoration: underline;
 }
+tr[id^="picker_"].selected td{
+  animation: pickPulse .25s ease-out;
+}
+
+@keyframes pickPulse{
+  from{ background-color: rgba(161,42,41,.15); }
+  to{   background-color: rgba(161,42,41,.30); }
+}
