@@ -342,7 +342,7 @@ html, body{
 
 /* 5) Module headers: steakhouse brass, not orange */
 .caption, td.caption, tr.caption > td, caption{
-  background: linear-gradient(180deg, #261C12 0%, #14110C 100%) !important;
+  background: #0E0E12 !important;
   background-image: none !important;
   color: var(--afl-brass2) !important;
   border: 0 !important;
