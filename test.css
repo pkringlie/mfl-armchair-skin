@@ -1426,3 +1426,43 @@ td:contains("Bye"){
     border-right: 0 !important;
   }
 }
+/* =========================================
+   MOBILE: Shrink the LEAGUE TABS header height
+   (keeps + aligned, removes the tall empty bar)
+   ========================================= */
+@media only screen and (max-width: 48em){
+
+  /* reduce the container padding/height */
+  #withmenus .myfantasyleague_tabmenu{
+    padding: 8px 10px !important;
+    border-radius: 14px !important;
+  }
+
+  /* tighten the title */
+  #withmenus .myfantasyleague_tabmenu #tab_title{
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+    font-size: 14px !important;
+  }
+
+  /* IMPORTANT: remove the big min-height/line-height that makes it huge */
+  #withmenus .myfantasyleague_tabmenu label[for="sub100"]{
+    min-height: 0 !important;
+    line-height: normal !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* keep the + button compact */
+  #withmenus .myfantasyleague_tabmenu label[for="sub100"] > span{
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 10px !important;
+  }
+
+  /* shrink the gap between header row and the dropdown list */
+  #withmenus .myfantasyleague_tabmenu ul#homepagetabs{
+    margin-top: 6px !important;
+  }
+}
