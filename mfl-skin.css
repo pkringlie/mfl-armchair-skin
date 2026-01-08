@@ -1193,3 +1193,23 @@ html, body{ overflow-x: hidden !important; }
   background-origin: padding-box !important;
   background-clip: padding-box !important;
 }
+/* Anchor the + button to the LEAGUE TABS header */
+@media (max-width: 48em){
+  #withmenus .myfantasyleague_tabmenu{
+    position: relative !important; /* establishes containing block */
+  }
+
+  /* The label/span lives in the header — keep it there */
+  #withmenus .myfantasyleague_tabmenu > label{
+    position: relative !important;
+    display: block !important;
+    padding-right: 52px !important; /* leaves room for the button */
+    min-height: 44px !important;    /* ensures header height */
+  }
+
+  #withmenus .myfantasyleague_tabmenu > label > span{
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+  }
+}
