@@ -1009,3 +1009,44 @@ td:contains("Bye"){
   background: transparent !important;
   opacity: 1 !important;
 }
+/* ==================================================
+   AFL — MOBILE “LEAGUE MENU” (top menu) FIX
+   Make accordion rows + dropdown panels SOLID
+   ================================================== */
+
+/* Main top menu bar + dropdown container */
+.myfantasyleague_menu,
+.myfantasyleague_menu ul,
+.myfantasyleague_menu li{
+  background: #0F0F13 !important;
+  background-image: none !important;
+}
+
+/* The clickable row text (MY ACCOUNT / SCORES / etc.) */
+.myfantasyleague_menu a,
+.myfantasyleague_menu li > a{
+  background: #0F0F13 !important;   /* solid row */
+  color: #E9E3D4 !important;
+  opacity: 1 !important;
+}
+
+/* Expanded submenu panel (the “MFL Dashboard / Login …” list) */
+.myfantasyleague_menu li ul,
+.myfantasyleague_menu li ul li,
+.myfantasyleague_menu li ul li a{
+  background: #121216 !important;   /* slightly different to show depth */
+  color: #E9E3D4 !important;
+  opacity: 1 !important;
+}
+
+/* Hover/focus (desktop + mobile tap highlight) */
+.myfantasyleague_menu a:hover,
+.myfantasyleague_menu a:focus{
+  background: #15151B !important;
+}
+
+/* Ensure the +/- button area stays readable */
+.myfantasyleague_menu .has-sub > a,
+.myfantasyleague_menu li.has-sub > a{
+  background: #0F0F13 !important;
+}
