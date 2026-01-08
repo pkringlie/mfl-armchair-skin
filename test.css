@@ -118,19 +118,19 @@ a:hover{ color: var(--brass2) !important; text-decoration: underline !important;
 
 /* ---------- HOME TABS ---------- */
 .myfantasyleague_tabmenu{
-  background: transparent !important;
+  background: #1A1210 !important;
   border: 0 !important;
 }
 .myfantasyleague_tabmenu ul#homepagetabs{
-  background: transparent !important;
+  background: #1A1210 !important;
   border-bottom: 2px solid var(--line2) !important;
 }
 .myfantasyleague_tabmenu ul#homepagetabs li{
-  background: transparent !important;
+  background: #1A1210 !important;
   border-right: 1px solid var(--hair) !important;
 }
 .myfantasyleague_tabmenu ul#homepagetabs li a{
-  background: transparent !important;
+  background: #1A1210 !important;
   color: var(--text) !important;
   letter-spacing: .5px;
   font-weight: 900;
