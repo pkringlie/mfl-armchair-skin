@@ -1276,3 +1276,54 @@ td:contains("Bye"){
     z-index: 9999 !important;
   }
 }
+/* =========================================================
+   FIX: Mobile LEAGUE TABS dropdown positioning (pushes down,
+   doesn't overlay video) + keeps +/- pinned in header
+   Paste at VERY END
+   ========================================================= */
+
+@media only screen and (max-width: 48em){
+
+  /* Let the menu expand normally (don't clip the dropdown) */
+  .myfantasyleague_tabmenu{
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  /* Make the "LEAGUE TABS" header the anchor row */
+  .myfantasyleague_tabmenu > label{
+    position: relative !important;
+    display: block !important;
+    padding-right: 56px !important;  /* room for the +/- button */
+    min-height: 44px !important;
+    line-height: 44px !important;
+    z-index: 3 !important;           /* stays above dropdown */
+  }
+
+  /* Pin the +/- button to the header (top-right) */
+  .myfantasyleague_tabmenu > label > span{
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 4 !important;
+  }
+
+  /* BIG FIX: force the dropdown list to be IN FLOW (not absolute overlay) */
+  .myfantasyleague_tabmenu ul#homepagetabs{
+    position: static !important;     /* was absolute in MFL */
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 2 !important;
+  }
+
+  /* Make each tab row full-width for mobile */
+  .myfantasyleague_tabmenu ul#homepagetabs li,
+  .myfantasyleague_tabmenu ul#homepagetabs li a{
+    display: block !important;
+    width: 100% !important;
+    border-right: 0 !important;
+  }
+}
