@@ -1213,3 +1213,63 @@ html, body{ overflow-x: hidden !important; }
     right: 10px !important;
   }
 }
+/* =========================================
+   FIX: Restore mobile HOME TAB dropdown toggle (+/hamburger)
+   Paste at the VERY BOTTOM of your custom CSS
+========================================= */
+@media only screen and (max-width: 48em){
+
+  /* Make sure the tabmenu can host an absolute-position toggle */
+  .myfantasyleague_tabmenu{
+    position: relative !important;
+    padding-right: 50px !important; /* room for the button */
+    overflow: visible !important;
+  }
+
+  /* The clickable label that MFL uses for the dropdown */
+  .myfantasyleague_tabmenu > label{
+    display: block !important;
+    position: relative !important;
+    cursor: pointer !important;
+    z-index: 50 !important;
+  }
+
+  /* The actual toggle "button" span */
+  .myfantasyleague_tabmenu > label span{
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    width: 35px !important;
+    height: 35px !important;
+
+    position: absolute !important;
+    right: 8px !important;
+    top: 6px !important;
+
+    background: #fff !important;
+    border: 1px solid rgba(255,255,255,.25) !important;
+    border-radius: 6px !important;
+
+    z-index: 60 !important;
+  }
+
+  /* Give the span an actual icon (3 bars) so it’s not “blank” */
+  .myfantasyleague_tabmenu > label span::before{
+    content: "≡";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #111;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  /* If something globally is messing with stacking, this helps */
+  .myfantasyleague_tabmenu ul#homepagetabs{
+    position: relative !important;
+    z-index: 10 !important;
+  }
+}
