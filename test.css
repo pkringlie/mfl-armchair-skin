@@ -966,3 +966,46 @@ td:contains("Bye"){
   font-weight: 800 !important;
   text-shadow: 0 0 6px rgba(255,47,164,.45);
 }
+/* ==================================================
+   AFL — FIX “LEAGUE MENU” Level-1 rows (the + items)
+   MY ACCOUNT / SCORES / TRANSACTIONS / etc.
+   ================================================== */
+
+:root{
+  --afl-menu-row: #0F0F13;
+  --afl-menu-row-hover: #17171E;
+  --afl-menu-text: #E9E3D4;
+  --afl-menu-divider: rgba(255,255,255,.10);
+}
+
+/* The level-1 clickable rows (this is the transparent part) */
+.myfantasyleague_menu > ul > li > a{
+  background: var(--afl-menu-row) !important;
+  background-image: none !important;
+  color: var(--afl-menu-text) !important;
+  opacity: 1 !important;
+  display: block !important;
+  border-bottom: 1px solid var(--afl-menu-divider) !important;
+}
+
+/* If MFL marks expandable items with has-sub, hit those too */
+.myfantasyleague_menu li.has-sub > a,
+.myfantasyleague_menu li.has-sub > a:link,
+.myfantasyleague_menu li.has-sub > a:visited{
+  background: var(--afl-menu-row) !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+/* Tap/hover state */
+.myfantasyleague_menu > ul > li > a:hover,
+.myfantasyleague_menu > ul > li > a:focus{
+  background: var(--afl-menu-row-hover) !important;
+}
+
+/* Kill any inherited “glass” effect on the row contents (+ button area, spans, etc.) */
+.myfantasyleague_menu > ul > li > a *,
+.myfantasyleague_menu li.has-sub > a *{
+  background: transparent !important;
+  opacity: 1 !important;
+}
