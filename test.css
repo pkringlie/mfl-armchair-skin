@@ -1236,3 +1236,43 @@ td:contains("Bye"){
     z-index: 10 !important;
   }
 }
+/* ===========================================
+   FIX: Restore mobile League Tabs dropdown
+   (it was being clipped by overflow:hidden)
+   Paste at END of your CSS
+   =========================================== */
+
+@media (max-width: 900px){
+
+  /* 1) Let the expanded drawer render outside the header */
+  .myfantasyleague_tabmenu{
+    overflow: visible !important;     /* <-- key fix */
+  }
+
+  /* 2) Make sure the toggle button area exists + is visible */
+  .myfantasyleague_tabmenu > label > span{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 34px !important;
+    height: 34px !important;
+    background: #F3F3F5 !important;
+    color: #121216 !important;
+    border: 1px solid rgba(0,0,0,.22) !important;
+    border-radius: 10px !important;
+    opacity: 1 !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,.45) !important;
+  }
+
+  /* 3) If MFL uses a hidden checkbox, keep it functional (don’t display:none it) */
+  .myfantasyleague_tabmenu > input[type="checkbox"]{
+    position: absolute !important;
+    left: -9999px !important;        /* hide but still works with label click */
+  }
+
+  /* 4) Make sure the expanded list panel is on top */
+  .myfantasyleague_tabmenu ul#homepagetabs{
+    position: relative !important;
+    z-index: 9999 !important;
+  }
+}
