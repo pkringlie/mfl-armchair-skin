@@ -1466,3 +1466,18 @@ td:contains("Bye"){
     margin-top: 6px !important;
   }
 }
+/* Franchise logo image: remove outline/border box */
+.franchiselogo {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Some skins put borders on the link that wraps the logo */
+a:has(> img.franchiselogo),
+a img.franchiselogo {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
