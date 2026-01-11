@@ -1,9 +1,11 @@
-<!-- AFL VIP Welcome Panel (wrapped + mobile-tight) + LIVE RANK + LIVE PTS badge -->
+<!-- AFL VIP Welcome Panel (tight square scorecard: stacked, clean, clickable) -->
 <style>
   .afl-welcome-wrap{ margin:0 0 12px 0; }
 
   .afl-welcome-panel{
-    display:flex; align-items:center; gap:14px;
+    display:flex;
+    align-items:center;
+    gap:14px;
     padding:14px 16px;
 
     background:
@@ -48,13 +50,15 @@
       0 10px 22px rgba(0,0,0,.55),
       inset 0 1px 0 rgba(255,255,255,.10);
 
-    display:flex; align-items:center; justify-content:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 
   .afl-welcome-text{
     flex:1 1 auto;
     min-width:0;
-    padding-right:124px; /* room for expanded badge */
+    padding-right:112px; /* room for scorecard */
   }
 
   .afl-welcome-title{
@@ -80,94 +84,115 @@
     color:rgba(233,227,212,.88);
   }
 
-  /* === BADGE (both rank + points) === */
-  .afl-live-badge{
+  /* === TIGHT SCORECARD (square-ish) === */
+  .afl-scorecard{
     position:absolute;
     right:14px;
-    top:12px;
+    top:50%;
+    transform:translateY(-50%);
 
-    padding:8px 10px;
+    display:block;
+    text-decoration:none;
+    cursor:pointer;
+    user-select:none;
+
+    width:92px;
+    padding:9px 10px;
     border-radius:12px;
 
     background:
-      radial-gradient(120px 60px at 20% 20%, rgba(255,255,255,.10), transparent 60%),
-      linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.30));
+      radial-gradient(140px 80px at 20% 25%, rgba(255,255,255,.10), transparent 62%),
+      linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.30));
 
     border:1px solid rgba(224,194,122,.55);
 
     box-shadow:
-      0 10px 22px rgba(0,0,0,.55),
+      0 12px 26px rgba(0,0,0,.58),
       inset 0 1px 0 rgba(255,255,255,.08);
   }
 
-  .afl-live-grid{
-    display:grid;
-    grid-template-columns:auto auto;
-    grid-template-rows:auto auto;
-    column-gap:10px;
-    row-gap:2px;
-    align-items:end;
+  .afl-scorecard:hover{
+    border-color: rgba(224,194,122,.82);
+    box-shadow:
+      0 16px 30px rgba(0,0,0,.62),
+      inset 0 1px 0 rgba(255,255,255,.10);
   }
 
-  .afl-live-col-label{
-    font-size:9px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:rgba(224,194,122,.92);
+  .afl-score-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
     line-height:1;
   }
 
-  .afl-live-col-value--rank{
-    font-weight:900;
-    font-size:14px;
-    color:rgba(233,227,212,.92);
-    text-shadow:0 1px 0 rgba(0,0,0,.65);
-    line-height:1.05;
+  .afl-score-row + .afl-score-row{ margin-top:6px; }
+
+  .afl-score-kicker{
+    font-size:9px;
+    letter-spacing:.20em;
+    text-transform:uppercase;
+    color:rgba(224,194,122,.92);
   }
 
-  .afl-live-col-value--pts{
+  .afl-score-rank{
     font-weight:900;
-    font-size:22px;
+    font-size:18px;
     letter-spacing:.3px;
     color:#E9E3D4;
     text-shadow:0 1px 0 rgba(0,0,0,.65);
-    line-height:1.05;
   }
 
-  /* subtle divider between rank and points columns */
-  .afl-live-grid{
-    position:relative;
-  }
-  .afl-live-grid:before{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:2px;
-    bottom:2px;
-    width:1px;
-    background:rgba(224,194,122,.18);
-    transform:translateX(-50%);
+  .afl-score-pts{
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:.2px;
+    color:rgba(233,227,212,.96);
+    text-shadow:0 1px 0 rgba(0,0,0,.65);
   }
 
+  /* Optional: tiny divider line inside the card */
+  .afl-score-divider{
+    height:1px;
+    margin:7px 0 6px 0;
+    background:linear-gradient(90deg, transparent, rgba(224,194,122,.35), transparent);
+    opacity:.9;
+  }
+
+  /* Mobile tighten */
   @media (max-width: 520px){
-    .afl-welcome-panel{ padding:10px 12px; gap:10px; border-radius:14px; }
-    .afl-welcome-logo .afl-logo-wrap{ width:44px; height:44px; padding:5px; }
+    .afl-welcome-panel{
+      padding:10px 12px;
+      gap:10px;
+      border-radius:14px;
+    }
+    .afl-welcome-logo .afl-logo-wrap{
+      width:44px; height:44px;
+      padding:5px;
+    }
     .afl-welcome-title{ font-size:16px; margin-bottom:3px; }
     .afl-welcome-tagline{
-      font-size:10px; letter-spacing:.14em;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      font-size:10px;
+      letter-spacing:.14em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .afl-welcome-sub{ margin-top:4px; font-size:11px; }
 
-    .afl-welcome-text{ padding-right:112px; }
-    .afl-live-badge{ right:10px; top:9px; padding:7px 9px; border-radius:10px; }
+    .afl-welcome-text{ padding-right:100px; }
 
-    .afl-live-col-value--rank{ font-size:13px; }
-    .afl-live-col-value--pts{ font-size:18px; }
-    .afl-live-grid{ column-gap:8px; }
+    .afl-scorecard{
+      right:10px;
+      width:86px;
+      padding:8px 9px;
+      border-radius:11px;
+    }
+    .afl-score-rank{ font-size:17px; }
+    .afl-score-pts{ font-size:12px; }
   }
 
-  /* keep old live line hidden */
+  /* Keep old liveWrap in DOM but hidden */
   #liveWrap{ display:none !important; }
 </style>
 
@@ -194,23 +219,31 @@
       </div>
     </div>
 
-    <!-- Badge: Rank (smaller) + Points (bolder) -->
-    <div class="afl-live-badge" aria-label="Live rank and points">
-      <div class="afl-live-grid">
-        <div class="afl-live-col-label">RANK</div>
-        <div class="afl-live-col-label" style="text-align:right;">LIVE</div>
+    <!-- Tight square scorecard (click -> Live Scoring) -->
+    <a class="afl-scorecard"
+       href="https://www46.myfantasyleague.com/2025/ajax_ls?L=41802"
+       title="Open Live Scoring"
+       aria-label="Open Live Scoring">
 
-        <div class="afl-live-col-value--rank"><span id="liveRank">--</span></div>
-        <div class="afl-live-col-value--pts" style="text-align:right;"><span id="livePts">--</span></div>
+      <div class="afl-score-row">
+        <div class="afl-score-kicker">RANK</div>
+        <div class="afl-score-rank"><span id="liveRank">--</span></div>
       </div>
-    </div>
+
+      <div class="afl-score-divider"></div>
+
+      <div class="afl-score-row">
+        <div class="afl-score-kicker">LIVE</div>
+        <div class="afl-score-pts"><span id="livePts">--</span></div>
+      </div>
+    </a>
 
   </div>
 </div>
 
-<!-- keep for compatibility if you ever need it (hidden) -->
-<div id="liveWrap">
-  LIVE <span id="livePts_legacy">--</span>
+<!-- keep this for script compatibility (hidden by CSS above) -->
+<div id="liveWrap" style="margin-top:6px; font-weight:700; opacity:.95;">
+  LIVE <span id="livePts">--</span>
 </div>
 
 <script>
@@ -220,15 +253,51 @@
   var LEAGUE_ID = "41802";
   var FRANCHISE_ID = "%FRANCHISEID%"; // e.g. 0001
   var HOST = "www46.myfantasyleague.com";
+
   var LS_URL = "https://" + HOST + "/" + YEAR + "/ajax_ls?L=" + encodeURIComponent(LEAGUE_ID);
 
-  // ===== INTERNALS =====
   var iframe, lastPts = null, lastRank = null;
 
-  function setText(id, text, fallback) {
+  function setText(id, text) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.textContent = (text && String(text).trim()) ? String(text).trim() : (fallback || "--");
+    el.textContent = (text && (""+text).trim()) ? (""+text).trim() : "--";
+  }
+
+  function parseNumber(text) {
+    var n = parseFloat(String(text || "").replace(/[^\d.\-]/g, ""));
+    return isNaN(n) ? null : n;
+  }
+
+  function computeRankFromWeeklyStandings(doc) {
+    var nodes = doc.querySelectorAll('div[class^="ogffpts_"]');
+    if (!nodes || !nodes.length) return null;
+
+    var entries = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      var cls = node.className || "";
+      var m = cls.match(/ogffpts_(\d{4})/);
+      if (!m) continue;
+
+      var fid = m[1];
+      var pts = parseNumber(node.textContent);
+      if (pts === null) continue;
+
+      entries.push({ fid: fid, pts: pts });
+    }
+
+    if (!entries.length) return null;
+
+    entries.sort(function(a,b){
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      return a.fid.localeCompare(b.fid);
+    });
+
+    for (var r = 0; r < entries.length; r++) {
+      if (entries[r].fid === FRANCHISE_ID) return (r + 1);
+    }
+    return null;
   }
 
   function safeRead() {
@@ -236,46 +305,24 @@
       var doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
       if (!doc) return;
 
-      // Points: .ogffpts_0001
-      var myPtsEl = doc.querySelector(".ogffpts_" + FRANCHISE_ID);
-      if (myPtsEl) {
-        var pts = (myPtsEl.textContent || "").trim();
-        if (pts && pts !== lastPts) {
-          lastPts = pts;
-          setText("livePts", pts, "--");
+      var scoreEl = doc.querySelector(".ogffpts_" + FRANCHISE_ID);
+      if (scoreEl) {
+        var ptsTxt = (scoreEl.textContent || "").trim();
+        if (ptsTxt && ptsTxt !== lastPts) {
+          lastPts = ptsTxt;
+          setText("livePts", ptsTxt);
         }
       }
 
-      // Rank: order of #other_games .ls_other_game
-      if (!myPtsEl) return;
-
-      var rows = doc.querySelectorAll("#other_games .ls_other_game");
-      if (!rows || !rows.length) rows = doc.querySelectorAll(".ls_other_game");
-      if (!rows || !rows.length) return;
-
-      var myRow = (myPtsEl.closest) ? myPtsEl.closest(".ls_other_game") : null;
-      if (!myRow) return;
-
-      // defensive filter: only rows that actually contain an ogffpts_* div
-      var filtered = [];
-      for (var i = 0; i < rows.length; i++) {
-        if (rows[i].querySelector('div[class*="ogffpts_"]')) filtered.push(rows[i]);
+      var rank = computeRankFromWeeklyStandings(doc);
+      if (rank !== null) {
+        var rankTxt = "#" + rank;
+        if (rankTxt !== lastRank) {
+          lastRank = rankTxt;
+          setText("liveRank", rankTxt);
+        }
       }
-
-      var rankNum = null;
-      for (var j = 0; j < filtered.length; j++) {
-        if (filtered[j] === myRow) { rankNum = j + 1; break; }
-      }
-      if (!rankNum) return;
-
-      var rankTxt = "#" + rankNum;
-      if (rankTxt !== lastRank) {
-        lastRank = rankTxt;
-        setText("liveRank", rankTxt, "--");
-      }
-    } catch (e) {
-      // silent
-    }
+    } catch (e) {}
   }
 
   function buildIframe() {
@@ -293,7 +340,6 @@
     iframe.addEventListener("load", function () {
       safeRead();
       setInterval(safeRead, 3000);
-
       setInterval(function () {
         try { iframe.contentWindow.location.reload(); } catch (e) {}
       }, 45000);
