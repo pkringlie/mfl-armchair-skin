@@ -1,4 +1,4 @@
-<!-- AFL VIP Welcome Panel (tight square scorecard: stacked, clean, clickable + NO overlap + rank movement) -->
+<!-- AFL VIP Welcome Panel (tight square scorecard: stacked, clean, clickable + rank movement arrow) -->
 <style>
   .afl-welcome-wrap{ margin:0 0 12px 0; }
 
@@ -58,7 +58,7 @@
   .afl-welcome-text{
     flex:1 1 auto;
     min-width:0;
-    padding-right:132px; /* extra buffer to avoid any visual collisions */
+    padding-right:112px; /* room for scorecard */
   }
 
   .afl-welcome-title{
@@ -96,7 +96,7 @@
     cursor:pointer;
     user-select:none;
 
-    width:98px;                 /* small bump prevents label/value collision */
+    width:92px;
     padding:9px 10px;
     border-radius:12px;
 
@@ -120,7 +120,7 @@
 
   .afl-score-row{
     display:flex;
-    align-items:center;         /* was baseline; center helps avoid weird font overlaps */
+    align-items:baseline;
     justify-content:space-between;
     gap:8px;
     line-height:1;
@@ -133,18 +133,6 @@
     letter-spacing:.20em;
     text-transform:uppercase;
     color:rgba(224,194,122,.92);
-    white-space:nowrap;
-    flex:0 0 auto;
-  }
-
-  /* Right side of rank row: value + tiny movement indicator */
-  .afl-rank-wrap{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:5px;                    /* slightly tighter */
-    min-width:0;
-    flex:0 0 auto;
   }
 
   .afl-score-rank{
@@ -153,30 +141,7 @@
     letter-spacing:.3px;
     color:#E9E3D4;
     text-shadow:0 1px 0 rgba(0,0,0,.65);
-    white-space:nowrap;
   }
-
-  .afl-rank-delta{
-    font-size:10px;             /* small */
-    line-height:1;
-    font-weight:900;
-    letter-spacing:.02em;
-    text-shadow:0 1px 0 rgba(0,0,0,.55);
-    padding:0;                  /* no circle/badge */
-    border:none;
-    background:transparent;
-    opacity:.95;
-    min-width:10px;
-    text-align:right;
-    white-space:nowrap;
-  }
-
-  /* Correct semantics:
-     up (green) when rank number DECREASES (better),
-     down (red) when rank number INCREASES (worse) */
-  .afl-rank-up{ color: rgba(120, 255, 170, .95); }
-  .afl-rank-down{ color: rgba(255, 120, 120, .95); }
-  .afl-rank-flat{ color: rgba(224,194,122,.92); }
 
   .afl-score-pts{
     font-weight:800;
@@ -184,7 +149,6 @@
     letter-spacing:.2px;
     color:rgba(233,227,212,.96);
     text-shadow:0 1px 0 rgba(0,0,0,.65);
-    white-space:nowrap;
   }
 
   .afl-score-divider{
@@ -193,6 +157,27 @@
     background:linear-gradient(90deg, transparent, rgba(224,194,122,.35), transparent);
     opacity:.9;
   }
+
+  /* Rank arrow to LEFT of number */
+  .afl-rank-row{ align-items:center; }
+  .afl-rank-value{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:4px;
+    min-width:0;
+  }
+
+  .afl-rank-arrow{
+    font-size:10px;
+    line-height:1;
+    position:relative;
+    top:-1px;
+    opacity:.95;
+  }
+  .afl-rank-up{ color:#3fb950; }   /* green */
+  .afl-rank-down{ color:#f85149; } /* red */
+  .afl-rank-flat{ color:rgba(233,227,212,.45); }
 
   /* Mobile tighten */
   @media (max-width: 520px){
@@ -215,33 +200,21 @@
     }
     .afl-welcome-sub{ margin-top:4px; font-size:11px; }
 
-    .afl-welcome-text{ padding-right:120px; }
+    .afl-welcome-text{ padding-right:100px; }
 
     .afl-scorecard{
       right:10px;
-      width:92px;               /* mobile width */
+      width:86px;
       padding:8px 9px;
       border-radius:11px;
     }
-
-    /* Key fix: shorten RANK label -> RK on mobile so it can never collide */
-    .afl-score-kicker.rank-kicker{
-      font-size:0;              /* hide text */
-      letter-spacing:0;
-    }
-    .afl-score-kicker.rank-kicker::after{
-      content:"RK";
-      font-size:9px;
-      letter-spacing:.20em;
-      text-transform:uppercase;
-      color:rgba(224,194,122,.92);
-    }
-
     .afl-score-rank{ font-size:17px; }
     .afl-score-pts{ font-size:12px; }
-    .afl-rank-delta{ font-size:9px; min-width:9px; }
-    .afl-rank-wrap{ gap:4px; }
+    .afl-rank-arrow{ font-size:9px; top:-1px; }
   }
+
+  /* Keep old liveWrap in DOM but hidden */
+  #liveWrap{ display:none !important; }
 </style>
 
 <div class="afl-welcome-wrap">
@@ -267,17 +240,17 @@
       </div>
     </div>
 
-    <!-- Tight scorecard (click -> Live Scoring) -->
+    <!-- Tight square scorecard (click -> Live Scoring) -->
     <a class="afl-scorecard"
        href="https://www46.myfantasyleague.com/2025/ajax_ls?L=41802"
        title="Open Live Scoring"
        aria-label="Open Live Scoring">
 
-      <div class="afl-score-row">
-        <div class="afl-score-kicker rank-kicker">RANK</div>
-        <div class="afl-rank-wrap">
-          <div class="afl-score-rank"><span id="liveRank">--</span></div>
-          <div id="rankDelta" class="afl-rank-delta afl-rank-flat" title="Rank movement">•</div>
+      <div class="afl-score-row afl-rank-row">
+        <div class="afl-score-kicker">RANK</div>
+        <div class="afl-rank-value">
+          <span id="rankArrow" class="afl-rank-arrow"></span>
+          <span id="liveRank" class="afl-score-rank">--</span>
         </div>
       </div>
 
@@ -292,6 +265,11 @@
   </div>
 </div>
 
+<!-- keep this for script compatibility (hidden by CSS above) -->
+<div id="liveWrap" style="margin-top:6px; font-weight:700; opacity:.95;">
+  LIVE <span id="livePts">--</span>
+</div>
+
 <script>
 (function () {
   // ===== CONFIG =====
@@ -301,24 +279,17 @@
   var HOST = "www46.myfantasyleague.com";
 
   var LS_URL = "https://" + HOST + "/" + YEAR + "/ajax_ls?L=" + encodeURIComponent(LEAGUE_ID);
-  var STORE_KEY = "AFL_LS_RANK_" + YEAR + "_" + LEAGUE_ID + "_" + FRANCHISE_ID;
 
-  var iframe, lastPts = null, lastRankTxt = null;
+  // How long to keep the ▲/▼ visible after a change (1 minute)
+  var ARROW_HOLD_MS = 60 * 1000;
 
-  function $(id){ return document.getElementById(id); }
+  var iframe, lastPts = null, lastRankNum = null;
+  var arrowHideTimer = null;
 
   function setText(id, text) {
-    var el = $(id);
+    var el = document.getElementById(id);
     if (!el) return;
     el.textContent = (text && (""+text).trim()) ? (""+text).trim() : "--";
-  }
-
-  function setDelta(state, symbol, title) {
-    var el = $("rankDelta");
-    if (!el) return;
-    el.className = "afl-rank-delta " + (state || "afl-rank-flat");
-    el.textContent = symbol || "•";
-    el.title = title || "Rank movement";
   }
 
   function parseNumber(text) {
@@ -327,6 +298,7 @@
   }
 
   function computeRankFromWeeklyStandings(doc) {
+    // grabs all .ogffpts_#### nodes and ranks by pts desc
     var nodes = doc.querySelectorAll('div[class^="ogffpts_"]');
     if (!nodes || !nodes.length) return null;
 
@@ -357,35 +329,55 @@
     return null;
   }
 
-  function updateRankUI(rankNum) {
-    if (rankNum === null) {
-      setText("liveRank", "--");
-      setDelta("afl-rank-flat", "•", "Rank movement");
-      return;
+  function clearArrowTimer() {
+    if (arrowHideTimer) {
+      clearTimeout(arrowHideTimer);
+      arrowHideTimer = null;
     }
+  }
 
-    var rankTxt = "#" + rankNum;
-    if (rankTxt !== lastRankTxt) {
-      lastRankTxt = rankTxt;
-      setText("liveRank", rankTxt);
-    }
+  function hideArrow() {
+    var arrowEl = document.getElementById("rankArrow");
+    if (!arrowEl) return;
+    arrowEl.textContent = "";
+    arrowEl.className = "afl-rank-arrow";
+  }
 
-    // Compare to last saved rank (lower is BETTER)
-    var prev = null;
-    try { prev = parseInt(localStorage.getItem(STORE_KEY), 10); } catch (e) {}
-    if (!isFinite(prev)) prev = null;
+  function setArrow(symbol, cls) {
+    var arrowEl = document.getElementById("rankArrow");
+    if (!arrowEl) return;
 
-    if (prev === null) {
-      setDelta("afl-rank-flat", "•", "No prior rank to compare yet");
-    } else if (rankNum < prev) {
-      setDelta("afl-rank-up", "▲", "Moved up (better rank): " + prev + " → " + rankNum);
-    } else if (rankNum > prev) {
-      setDelta("afl-rank-down", "▼", "Moved down (worse rank): " + prev + " → " + rankNum);
+    arrowEl.textContent = symbol;
+    arrowEl.className = "afl-rank-arrow " + cls;
+
+    // keep it visible for ARROW_HOLD_MS after each change
+    clearArrowTimer();
+    arrowHideTimer = setTimeout(hideArrow, ARROW_HOLD_MS);
+  }
+
+  function updateRank(rankNum) {
+    if (rankNum === null) return;
+
+    // Always show current rank
+    setText("liveRank", "#" + rankNum);
+
+    // Determine direction ONLY when we have a previous rank
+    if (lastRankNum !== null) {
+      // Lower rank number is BETTER (moving up)
+      if (rankNum < lastRankNum) {
+        setArrow("▲", "afl-rank-up");
+      } else if (rankNum > lastRankNum) {
+        setArrow("▼", "afl-rank-down");
+      } else {
+        // unchanged: show a subtle dash briefly then hide
+        setArrow("–", "afl-rank-flat");
+      }
     } else {
-      setDelta("afl-rank-flat", "—", "No change in rank");
+      // first load: no arrow (clean)
+      hideArrow();
     }
 
-    try { localStorage.setItem(STORE_KEY, String(rankNum)); } catch (e) {}
+    lastRankNum = rankNum;
   }
 
   function safeRead() {
@@ -393,6 +385,7 @@
       var doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
       if (!doc) return;
 
+      // Points for this franchise
       var scoreEl = doc.querySelector(".ogffpts_" + FRANCHISE_ID);
       if (scoreEl) {
         var ptsTxt = (scoreEl.textContent || "").trim();
@@ -402,9 +395,11 @@
         }
       }
 
+      // Rank computed from the same weekly standings block
       var rankNum = computeRankFromWeeklyStandings(doc);
-      updateRankUI(rankNum);
-
+      if (rankNum !== null) {
+        updateRank(rankNum);
+      }
     } catch (e) {}
   }
 
@@ -423,6 +418,8 @@
     iframe.addEventListener("load", function () {
       safeRead();
       setInterval(safeRead, 3000);
+
+      // keep data fresh
       setInterval(function () {
         try { iframe.contentWindow.location.reload(); } catch (e) {}
       }, 45000);
