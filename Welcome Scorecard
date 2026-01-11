@@ -1,13 +1,9 @@
-<!-- AFL VIP Welcome Scorecard that contains Rank + Live Score (wrapped + mobile-tight) --> 
+<!-- AFL VIP Welcome Panel (wrapped + mobile-tight) + LIVE RANK + LIVE PTS badge -->
 <style>
-  .afl-welcome-wrap{
-    margin:0 0 12px 0;
-  }
+  .afl-welcome-wrap{ margin:0 0 12px 0; }
 
   .afl-welcome-panel{
-    display:flex;
-    align-items:center;
-    gap:14px;
+    display:flex; align-items:center; gap:14px;
     padding:14px 16px;
 
     background:
@@ -26,7 +22,6 @@
     overflow:hidden;
   }
 
-  /* subtle brass accent line */
   .afl-welcome-panel::before{
     content:"";
     position:absolute;
@@ -36,9 +31,7 @@
     opacity:.55;
   }
 
-  .afl-welcome-logo{
-    flex:0 0 auto;
-  }
+  .afl-welcome-logo{ flex:0 0 auto; }
 
   .afl-welcome-logo .afl-logo-wrap{
     width:58px; height:58px;
@@ -55,15 +48,13 @@
       0 10px 22px rgba(0,0,0,.55),
       inset 0 1px 0 rgba(255,255,255,.10);
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display:flex; align-items:center; justify-content:center;
   }
 
   .afl-welcome-text{
     flex:1 1 auto;
     min-width:0;
-    padding-right:92px; /* room for score badge */
+    padding-right:124px; /* room for expanded badge */
   }
 
   .afl-welcome-title{
@@ -89,16 +80,11 @@
     color:rgba(233,227,212,.88);
   }
 
-  /* === NEW: score badge inside the welcome card === */
+  /* === BADGE (both rank + points) === */
   .afl-live-badge{
     position:absolute;
     right:14px;
     top:12px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:2px;
 
     padding:8px 10px;
     border-radius:12px;
@@ -114,15 +100,32 @@
       inset 0 1px 0 rgba(255,255,255,.08);
   }
 
-  .afl-live-label{
-    font-size:10px;
+  .afl-live-grid{
+    display:grid;
+    grid-template-columns:auto auto;
+    grid-template-rows:auto auto;
+    column-gap:10px;
+    row-gap:2px;
+    align-items:end;
+  }
+
+  .afl-live-col-label{
+    font-size:9px;
     letter-spacing:.18em;
     text-transform:uppercase;
     color:rgba(224,194,122,.92);
     line-height:1;
   }
 
-  .afl-live-points{
+  .afl-live-col-value--rank{
+    font-weight:900;
+    font-size:14px;
+    color:rgba(233,227,212,.92);
+    text-shadow:0 1px 0 rgba(0,0,0,.65);
+    line-height:1.05;
+  }
+
+  .afl-live-col-value--pts{
     font-weight:900;
     font-size:22px;
     letter-spacing:.3px;
@@ -131,50 +134,41 @@
     line-height:1.05;
   }
 
-  /* --- Mobile tightening without killing the wrap --- */
-  @media (max-width: 520px){
-    .afl-welcome-panel{
-      padding:10px 12px;
-      gap:10px;
-      border-radius:14px;
-    }
-    .afl-welcome-logo .afl-logo-wrap{
-      width:44px; height:44px;
-      padding:5px;
-    }
-    .afl-welcome-title{
-      font-size:16px;
-      margin-bottom:3px;
-    }
-    .afl-welcome-tagline{
-      font-size:10px;
-      letter-spacing:.14em;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .afl-welcome-sub{
-      margin-top:4px;
-      font-size:11px;
-    }
-    .afl-welcome-text{
-      padding-right:78px; /* slightly less on mobile */
-    }
-    .afl-live-badge{
-      right:10px;
-      top:9px;
-      padding:7px 9px;
-      border-radius:10px;
-    }
-    .afl-live-points{
-      font-size:18px;
-    }
+  /* subtle divider between rank and points columns */
+  .afl-live-grid{
+    position:relative;
+  }
+  .afl-live-grid:before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:2px;
+    bottom:2px;
+    width:1px;
+    background:rgba(224,194,122,.18);
+    transform:translateX(-50%);
   }
 
-  /* Keep the old live line in DOM for the script, but hide visually */
-  #liveWrap{
-    display:none !important;
+  @media (max-width: 520px){
+    .afl-welcome-panel{ padding:10px 12px; gap:10px; border-radius:14px; }
+    .afl-welcome-logo .afl-logo-wrap{ width:44px; height:44px; padding:5px; }
+    .afl-welcome-title{ font-size:16px; margin-bottom:3px; }
+    .afl-welcome-tagline{
+      font-size:10px; letter-spacing:.14em;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .afl-welcome-sub{ margin-top:4px; font-size:11px; }
+
+    .afl-welcome-text{ padding-right:112px; }
+    .afl-live-badge{ right:10px; top:9px; padding:7px 9px; border-radius:10px; }
+
+    .afl-live-col-value--rank{ font-size:13px; }
+    .afl-live-col-value--pts{ font-size:18px; }
+    .afl-live-grid{ column-gap:8px; }
   }
+
+  /* keep old live line hidden */
+  #liveWrap{ display:none !important; }
 </style>
 
 <div class="afl-welcome-wrap">
@@ -196,22 +190,27 @@
       </div>
 
       <div class="afl-welcome-sub">
-       Armchair 2026 is underway.
+        Armchair 2026 is underway.
       </div>
     </div>
 
-    <!-- NEW: live score badge -->
-    <div class="afl-live-badge" aria-label="Live score">
-      <div class="afl-live-label">LIVE</div>
-      <div class="afl-live-points"><span id="livePts">--</span></div>
+    <!-- Badge: Rank (smaller) + Points (bolder) -->
+    <div class="afl-live-badge" aria-label="Live rank and points">
+      <div class="afl-live-grid">
+        <div class="afl-live-col-label">RANK</div>
+        <div class="afl-live-col-label" style="text-align:right;">LIVE</div>
+
+        <div class="afl-live-col-value--rank"><span id="liveRank">--</span></div>
+        <div class="afl-live-col-value--pts" style="text-align:right;"><span id="livePts">--</span></div>
+      </div>
     </div>
 
   </div>
 </div>
 
-<!-- keep this for script compatibility (hidden by CSS above) -->
-<div id="liveWrap" style="margin-top:6px; font-weight:700; opacity:.95;">
-  LIVE <span id="livePts">--</span>
+<!-- keep for compatibility if you ever need it (hidden) -->
+<div id="liveWrap">
+  LIVE <span id="livePts_legacy">--</span>
 </div>
 
 <script>
@@ -221,17 +220,15 @@
   var LEAGUE_ID = "41802";
   var FRANCHISE_ID = "%FRANCHISEID%"; // e.g. 0001
   var HOST = "www46.myfantasyleague.com";
-
-  // Live Scoring page you inspected (same-origin, so we can read DOM)
   var LS_URL = "https://" + HOST + "/" + YEAR + "/ajax_ls?L=" + encodeURIComponent(LEAGUE_ID);
 
   // ===== INTERNALS =====
-  var iframe, lastText = null;
+  var iframe, lastPts = null, lastRank = null;
 
-  function setPts(text) {
-    var el = document.getElementById("livePts");
+  function setText(id, text, fallback) {
+    var el = document.getElementById(id);
     if (!el) return;
-    el.textContent = (text && text.trim()) ? text.trim() : "--";
+    el.textContent = (text && String(text).trim()) ? String(text).trim() : (fallback || "--");
   }
 
   function safeRead() {
@@ -239,18 +236,45 @@
       var doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
       if (!doc) return;
 
-      // .ogffpts_0001 etc
-      var scoreEl = doc.querySelector(".ogffpts_" + FRANCHISE_ID);
-      if (!scoreEl) return;
+      // Points: .ogffpts_0001
+      var myPtsEl = doc.querySelector(".ogffpts_" + FRANCHISE_ID);
+      if (myPtsEl) {
+        var pts = (myPtsEl.textContent || "").trim();
+        if (pts && pts !== lastPts) {
+          lastPts = pts;
+          setText("livePts", pts, "--");
+        }
+      }
 
-      var txt = (scoreEl.textContent || "").trim();
-      if (txt && txt !== lastText) {
-        lastText = txt;
-        setPts(txt);
+      // Rank: order of #other_games .ls_other_game
+      if (!myPtsEl) return;
+
+      var rows = doc.querySelectorAll("#other_games .ls_other_game");
+      if (!rows || !rows.length) rows = doc.querySelectorAll(".ls_other_game");
+      if (!rows || !rows.length) return;
+
+      var myRow = (myPtsEl.closest) ? myPtsEl.closest(".ls_other_game") : null;
+      if (!myRow) return;
+
+      // defensive filter: only rows that actually contain an ogffpts_* div
+      var filtered = [];
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].querySelector('div[class*="ogffpts_"]')) filtered.push(rows[i]);
+      }
+
+      var rankNum = null;
+      for (var j = 0; j < filtered.length; j++) {
+        if (filtered[j] === myRow) { rankNum = j + 1; break; }
+      }
+      if (!rankNum) return;
+
+      var rankTxt = "#" + rankNum;
+      if (rankTxt !== lastRank) {
+        lastRank = rankTxt;
+        setText("liveRank", rankTxt, "--");
       }
     } catch (e) {
-      // If MFL ever blocks access, this will fail silently.
-      // In practice, same-origin on www46 should allow it.
+      // silent
     }
   }
 
@@ -258,7 +282,6 @@
     iframe = document.createElement("iframe");
     iframe.src = LS_URL;
 
-    // truly hidden
     iframe.style.position = "absolute";
     iframe.style.left = "-9999px";
     iframe.style.top = "-9999px";
@@ -268,13 +291,9 @@
     iframe.setAttribute("aria-hidden", "true");
 
     iframe.addEventListener("load", function () {
-      // initial read
       safeRead();
-
-      // poll the DOM for updates
       setInterval(safeRead, 3000);
 
-      // force-refresh iframe to keep data fresh
       setInterval(function () {
         try { iframe.contentWindow.location.reload(); } catch (e) {}
       }, 45000);
@@ -283,7 +302,6 @@
     document.body.appendChild(iframe);
   }
 
-  // wait for DOM
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", buildIframe);
   } else {
@@ -291,4 +309,3 @@
   }
 })();
 </script>
-Welcome Scorecard
