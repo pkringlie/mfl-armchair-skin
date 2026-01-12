@@ -1539,3 +1539,8 @@ div:has(> ins.adsbygoogle){
   margin: 0 !important;
   padding: 0 !important;
 }
+/* Extra: any fixed-position iframe ad bar */
+iframe[style*="position: fixed"],
+div[style*="position: fixed"] iframe{
+  display: none !important;
+}
