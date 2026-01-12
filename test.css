@@ -1481,3 +1481,61 @@ a img.franchiselogo {
   outline: 0 !important;
   box-shadow: none !important;
 }
+/* =========================
+   MFL: Hide common ad units
+   (banner + sticky footer)
+   ========================= */
+
+/* 1) Nuke the ad iframes by source */
+iframe[src*="doubleclick"],
+iframe[src*="googlesyndication"],
+iframe[src*="googleads"],
+iframe[src*="adservice"],
+iframe[src*="/ads"],
+iframe[id*="ad"],
+iframe[name*="ad"]{
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+}
+
+/* 2) Hide common Google ad wrappers */
+ins.adsbygoogle,
+.adsbygoogle,
+.google-auto-placed,
+[id*="google_ads"],
+[class*="google_ads"],
+[id*="ad_"],
+[class*="ad_"],
+[id^="ad"],
+[class^="ad"]{
+  display: none !important;
+  visibility: hidden !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 3) Collapse “centered ad containers” MFL often uses */
+div[align="center"] > iframe,
+center > iframe{
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* 4) Kill sticky/footer ad bars (common pattern) */
+body > iframe[src*="doubleclick"],
+body > iframe[src*="googlesyndication"]{
+  display: none !important;
+}
+
+/* 5) Remove dead space where the ad was */
+div[align="center"]:has(> iframe),
+center:has(> iframe),
+div:has(> ins.adsbygoogle){
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
