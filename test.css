@@ -1628,3 +1628,111 @@ div[align="center"][data-freestar-ad]{
   max-height: 0 !important;
 }
 
+/* =========================================================
+   LIVE SCORING ONLY (ajax_ls)
+   Scopes everything to this page so nothing site-wide breaks
+   ========================================================= */
+#body_ajax_ls table.report {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* --- Make the main two-column layout behave on desktop --- */
+@media (min-width: 901px) {
+  #body_ajax_ls table.report > tbody > tr {
+    display: flex;                 /* replaces “table fighting” */
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  /* left: weekly points standings */
+  #body_ajax_ls table.report > tbody > tr > td.mobile-view[valign="middle"] {
+    flex: 0 0 360px;               /* adjust 320–420 to taste */
+    max-width: 420px;
+  }
+
+  /* right: lineup/live scoring detail */
+  #body_ajax_ls table.report > tbody > tr > td.mobile-view[valign="top"] {
+    flex: 1 1 auto;
+    min-width: 0;                  /* IMPORTANT: prevents overflow */
+  }
+}
+
+/* --- Mobile: stack cleanly so nothing “folds under” --- */
+@media (max-width: 900px) {
+  #body_ajax_ls table.report > tbody > tr {
+    display: block !important;
+  }
+
+  #body_ajax_ls table.report > tbody > tr > td.mobile-view {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* tighten vertical spacing between the two blocks */
+  #body_ajax_ls table.report > tbody > tr > td.mobile-view + td.mobile-view {
+    margin-top: 10px;
+  }
+}
+
+/* =========================================================
+   WEEKLY POINTS STANDINGS (the left leaderboard)
+   table id="other_games"
+   Goal: rows go full-width, no right-side dead space,
+         keep scores visible, and make it tighter.
+   ========================================================= */
+#body_ajax_ls #other_games {
+  width: 100% !important;
+  max-width: none !important;
+
+  /* kill the “cellspacing=2” gaps without editing HTML */
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+
+  margin: 0 !important;
+}
+
+/* make the header span full width */
+#body_ajax_ls #other_games th {
+  width: 100% !important;
+}
+
+/* rows: full width, tighter padding */
+#body_ajax_ls #other_games td {
+  padding: 6px 10px !important;
+  vertical-align: middle !important;
+}
+
+/* IMPORTANT:
+   Your markup shows a 2nd <td> that’s basically a spacer: <td style="border:none;">&nbsp;</td>
+   Don’t delete it (that’s how you “lost” the score in your last attempt).
+   Instead, collapse it down to almost nothing.
+*/
+#body_ajax_ls #other_games td[style*="border:none"] {
+  width: 1px !important;
+  padding: 0 !important;
+}
+
+/* If the score is wrapped in an element inside the first cell (common in MFL),
+   this pushes the LAST child (usually the score) to the far right cleanly.
+*/
+#body_ajax_ls #other_games td:first-child {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#body_ajax_ls #other_games td:first-child > *:last-child {
+  margin-left: auto !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  opacity: 0.95;
+}
+
+/* If the score is NOT wrapped (rare), the flex trick won’t catch it.
+   This fallback prevents clipping by letting content wrap intelligently.
+*/
+#body_ajax_ls #other_games td:first-child * {
+  max-width: 100%;
+}
