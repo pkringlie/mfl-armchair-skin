@@ -1628,3 +1628,59 @@ div[align="center"][data-freestar-ad]{
   max-height: 0 !important;
 }
 
+/* =========================================
+   FIX: Weekly Points Standings stacking
+   Scope: Live Scoring ajax area only
+   ========================================= */
+
+/* Target the standings widget */
+#body_ajax_ls #other_games {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: auto !important;          /* <-- undo fixed */
+}
+
+/* The cell that contains all the little game blocks */
+#body_ajax_ls #other_games td[align="left"] {
+  white-space: normal !important;         /* <-- allow wrapping */
+}
+
+/* Each clickable entry (MFL sets inline-block via inline style) */
+#body_ajax_ls #other_games .ls_other_game,
+#body_ajax_ls #other_games div[id^="ogg_"] {
+  display: block !important;              /* <-- force stack */
+  width: 100% !important;
+  max-width: 100% !important;
+  float: none !important;
+  clear: both !important;
+  margin: 0 0 6px 0 !important;           /* spacing between rows */
+}
+
+/* Inner table for each row: make it fill */
+#body_ajax_ls #other_games .ls_other_game > table {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+/* Tighten the cells */
+#body_ajax_ls #other_games td.ls_og_cell,
+#body_ajax_ls #other_games td[align="right"],
+#body_ajax_ls #other_games td[style*="border:none"] {
+  padding: 6px 10px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Keep score column consistent */
+#body_ajax_ls #other_games td[align="right"] {
+  width: 90px !important;
+  text-align: right !important;
+}
+
+/* Keep the blank/spacer column small */
+#body_ajax_ls #other_games td[style*="border:none"] {
+  width: 40px !important;
+}
