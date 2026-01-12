@@ -1627,3 +1627,13 @@ div[align="center"][data-freestar-ad]{
   min-height: 0 !important;
   max-height: 0 !important;
 }
+
+
+@media (max-width: 768px) {
+  #body_ajax_ls div[align="center"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
