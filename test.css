@@ -1622,3 +1622,8 @@ div[align="center"][data-freestar-ad] iframe{
   width: 0 !important;
   height: 0 !important;
 }
+/* Kill common injected min-height on the slot */
+div[align="center"][data-freestar-ad]{
+  min-height: 0 !important;
+  max-height: 0 !important;
+}
