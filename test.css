@@ -1581,3 +1581,13 @@ html, body {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
 }
+/* Last resort: hide any fixed-position footer containers */
+div[style*="position: fixed"][id*="fs"],
+div[style*="position: fixed"][class*="fs-"],
+div[id*="sticky"][class*="fs-"],
+div[id*="fs-slot"] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
