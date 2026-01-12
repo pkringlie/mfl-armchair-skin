@@ -1629,110 +1629,39 @@ div[align="center"][data-freestar-ad]{
 }
 
 /* =========================================================
-   LIVE SCORING ONLY (ajax_ls)
-   Scopes everything to this page so nothing site-wide breaks
+   LIVE SCORING – WEEKLY POINTS STANDINGS (Mobile polish)
+   Goal: stop the layout from FEELING broken even if table math is
    ========================================================= */
-#body_ajax_ls table.report {
-  width: 100% !important;
-  max-width: none !important;
-}
 
-/* --- Make the main two-column layout behave on desktop --- */
-@media (min-width: 901px) {
-  #body_ajax_ls table.report > tbody > tr {
-    display: flex;                 /* replaces “table fighting” */
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  /* left: weekly points standings */
-  #body_ajax_ls table.report > tbody > tr > td.mobile-view[valign="middle"] {
-    flex: 0 0 360px;               /* adjust 320–420 to taste */
-    max-width: 420px;
-  }
-
-  /* right: lineup/live scoring detail */
-  #body_ajax_ls table.report > tbody > tr > td.mobile-view[valign="top"] {
-    flex: 1 1 auto;
-    min-width: 0;                  /* IMPORTANT: prevents overflow */
-  }
-}
-
-/* --- Mobile: stack cleanly so nothing “folds under” --- */
-@media (max-width: 900px) {
-  #body_ajax_ls table.report > tbody > tr {
-    display: block !important;
-  }
-
-  #body_ajax_ls table.report > tbody > tr > td.mobile-view {
-    display: block !important;
-    width: 100% !important;
-  }
-
-  /* tighten vertical spacing between the two blocks */
-  #body_ajax_ls table.report > tbody > tr > td.mobile-view + td.mobile-view {
-    margin-top: 10px;
-  }
-}
-
-/* =========================================================
-   WEEKLY POINTS STANDINGS (the left leaderboard)
-   table id="other_games"
-   Goal: rows go full-width, no right-side dead space,
-         keep scores visible, and make it tighter.
-   ========================================================= */
+/* soften the unused gutter so it blends */
 #body_ajax_ls #other_games {
-  width: 100% !important;
-  max-width: none !important;
-
-  /* kill the “cellspacing=2” gaps without editing HTML */
-  border-collapse: collapse !important;
-  border-spacing: 0 !important;
-
-  margin: 0 !important;
+  background: #f3e9d6; /* same as row bg */
 }
 
-/* make the header span full width */
-#body_ajax_ls #other_games th {
-  width: 100% !important;
-}
-
-/* rows: full width, tighter padding */
-#body_ajax_ls #other_games td {
-  padding: 6px 10px !important;
-  vertical-align: middle !important;
-}
-
-/* IMPORTANT:
-   Your markup shows a 2nd <td> that’s basically a spacer: <td style="border:none;">&nbsp;</td>
-   Don’t delete it (that’s how you “lost” the score in your last attempt).
-   Instead, collapse it down to almost nothing.
-*/
-#body_ajax_ls #other_games td[style*="border:none"] {
-  width: 1px !important;
-  padding: 0 !important;
-}
-
-/* If the score is wrapped in an element inside the first cell (common in MFL),
-   this pushes the LAST child (usually the score) to the far right cleanly.
-*/
+/* rows feel full-width even if table isn’t */
 #body_ajax_ls #other_games td:first-child {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px;
-  width: 100% !important;
-  box-sizing: border-box !important;
+  background: #f3e9d6;
+  box-shadow: inset -9999px 0 0 #f3e9d6; /* visually fills gutter */
+}
+
+/* tighter, denser rows (better for 50+ teams) */
+#body_ajax_ls #other_games td {
+  padding: 7px 12px !important;
+  font-size: 14px;
+}
+
+/* emphasize score subtly */
+#body_ajax_ls #other_games td:first-child {
+  display: flex;
+  align-items: center;
 }
 #body_ajax_ls #other_games td:first-child > *:last-child {
-  margin-left: auto !important;
-  text-align: right !important;
-  white-space: nowrap !important;
-  opacity: 0.95;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
-/* If the score is NOT wrapped (rare), the flex trick won’t catch it.
-   This fallback prevents clipping by letting content wrap intelligently.
-*/
-#body_ajax_ls #other_games td:first-child * {
-  max-width: 100%;
+/* highlight the logged-in user row IF MFL adds a class or inline marker */
+#body_ajax_ls #other_games tr:has(td:contains("KING KRING")) {
+  background: #efe1bf;
+  font-weight: 600;
 }
