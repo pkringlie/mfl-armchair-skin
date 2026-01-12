@@ -1628,56 +1628,140 @@ div[align="center"][data-freestar-ad]{
   max-height: 0 !important;
 }
 
-/* =========================================================
-   LIVE SCORING – WEEKLY POINTS STANDINGS (Mobile polish)
-   Goal: stop the layout from FEELING broken even if table math is
-   ========================================================= */
+/* =========================================
+   LIVE SCORING – WEEKLY POINTS STANDINGS
+   CSS-only, scoped to this page/section
+   Targets: #body_ajax_ls #other_games
+   ========================================= */
 
-/* soften the unused gutter so it blends */
+/* ---------- 0) Scope + remove wasted space ---------- */
 #body_ajax_ls #other_games {
-  background: #f3e9d6; /* same as row bg */
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed;              /* makes columns behave on mobile */
 }
 
-/* rows feel full-width even if table isn’t */
-#body_ajax_ls #other_games td:first-child {
-  background: #f3e9d6;
-  box-shadow: inset -9999px 0 0 #f3e9d6; /* visually fills gutter */
+#body_ajax_ls td.mobile-view {
+  padding: 0 !important;
 }
 
-/* tighter, denser rows (better for 50+ teams) */
+/* The "report" wrapper table sometimes constrains width */
+#body_ajax_ls table.report {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+/* ---------- 1) Make the leaderboard actually fill the card ---------- */
+/* Each clickable row container */
+#body_ajax_ls #other_games .ls_other_game {
+  display: block !important;        /* makes each row behave like a full-width row */
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* The inner table inside each row (name + score + blank/spacer) */
+#body_ajax_ls #other_games .ls_other_game > table,
+#body_ajax_ls #other_games .ls_other_game table {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: fixed !important;
+}
+
+/* Remove the visible “box within box” look */
+#body_ajax_ls #other_games th,
 #body_ajax_ls #other_games td {
-  padding: 7px 12px !important;
-  font-size: 14px;
+  border-left: none !important;
+  border-right: none !important;
 }
 
-/* emphasize score subtly */
-#body_ajax_ls #other_games td:first-child {
-  display: flex;
-  align-items: center;
-}
-#body_ajax_ls #other_games td:first-child > *:last-child {
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-/* highlight the logged-in user row IF MFL adds a class or inline marker */
-#body_ajax_ls #other_games tr:has(td:contains("KING KRING")) {
-  background: #efe1bf;
-  font-weight: 600;
-}
-/* ===== TOP 3 PODIUM ===== */
-#body_ajax_ls #other_games tbody tr:nth-child(2)::before {
-  content: "🥇 ";
-}
-#body_ajax_ls #other_games tbody tr:nth-child(3)::before {
-  content: "🥈 ";
-}
-#body_ajax_ls #other_games tbody tr:nth-child(4)::before {
-  content: "🥉 ";
+/* ---------- 2) Column sizing + tighter rows (good for 50+ teams) ---------- */
+/* Name cell */
+#body_ajax_ls #other_games td.ls_og_cell {
+  width: auto !important;
+  padding: 6px 10px !important;     /* tighter */
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-/* tighten spacing so emoji doesn’t bloat rows */
-#body_ajax_ls #other_games tbody tr::before {
+/* Score cell: force consistent width so it aligns + reaches edge */
+#body_ajax_ls #other_games td[align="right"] {
+  width: 92px !important;           /* tune this */
+  padding: 6px 10px !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+/* The "spacer" cell that contains .oggstat_xxxx (blank area) */
+#body_ajax_ls #other_games td[style*="border:none"] {
+  width: 52px !important;           /* keep small; you can go 0 if you want */
+  padding: 6px 8px !important;
+  text-align: left !important;
+}
+
+/* Make the score div not create extra width weirdness */
+#body_ajax_ls #other_games [class^="oggpfts_"] {
+  display: block !important;
+  width: 100% !important;
+}
+
+/* reduce overall vertical density */
+#body_ajax_ls #other_games tr {
+  line-height: 1.15 !important;
+}
+
+/* ---------- 3) Make it feel modern: subtle separators + hover ---------- */
+#body_ajax_ls #other_games .ls_other_game table tr td {
+  box-shadow: none !important;
+}
+
+#body_ajax_ls #other_games .ls_other_game table tr td {
+  border-bottom: 1px solid rgba(0,0,0,.08) !important;
+}
+
+/* hover on desktop only */
+@media (hover:hover) {
+  #body_ajax_ls #other_games .ls_other_game:hover td {
+    filter: brightness(0.98);
+  }
+}
+
+/* ---------- 4) Top 3 styling (CSS-only, reliable) ---------- */
+/* Add medal emoji to first 3 rows in the standings list */
+#body_ajax_ls #other_games .ls_other_game:nth-of-type(1) td.ls_og_cell::before { content: "🥇 "; }
+#body_ajax_ls #other_games .ls_other_game:nth-of-type(2) td.ls_og_cell::before { content: "🥈 "; }
+#body_ajax_ls #other_games .ls_other_game:nth-of-type(3) td.ls_og_cell::before { content: "🥉 "; }
+
+/* Optional: slightly emphasize top 3 without making it huge */
+#body_ajax_ls #other_games .ls_other_game:nth-of-type(-n+3) td {
+  font-weight: 650 !important;
+}
+
+/* ---------- 5) Logged-in franchise marker (CSS-only, no :has(), no JS) ---------- */
+/* This WILL render the star in the "blank/spacer" column, because oggstat_FRANCHISEID lives there */
+#body_ajax_ls #other_games .oggstat_%FRANCHISEID%::before {
+  content: "⭐";
+  display: inline-block;
   margin-right: 6px;
-  font-size: 14px;
+}
+
+/* Optional: also slightly highlight your row (still CSS-only) */
+#body_ajax_ls #other_games .oggstat_%FRANCHISEID% {
+  font-weight: 700 !important;
+}
+
+/* ---------- 6) If your environment supports :has(), this upgrade puts ⭐ by the team name ---------- */
+/* If it works, keep it. If it breaks/does nothing, remove this block. */
+#body_ajax_ls #other_games .ls_other_game:has(.oggstat_%FRANCHISEID%) td.ls_og_cell::before {
+  content: "⭐ ";
+}
+#body_ajax_ls #other_games .ls_other_game:has(.oggstat_%FRANCHISEID%) td {
+  font-weight: 700 !important;
 }
