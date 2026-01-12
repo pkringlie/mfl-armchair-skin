@@ -1628,59 +1628,137 @@ div[align="center"][data-freestar-ad]{
   max-height: 0 !important;
 }
 
-/* =========================================
-   FIX: Weekly Points Standings stacking
-   Scope: Live Scoring ajax area only
-   ========================================= */
+/* =========================================================
+   MFL Live Scoring (ajax_ls) — Mobile + Desktop Layout Fix
+   + Top 3 medals + Current user star
+   Scoped to: #body_ajax_ls
+   ========================================================= */
 
-/* Target the standings widget */
+/* ---------- 0) Mobile: stop the two-column table from causing weird wrap/fold ---------- */
+/* This makes the two "mobile-view" TD columns stack cleanly on narrow screens */
+@media (max-width: 860px) {
+  #body_ajax_ls table.report > tbody > tr.oddtablerow > td.mobile-view {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    vertical-align: top !important;
+  }
+}
+
+/* ---------- 1) Weekly Points Standings container: full width + predictable ---------- */
 #body_ajax_ls #other_games {
   width: 100% !important;
   max-width: 100% !important;
   border-collapse: collapse !important;
-  table-layout: auto !important;          /* <-- undo fixed */
+  table-layout: auto !important; /* IMPORTANT: don't force fixed */
 }
 
-/* The cell that contains all the little game blocks */
+/* The left cell that holds the list of franchise entries */
 #body_ajax_ls #other_games td[align="left"] {
-  white-space: normal !important;         /* <-- allow wrapping */
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;  /* allow wrapping */
+  padding: 0 !important;           /* remove built-in gutter */
 }
 
-/* Each clickable entry (MFL sets inline-block via inline style) */
+/* ---------- 2) Force each standings entry to be a full-width stacked row ---------- */
+/* MFL often sets inline-block inline-style on these; we override it */
 #body_ajax_ls #other_games .ls_other_game,
 #body_ajax_ls #other_games div[id^="ogg_"] {
-  display: block !important;              /* <-- force stack */
+  display: block !important;
   width: 100% !important;
   max-width: 100% !important;
   float: none !important;
   clear: both !important;
-  margin: 0 0 6px 0 !important;           /* spacing between rows */
+  margin: 0 0 6px 0 !important;   /* spacing between rows */
+  box-sizing: border-box !important;
 }
 
-/* Inner table for each row: make it fill */
+/* The little inner table that actually holds Name | Score | (F) etc */
 #body_ajax_ls #other_games .ls_other_game > table {
   width: 100% !important;
   max-width: 100% !important;
   border-collapse: collapse !important;
+  table-layout: fixed !important;  /* fixed INSIDE the row so columns behave */
 }
 
-/* Tighten the cells */
-#body_ajax_ls #other_games td.ls_og_cell,
-#body_ajax_ls #other_games td[align="right"],
-#body_ajax_ls #other_games td[style*="border:none"] {
+/* Tighten row height and keep it sleek */
+#body_ajax_ls #other_games .ls_other_game td {
   padding: 6px 10px !important;
+  box-sizing: border-box !important;
+}
+
+/* Franchise name cell */
+#body_ajax_ls #other_games td.ls_og_cell {
+  width: auto !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
-/* Keep score column consistent */
+/* Score cell (right aligned) */
 #body_ajax_ls #other_games td[align="right"] {
-  width: 90px !important;
+  width: 92px !important;
   text-align: right !important;
+  white-space: nowrap !important;
+  padding-right: 10px !important;
 }
 
-/* Keep the blank/spacer column small */
+/* The extra spacer/status cell (where your oggstat_#### div lives) — keep it narrow */
 #body_ajax_ls #other_games td[style*="border:none"] {
-  width: 40px !important;
+  width: 42px !important;
+  white-space: nowrap !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
+/* ---------- 3) Top 3 medals (based on standings order in the list) ---------- */
+/* These apply to the first three ogg_ blocks inside the standings list */
+#body_ajax_ls #other_games td[align="left"] > div[id^="ogg_"]:nth-of-type(1) td.ls_og_cell::before {
+  content: "🥇 ";
+}
+#body_ajax_ls #other_games td[align="left"] > div[id^="ogg_"]:nth-of-type(2) td.ls_og_cell::before {
+  content: "🥈 ";
+}
+#body_ajax_ls #other_games td[align="left"] > div[id^="ogg_"]:nth-of-type(3) td.ls_og_cell::before {
+  content: "🥉 ";
+}
+
+/* Optional: make top 3 feel a touch “special” without becoming huge */
+#body_ajax_ls #other_games td[align="left"] > div[id^="ogg_"]:nth-of-type(-n+3) td.ls_og_cell {
+  font-weight: 700 !important;
+}
+
+/* ---------- 4) Current user star (⭐) ---------- */
+/* BEST METHOD: target the wrapper DIV id="ogg_####" using your %FRANCHISEID% */
+
+/* If your wrapper IDs are like: ogg_0001 */
+#body_ajax_ls #other_games #ogg_%FRANCHISEID% td.ls_og_cell::after {
+  content: " ⭐";
+  font-weight: 700 !important;
+}
+
+/* If your wrapper IDs are like: ogg_51 (no leading zeros),
+   duplicate the line above and manually set the number (example: #ogg_51)
+   because CSS cannot strip leading zeros from %FRANCHISEID%.
+*/
+
+/* Optional highlight for the logged-in row (subtle, not giant) */
+#body_ajax_ls #other_games #ogg_%FRANCHISEID% > table {
+  outline: 2px solid rgba(212, 175, 55, 0.55) !important;
+  outline-offset: -2px !important;
+  border-radius: 6px !important;
+}
+
+/* ---------- 5) Make the whole thing feel “full width” on mobile ---------- */
+@media (max-width: 860px) {
+  /* remove any extra left/right padding that causes the “floating card” feel */
+  #body_ajax_ls #other_games {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  #body_ajax_ls #other_games .ls_other_game td {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
 }
