@@ -1591,3 +1591,34 @@ div[id*="fs-slot"] {
   min-height: 0 !important;
   overflow: hidden !important;
 }
+/* =========================================
+   Collapse Freestar leaderboard ATF container
+   ========================================= */
+
+/* The exact container you highlighted */
+#myfantasyleague_leaderboard_atf_desktop{
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* General: any Freestar ad slot wrapper still reserving space */
+[data-freestar-ad],
+div[data-freestar-ad],
+div[align="center"][data-freestar-ad]{
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* If they inject an iframe but keep the wrapper visible */
+div[align="center"][data-freestar-ad] iframe{
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
