@@ -1544,3 +1544,40 @@ iframe[style*="position: fixed"],
 div[style*="position: fixed"] iframe{
   display: none !important;
 }
+/* =========================================
+   MFL / Freestar sticky footer ad (FIXED)
+   ========================================= */
+
+/* Kill the whole sticky footer wrapper */
+#fs-sticky-footer,
+.fs-sticky-footer,
+#fs-slot-footer-wrapper,
+.fs-sticky-parent.fs-sticky-wrapper,
+.fs-sticky-slot-element,
+#myfantasyleague_stickyfooter,
+#myfantasyleague_stickyFooter,
+#myfantasyleague_sticky_footer {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Kill Freestar UI bits (close button + branding) */
+.fs-close-button,
+.fs-close-button-sticky,
+.fs-branding,
+.fs-sticky-parent,
+.fs-sticky-wrapper {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Sometimes the page reserves bottom space for sticky ads */
+html, body {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
