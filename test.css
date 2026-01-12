@@ -1738,3 +1738,10 @@ div[align="center"][data-freestar-ad]{
     padding: 0 !important;
   }
 }
+@media (max-width: 768px) {
+  #body_ajax_ls tr.selected td:first-child,
+  #body_ajax_ls tr[bgcolor] td:first-child {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+}
