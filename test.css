@@ -1688,3 +1688,90 @@ div[align="center"][data-freestar-ad]{
 .kkLive .kkToggle .kkToggleBtn + .kkToggleBtn{
   border-left:0 !important;
 }
+/* =========================================================
+   PREMIUM TOGGLE (ME / AVG)
+   Works with:
+   <div class="kkToggle" data-toggle="compare" data-value="0|1">
+     <div class="kkToggleRow">
+       <button class="kkToggleBtn" data-idx="0">ME</button>
+       <button class="kkToggleBtn" data-idx="1">AVG</button>
+     </div>
+   </div>
+   ========================================================= */
+.kkLive .kkToggle{
+  position:relative;
+  height:44px;
+  border-radius:999px;
+  padding:4px;
+  overflow:hidden;
+  -webkit-tap-highlight-color: transparent;
+
+  border:1px solid rgba(212,175,55,.22);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.20));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Sliding thumb */
+.kkLive .kkToggle::before{
+  content:"";
+  position:absolute;
+  top:4px; bottom:4px; left:4px;
+  width: calc(50% - 2px);
+  border-radius:999px;
+
+  /* default thumb look (ME active default = oxblood) */
+  background: rgba(90,15,20,.92);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  transform: translateX(0%);
+  transition: transform .18s ease, background .18s ease;
+}
+
+/* When AVG selected (idx 1), slide thumb right and lighten */
+.kkLive .kkToggle[data-value="1"]::before{
+  transform: translateX(100%);
+  background: rgba(242,238,230,.92);
+}
+
+.kkLive .kkToggleRow{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  height:100%;
+}
+
+.kkLive .kkToggleBtn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  height:100%;
+  width:100%;
+  border-radius:999px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+  user-select:none;
+
+  font: inherit;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  font-size:11px;
+  color: rgba(242,238,230,.72);
+}
+
+/* Active label colors (ME = idx0, AVG = idx1) */
+.kkLive .kkToggle[data-value="0"] .kkToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.95) !important; }
+.kkLive .kkToggle[data-value="0"] .kkToggleBtn[data-idx="1"]{ color: rgba(242,238,230,.62) !important; }
+
+.kkLive .kkToggle[data-value="1"] .kkToggleBtn[data-idx="1"]{ color: #2b2420 !important; }
+.kkLive .kkToggle[data-value="1"] .kkToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.70) !important; }
