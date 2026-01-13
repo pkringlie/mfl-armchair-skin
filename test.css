@@ -1798,3 +1798,51 @@ html.kkDrawerOpen, body.kkDrawerOpen{
   overscroll-behavior: none !important;
   touch-action: none !important;
 }
+/* =========================================================
+   VIP LEDGER: Suppress MFL League Tabs / Mobile Tabs while open
+   (stops the "LEAGUE TABS" bar from appearing over the drawer)
+   ========================================================= */
+html.kkDrawerOpen .myfantasyleague_tabmenu,
+body.kkDrawerOpen .myfantasyleague_tabmenu,
+html.kkDrawerOpen #mobiletabs,
+body.kkDrawerOpen #mobiletabs,
+html.kkDrawerOpen .mobiletabs,
+body.kkDrawerOpen .mobiletabs{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Extra safety: if it is position/fixed somewhere */
+html.kkDrawerOpen .myfantasyleague_tabmenu,
+body.kkDrawerOpen .myfantasyleague_tabmenu{
+  position: static !important;
+  z-index: 0 !important;
+}
+/* Make premium toggle overrides apply inside the VIP drawer too */
+.kkDrawer .kkToggle,
+.kkDrawer .kkToggle *{
+  box-sizing:border-box;
+}
+
+.kkDrawer .kkToggle .kkToggleBtn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0 !important;
+  outline:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  filter:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  line-height:1 !important;
+  min-height:0 !important;
+  height:100% !important;
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
