@@ -1627,3 +1627,64 @@ div[align="center"][data-freestar-ad]{
   min-height: 0 !important;
   max-height: 0 !important;
 }
+/* =========================================================
+   MFL BUTTON OVERRIDES (ONLY for our premium toggles)
+   Fixes: global button styles causing “two pill buttons”
+   ========================================================= */
+.kkLive .kkToggle,
+.kkLive .kkToggle *{
+  box-sizing:border-box;
+}
+
+/* Kill any MFL default button chrome inside the toggle */
+.kkLive .kkToggle .kkToggleBtn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0 !important;
+  outline:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  filter:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  line-height:1 !important;
+  min-height:0 !important;
+  height:100% !important;
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* If MFL sets button font or uppercase weirdly */
+.kkLive .kkToggle .kkToggleBtn{
+  font: inherit !important;
+  font-weight:900 !important;
+  letter-spacing:.10em !important;
+  text-transform:uppercase !important;
+  font-size:11px !important;
+  color: rgba(242,238,230,.72) !important;
+}
+
+/* Ensure the toggle row is truly two equal hit areas */
+.kkLive .kkToggle .kkToggleRow{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  height:100% !important;
+}
+
+/* Force the thumb to render above any background tricks */
+.kkLive .kkToggle::before{
+  z-index:0 !important;
+}
+.kkLive .kkToggle .kkToggleRow{
+  z-index:1 !important;
+  position:relative !important;
+}
+
+/* Optional: remove the visible seam line if MFL adds it via borders */
+.kkLive .kkToggle .kkToggleBtn + .kkToggleBtn{
+  border-left:0 !important;
+}
