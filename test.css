@@ -1627,4 +1627,106 @@ div[align="center"][data-freestar-ad]{
   min-height: 0 !important;
   max-height: 0 !important;
 }
+/* =========================================================
+   LIVE SCORING ONLY (ajax_ls) – layout lock + medals + star
+   Paste at VERY END of League CSS
+   ========================================================= */
+
+/* ----- 0) Scope guard: do nothing unless Live Scoring page ----- */
+body#body_ajax_ls #contentframe { overflow-x: hidden !important; }
+
+/* ----- 1) Two-column stability (desktop/tablet) ----- */
+@media (min-width: 901px){
+  /* The main report table that holds: left list + right details */
+  body#body_ajax_ls #contentframe table.report{
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;      /* key: prevents column jitter */
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+  }
+
+  /* Left column (standings list) */
+  body#body_ajax_ls #contentframe table.report > tbody > tr > td.mobile-view[valign="middle"]{
+    width: 62% !important;
+    vertical-align: top !important;
+  }
+
+  /* Right column (details/lineup box) */
+  body#body_ajax_ls #contentframe table.report > tbody > tr > td.mobile-view[valign="top"]{
+    width: 38% !important;
+    vertical-align: top !important;
+  }
+
+  /* Force right-panel internal tables to fill its column */
+  body#body_ajax_ls #contentframe table.report > tbody > tr > td.mobile-view[valign="top"] table{
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+  }
+}
+
+/* ----- 2) Mobile: stack cleanly + kill off-edge overflow ----- */
+@media (max-width: 900px){
+  body#body_ajax_ls #contentframe table.report,
+  body#body_ajax_ls #contentframe table.report > tbody,
+  body#body_ajax_ls #contentframe table.report > tbody > tr{
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  body#body_ajax_ls #contentframe table.report > tbody > tr > td.mobile-view{
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Any nested tables inside right panel: force fluid */
+  body#body_ajax_ls #contentframe td.mobile-view table{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ----- 3) Tighten the LEFT standings rows (remove extra spacing) ----- */
+body#body_ajax_ls #other_games{
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+/* each row wrapper */
+body#body_ajax_ls #other_games .ls_other_game{
+  display: block !important;
+  width: 100% !important;
+}
+
+/* row cell padding (this is where “too spaced” comes from) */
+body#body_ajax_ls #other_games td,
+body#body_ajax_ls #other_games th{
+  padding: 6px 8px !important;   /* tweak 5–7 if you want tighter */
+  line-height: 1.15 !important;
+}
+
+/* keep name clean + prevent wrap-induced height changes */
+body#body_ajax_ls #other_games .ls_og_cell{
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* ----- 4) 🥇🥈🥉 medals for top 3 rows (header is row 1) ----- */
+body#body_ajax_ls #other_games tbody tr:nth-child(2) .ls_og_cell::before{ content:"🥇 "; }
+body#body_ajax_ls #other_games tbody tr:nth-child(3) .ls_og_cell::before{ content:"🥈 "; }
+body#body_ajax_ls #other_games tbody tr:nth-child(4) .ls_og_cell::before{ content:"🥉 "; }
+
+/* ----- 5) ⭐ Logged-in user star (you found oggstat_FRANCHISEID) ----- */
+/* Put the star in the spacer div so it reliably sits in the row */
+body#body_ajax_ls #other_games .oggstat_%FRANCHISEID%::before{
+  content:"⭐";
+  display:inline-block;
+  margin-right: 6px;
+}
 
