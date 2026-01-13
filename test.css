@@ -1781,3 +1781,20 @@ div[align="center"][data-freestar-ad]{
   box-shadow: none !important;
   background: transparent !important;
 }
+/* ===== DRAWER (MOBILE VIP LEDGER) ===== */
+.kkDrawer{
+  display:none;
+  position:fixed;
+  left:0; right:0; top:0; bottom:0;          /* cover full viewport */
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  z-index: 2147483646 !important;            /* WIN EVERYTHING */
+  padding: 12px;
+}
+
+html.kkDrawerOpen, body.kkDrawerOpen{
+  overflow:hidden !important;                 /* prevent background scroll */
+  height:100% !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
