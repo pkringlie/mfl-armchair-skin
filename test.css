@@ -1775,3 +1775,9 @@ div[align="center"][data-freestar-ad]{
 
 .kkLive .kkToggle[data-value="1"] .kkToggleBtn[data-idx="1"]{ color: #2b2420 !important; }
 .kkLive .kkToggle[data-value="1"] .kkToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.70) !important; }
+/* REMOVE RECTANGULAR TOGGLE CONTAINER */
+.kkToggle{
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
