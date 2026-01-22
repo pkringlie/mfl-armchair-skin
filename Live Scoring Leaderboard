@@ -1,0 +1,2031 @@
+<!-- KING KRING | VIP LIVE LEADERBOARD + TOTALS + HEAD-TO-HEAD (MFL-SAFE, SINGLE FILE) -->
+<style>
+  :root{
+    --bg0:#060504;
+    --bg1:#0c0a07;
+    --card:#120f0b;
+    --card2:#15120d;
+    --line:rgba(212,175,55,.18);
+    --gold:#d4af37;
+    --text:#f2eee6;
+    --muted:rgba(242,238,230,.68);
+    --shadow: 0 20px 70px rgba(0,0,0,.55);
+    --radius: 18px;
+    --ox:#5A0F14;
+
+    --pos:#3fb950;
+    --neg:#f85149;
+    --zero:rgba(242,238,230,.45);
+  }
+  *{box-sizing:border-box}
+
+  .kkLive{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 900px at 20% -10%, rgba(212,175,55,.12), transparent 60%),
+      radial-gradient(900px 700px at 120% 20%, rgba(212,175,55,.08), transparent 50%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    border-radius: 20px;
+    border: 1px solid rgba(212,175,55,.16);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .kkWrap{ max-width: 1200px; margin: 0 auto; padding: 12px; }
+  .kkShell{ display:grid; grid-template-columns: 1.05fr .95fr; gap: 14px; }
+
+  .kkPanel{
+    background: linear-gradient(180deg, rgba(255,255,255,.04), transparent 45%),
+                linear-gradient(180deg, var(--card), var(--card2));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    position:relative;
+  }
+  .kkPanel:before{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    background: radial-gradient(800px 240px at 30% 0%, rgba(212,175,55,.10), transparent 60%);
+    opacity:.9;
+  }
+
+  .kkHdr{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 12px 10px 12px;
+    border-bottom: 1px solid rgba(212,175,55,.12);
+    gap:10px;
+  }
+  .kkHdrLeft{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+    flex: 1 1 auto;
+    flex-wrap:wrap;
+  }
+  .kkHdrRight{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:0 0 auto;
+  }
+  .kkPill{
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(0,0,0,.25);
+    padding: 6px 10px;
+    border-radius: 999px;
+    white-space:nowrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ===== TOGGLE (LEFT PANE) ===== */
+  .kkToggle{
+    position:relative;
+    border:1px solid rgba(212,175,55,.20);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.22));
+    border-radius: 999px;
+    padding: 4px;
+    height: 40px;
+    width: 180px;
+    overflow:hidden;
+    -webkit-tap-highlight-color: transparent;
+    flex: 0 0 auto;
+  }
+  .kkToggle::before{
+    content:"";
+    position:absolute;
+    top:4px; bottom:4px;
+    left:4px;
+    width: calc(50% - 2px);
+    border-radius: 999px;
+    background: rgba(90,15,20,.92);
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    transform: translateX(0%);
+    transition: transform .18s ease, background .18s ease;
+  }
+  .kkToggle[data-value="1"]::before{
+    transform: translateX(100%);
+    background: rgba(242,238,230,.92);
+  }
+  .kkToggleRow{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    height:100%;
+  }
+  .kkToggleBtn{
+    border:0 !important;
+    background: transparent !important;
+    cursor:pointer;
+    font-weight: 900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size: 10px;
+    padding: 0;
+    border-radius: 999px;
+    color: rgba(242,238,230,.70);
+    user-select:none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .kkToggle[data-value="0"] .kkToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.95); }
+  .kkToggle[data-value="0"] .kkToggleBtn[data-idx="1"]{ color: rgba(242,238,230,.62); }
+  .kkToggle[data-value="1"] .kkToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.70); }
+  .kkToggle[data-value="1"] .kkToggleBtn[data-idx="1"]{ color: #2b2420; }
+
+  /* ===== LEFT LIST ===== */
+  .kkList{
+    position:relative;
+    padding: 10px;
+    max-height: 78vh;
+    overflow:auto;
+  }
+
+  .kkRow{
+    display:grid;
+    grid-template-columns: 50px 1fr 96px;
+    gap: 10px;
+    align-items:center;
+    padding: 10px 10px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    cursor:pointer;
+    user-select:none;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .kkRow:hover{
+    transform: translateY(-1px);
+    background: rgba(212,175,55,.06);
+    border-color: rgba(212,175,55,.18);
+  }
+  .kkRow.kkActive{
+    background: rgba(212,175,55,.10);
+    border-color: rgba(212,175,55,.28);
+    box-shadow: 0 0 0 1px rgba(212,175,55,.10) inset;
+  }
+  .kkRow.kkTop{
+    background: rgba(212,175,55,.06);
+    border-color: rgba(212,175,55,.22);
+    box-shadow:
+      0 10px 26px rgba(0,0,0,.30),
+      inset 0 0 0 1px rgba(212,175,55,.10);
+  }
+  .kkRow.kkGold{
+    background: linear-gradient(180deg, rgba(255,215,0,.12), rgba(212,175,55,.08));
+    border-color: rgba(255,215,0,.38);
+    box-shadow:
+      0 10px 28px rgba(0,0,0,.32),
+      inset 0 0 0 1px rgba(255,215,0,.18);
+  }
+  .kkRow.kkSilver{
+    background: linear-gradient(180deg, rgba(192,192,192,.10), rgba(169,169,169,.06));
+    border-color: rgba(192,192,192,.32);
+    box-shadow:
+      0 10px 26px rgba(0,0,0,.30),
+      inset 0 0 0 1px rgba(192,192,192,.14);
+  }
+  .kkRow.kkBronze{
+    background: linear-gradient(180deg, rgba(205,127,50,.10), rgba(184,115,51,.06));
+    border-color: rgba(205,127,50,.32);
+    box-shadow:
+      0 10px 26px rgba(0,0,0,.30),
+      inset 0 0 0 1px rgba(205,127,50,.14);
+  }
+  .kkRow.kkMe{
+    background: linear-gradient(180deg, rgba(90,15,20,.34), rgba(0,0,0,.18));
+    border-color: rgba(90,15,20,.55);
+    box-shadow:
+      0 12px 26px rgba(0,0,0,.32),
+      inset 0 0 0 1px rgba(90,15,20,.30);
+  }
+  .kkRow.kkMe:hover{ border-color: rgba(90,15,20,.70); }
+
+  .kkRankTile{
+    width: 46px; height: 46px;
+    border-radius: 10px;
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(0,0,0,.22);
+    position:relative;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+  }
+  .kkRankTile .kkWM{
+    position:absolute; inset:0;
+    background-position:center;
+    background-size: cover;
+    opacity:.18;
+    filter: saturate(.7) contrast(1.05);
+    transform: scale(1.05);
+  }
+  .kkRankTile .kkRankNum{
+    position:relative;
+    font-weight: 950;
+    font-size: 16px;
+    letter-spacing:.2px;
+    color: rgba(242,238,230,.95);
+    text-shadow: 0 1px 0 rgba(0,0,0,.65);
+  }
+
+  .kkText{ min-width:0; }
+  .kkFrName{
+    font-weight: 850;
+    letter-spacing:.01em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+  .kkOwner{
+    margin-top:4px;
+    font-size: 12px;
+    color: var(--muted);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.12;
+  }
+
+  .kkScoreCluster{
+    text-align:right;
+    min-width:0;
+  }
+  .kkPts{
+    font-variant-numeric: tabular-nums;
+    font-size: 16px;
+    font-weight: 950;
+    color: rgba(242,238,230,.96);
+    white-space:nowrap;
+    line-height:1;
+  }
+  .kkMiniMeta{
+    margin-top:4px;
+    font-size:11px;
+    color: rgba(242,238,230,.62);
+    line-height:1.1;
+    white-space:nowrap;
+  }
+  .kkMiniMeta b{ color: rgba(242,238,230,.90); font-weight:800; }
+
+  /* ===== RIGHT DETAIL ===== */
+  .kkDetail{
+    position:relative;
+    padding: 12px;
+    max-height: 78vh;
+    overflow:auto;
+  }
+
+  .kkHero{
+    display:flex;
+    gap: 12px;
+    align-items:center;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(212,175,55,.18);
+    background: rgba(0,0,0,.20);
+  }
+  .kkLogo{
+    width: 54px; height: 54px;
+    border-radius: 14px;
+    border: 1px solid rgba(212,175,55,.20);
+    background: rgba(0,0,0,.26);
+    display:grid; place-items:center;
+    overflow:hidden;
+    flex: 0 0 auto;
+    text-decoration:none;
+    transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+    cursor:pointer;
+  }
+  .kkLogo:hover{
+    border-color: rgba(212,175,55,.45);
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px rgba(212,175,55,.15);
+  }
+  .kkLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .kkHeroMain{ min-width:0; }
+  .kkHeroName{
+    margin:0;
+    font-size: 16px;
+    font-weight: 950;
+    letter-spacing:.02em;
+    color: rgba(212,175,55,.92);
+    text-shadow: 0 1px 0 rgba(0,0,0,.65);
+    background: transparent !important;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+  .kkHeroOwner{
+    margin-top:4px;
+    font-size: 12px;
+    color: rgba(242,238,230,.72);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.12;
+  }
+
+  .kkHeroScore{
+    margin-left:auto;
+    text-align:right;
+    flex:0 0 auto;
+  }
+  .kkHeroScore .kkBig{
+    font-size: 26px;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    line-height:1;
+  }
+  .kkHeroScore .kkSmall{
+    font-size: 11px;
+    color: var(--muted);
+    margin-top:3px;
+  }
+
+  .kkMini{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    align-items:stretch;
+  }
+  .kkBox{
+    border: 1px solid rgba(212,175,55,.14);
+    background: rgba(0,0,0,.16);
+    border-radius: 14px;
+    padding: 8px 10px;
+    overflow:hidden;
+  }
+  .kkK{ font-size: 11px; color: var(--muted); letter-spacing:.02em; }
+  .kkV{ font-size: 15px; font-weight: 950; margin-top: 2px; }
+
+  /* ===== PRIMARY BUTTON ===== */
+  .kkBtn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    border:1px solid rgba(212,175,55,.22);
+    background: linear-gradient(180deg, rgba(90,15,20,.92), rgba(50,10,12,.78));
+    color: rgba(242,238,230,.95);
+    font-weight: 950;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size: 11px;
+    border-radius: 12px;
+    padding: 12px 10px; /* tap-safe */
+    cursor:pointer;
+    user-select:none;
+    box-shadow: 0 14px 30px rgba(0,0,0,.35);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s ease, filter .15s ease, border-color .15s ease, opacity .15s ease, box-shadow .15s ease;
+  }
+  .kkBtn:hover{
+    filter: brightness(1.08);
+    border-color: rgba(212,175,55,.50);
+    transform: scale(1.02);
+    box-shadow: 0 0 0 3px rgba(212,175,55,.18), 0 16px 35px rgba(0,0,0,.4);
+  }
+  .kkBtn:active{
+    transform: scale(0.98) translateY(1px);
+    box-shadow: 0 0 0 2px rgba(212,175,55,.25), 0 8px 20px rgba(0,0,0,.3);
+  }
+  .kkBtn[disabled]{ opacity:.45; cursor:not-allowed; }
+
+  /* ===== LIVE TABLE ===== */
+  .kkTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin-top: 10px;
+    overflow:hidden;
+    border-radius: 14px;
+    border: 1px solid rgba(212,175,55,.14);
+  }
+  .kkThead th{
+    text-align:left;
+    font-size: 11px;
+    color: rgba(242,238,230,.60);
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    padding: 9px 10px;
+    background: rgba(0,0,0,.18);
+    border-bottom: 1px solid rgba(212,175,55,.10);
+    white-space:nowrap;
+  }
+  .kkThead th.num{ text-align:right; }
+
+  .kkTable tr{ background: rgba(0,0,0,.14); }
+  .kkTable tr + tr td{ border-top: 1px solid rgba(212,175,55,.08); }
+  .kkTable td{
+    padding: 8px 10px;
+    font-size: 13px;
+    color: rgba(242,238,230,.88);
+    vertical-align:middle;
+  }
+  .kkSlot{
+    width: 84px;
+    color: rgba(242,238,230,.70);
+    font-size: 11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .kkSlotLine{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+  }
+  .kkDot{
+    width:7px; height:7px; border-radius:999px;
+    background: transparent;
+    border:1px solid rgba(242,238,230,.18);
+    flex:0 0 auto;
+  }
+  .kkDot.on{
+    background: rgba(63,185,80,.92);
+    border-color: rgba(63,185,80,.92);
+    box-shadow: 0 0 0 3px rgba(63,185,80,.10);
+  }
+
+  .kkPlayer{
+    min-width:0;
+    font-weight: 800;
+    letter-spacing:.01em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .kkNum{
+    text-align:right;
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+  }
+  .kkNum.them{ font-weight: 950; color: rgba(242,238,230,.92); }
+
+  /* ===== MOBILE roster ===== */
+  .kkMobileList{ display:none; margin-top:10px; }
+  .kkMRow{
+    border: 1px solid rgba(212,175,55,.14);
+    background: rgba(0,0,0,.14);
+    border-radius: 12px;
+    padding: 9px 10px;
+  }
+  .kkMRow + .kkMRow{ margin-top: 8px; }
+
+  .kkMGrid{
+    display:grid;
+    grid-template-columns: minmax(0, 1fr) 84px;
+    gap: 8px;
+    align-items:center;
+    line-height:1.15;
+  }
+  .kkMLeft{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .kkMSlot{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: rgba(242,238,230,.70);
+    white-space:nowrap;
+  }
+  .kkMName{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-weight: 650;
+    color: rgba(242,238,230,.90);
+  }
+  .kkMNum{
+    text-align:right;
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+    font-size:12px;
+    font-weight:900;
+    color: rgba(242,238,230,.92);
+  }
+
+  /* ===== DRAWER (MOBILE VIP LEDGER) ===== */
+  .kkDrawer{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0; top:0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px);
+    z-index: 2147482000;
+    padding: 12px;
+    touch-action: none;
+  }
+  .kkDrawerCard{
+    max-width: 980px;
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 1px solid rgba(212,175,55,.18);
+    background:
+      radial-gradient(900px 240px at 20% 10%, rgba(255,255,255,.05), transparent 60%),
+      linear-gradient(180deg, rgba(22,18,16,.92) 0%, rgba(8,8,10,.90) 100%);
+    box-shadow: 0 24px 70px rgba(0,0,0,.70);
+    overflow:hidden;
+    position:relative;
+    z-index: 2147482001;
+  }
+  .kkDrawerHdr{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 12px 10px 12px;
+    border-bottom: 1px solid rgba(212,175,55,.10);
+  }
+  .kkDrawerTitle{
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size: 12px;
+    font-weight: 900;
+    color: rgba(212,175,55,.92);
+  }
+  .kkClose{
+    border:1px solid rgba(212,175,55,.18);
+    background: rgba(90,15,20,.55);
+    color: rgba(242,238,230,.92);
+    font-weight: 900;
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    cursor:pointer;
+    touch-action: manipulation;
+  }
+
+  /* ===== H2H MODAL ===== */
+  .kkH2HModal{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0; top:0;
+    background: rgba(0,0,0,.58);
+    backdrop-filter: blur(6px);
+    z-index: 2147485000;
+    padding: 12px;
+    touch-action: none;
+  }
+  .kkH2HCard{
+    max-width: 980px;
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 1px solid rgba(212,175,55,.18);
+    background:
+      radial-gradient(900px 240px at 20% 10%, rgba(255,255,255,.05), transparent 60%),
+      linear-gradient(180deg, rgba(22,18,16,.92) 0%, rgba(8,8,10,.90) 100%);
+    box-shadow: 0 24px 80px rgba(0,0,0,.74);
+    overflow:hidden;
+    position:relative;
+    z-index: 2147485001;
+  }
+  .kkH2HHdr{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 12px 10px 12px;
+    border-bottom: 1px solid rgba(212,175,55,.10);
+    gap:10px;
+  }
+  .kkH2HTitle{
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size: 12px;
+    font-weight: 900;
+    color: rgba(212,175,55,.92);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .kkH2HSummary{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    padding: 16px 12px 0 12px;
+    align-items:center;
+  }
+  .kkH2HTeam{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
+  .kkH2HTeam.left{ align-items:flex-end; }
+  .kkH2HTeam.right{ align-items:flex-start; }
+
+  .kkH2HMiniLogo{
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(0,0,0,.26);
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    flex: 0 0 auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  }
+  .kkH2HMiniLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .kkH2HName{
+    font-weight: 950;
+    font-size: 15px;
+    color: rgba(242,238,230,.92);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.2;
+    max-width:100%;
+  }
+  .kkH2HSub{
+    margin-top:2px;
+    font-size: 11px;
+    color: rgba(242,238,230,.58);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+    max-width:100%;
+  }
+
+  .kkH2HVersus{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    padding:0 12px;
+    flex:0 0 auto;
+  }
+  .kkH2HScoreLine{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .kkH2HScore{
+    font-variant-numeric: tabular-nums;
+    font-weight: 950;
+    font-size: 28px;
+    color: rgba(242,238,230,.95);
+    white-space:nowrap;
+    line-height:1;
+  }
+  .kkH2HVsLabel{
+    font-size: 11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color: rgba(212,175,55,.75);
+    font-weight: 900;
+  }
+
+  /* ===== COMPACT H2H GRID ===== */
+  .kkH2HGrid{ padding: 0 12px 12px 12px; }
+
+  .kkH2HCompact{
+    border: 1px solid rgba(212,175,55,.14);
+    border-radius: 14px;
+    overflow:hidden;
+    margin-top: 10px;
+  }
+  .kkH2HCompactHdr{
+    display:grid;
+    grid-template-columns: 1fr 70px 70px 70px 1fr;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(0,0,0,.18);
+    border-bottom: 1px solid rgba(212,175,55,.10);
+    font-size: 10px;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    color: rgba(242,238,230,.60);
+    font-weight: 800;
+  }
+  .kkH2HCompactHdr .cMid{ text-align:center; }
+  .kkH2HCompactHdr .cR{ text-align:right; }
+
+  .kkH2HCompactRow{
+    display:grid;
+    grid-template-columns: 1fr 70px 70px 70px 1fr;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(0,0,0,.14);
+    align-items:center;
+  }
+  .kkH2HCompactRow + .kkH2HCompactRow{
+    border-top: 1px solid rgba(212,175,55,.08);
+  }
+
+  .kkH2HCell{
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .kkH2HCell.right{
+    justify-content:flex-end;
+    text-align:right;
+  }
+  .kkH2HNameLine{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-weight: 750;
+    color: rgba(242,238,230,.90);
+    line-height:1.1;
+    font-size: 13px;
+  }
+  .kkH2HMetaLine{
+    margin-top:3px;
+    font-size:11px;
+    color: rgba(242,238,230,.62);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+  .kkH2HPts{
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+    font-weight: 900;
+    color: rgba(242,238,230,.92);
+    font-size: 14px;
+    text-align: center;
+  }
+  .kkH2HDelta{
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+    font-weight: 850;
+    font-size: 13px;
+    text-align: center;
+  }
+  .kkH2HDelta.pos{ color: var(--pos); }
+  .kkH2HDelta.neg{ color: var(--neg); }
+  .kkH2HDelta.zero{ color: var(--zero); }
+
+  .kkSlotMid{
+    text-align:center;
+    white-space:nowrap;
+    font-size: 10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color: rgba(242,238,230,.65);
+    font-weight: 800;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px){
+    .kkShell{ grid-template-columns: 1fr; }
+    .kkPanel.kkRightPanel{ display:none; }
+    .kkList{ max-height: none; }
+  }
+
+  @media (max-width: 520px){
+    .kkHdrRight{ display:none; }
+    .kkRow{
+      grid-template-columns: 46px 1fr 88px;
+      padding: 9px 9px;
+      gap: 9px;
+    }
+    .kkRankTile{ width:44px; height:44px; border-radius:10px; }
+    .kkPts{ font-size: 15px; }
+    .kkMiniMeta{ font-size:10px; margin-top:3px; }
+    .kkOwner{ font-size:11px; margin-top:3px; }
+    .kkTable{ display:none; }
+    .kkMobileList{ display:block; }
+    .kkDetail{ padding: 10px; max-height: 76vh; }
+    .kkHero{ padding: 10px; }
+    .kkHeroScore .kkBig{ font-size: 24px; }
+    .kkMini{ gap: 8px; margin-top: 8px; }
+    .kkBox{ padding: 7px 9px; border-radius: 12px; }
+    .kkToggle{ width: 168px; height: 38px; }
+
+    .kkH2HCompactHdr{
+      grid-template-columns: 1fr 50px 50px 50px 1fr;
+      padding: 9px 10px;
+      gap: 6px;
+    }
+    .kkH2HCompactRow{
+      grid-template-columns: 1fr 50px 50px 50px 1fr;
+      padding: 9px 10px;
+      gap: 6px;
+    }
+    .kkH2HCell{ gap: 6px; }
+    .kkH2HPts{ font-size: 13px; }
+    .kkH2HNameLine{ font-size: 11px; font-weight: 700; }
+    .kkSlotMid{ font-size: 9px; }
+
+    .kkH2HSummary{ gap: 10px; padding: 12px 10px 0 10px; }
+    .kkH2HMiniLogo{ width: 52px; height: 52px; border-radius: 14px; }
+    .kkH2HName{ font-size: 13px; }
+    .kkH2HSub{ font-size: 10px; }
+    .kkH2HScore{ font-size: 22px; }
+    .kkH2HVersus{ gap: 6px; padding: 0 8px; }
+    .kkH2HScoreLine{ gap: 8px; }
+    .kkH2HVsLabel{ font-size: 10px; }
+  }
+
+  .kkList::-webkit-scrollbar, .kkDetail::-webkit-scrollbar{ width: 10px; }
+  .kkList::-webkit-scrollbar-thumb, .kkDetail::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+  }
+</style>
+
+<div class="kkLive" id="kkLiveRoot">
+  <div class="kkWrap">
+    <div class="kkShell">
+      <section class="kkPanel kkLeftPanel">
+        <div class="kkHdr">
+          <div class="kkHdrLeft">
+            <div class="kkToggle" id="kkViewToggle" data-value="0" role="tablist" aria-label="View">
+              <div class="kkToggleRow">
+                <button type="button" class="kkToggleBtn" data-idx="0">LIVE</button>
+                <button type="button" class="kkToggleBtn" data-idx="1">TOTAL</button>
+              </div>
+            </div>
+
+            <span class="kkPill" id="kkSortPill">Sorted by live</span>
+            <span class="kkPill" id="kkStatusPill">Loading…</span>
+          </div>
+
+          <div class="kkHdrRight">
+            <span class="kkPill" id="kkLastUpdated">—</span>
+          </div>
+        </div>
+        <div class="kkList" id="kkLeaderboard"></div>
+      </section>
+
+      <section class="kkPanel kkRightPanel">
+        <div class="kkHdr">
+          <div class="kkHdrLeft">
+            <span class="kkPill" id="kkRightModePill">LIVE DETAIL</span>
+          </div>
+          <div class="kkHdrRight">
+            <span class="kkPill" id="kkRightHint">Click a team</span>
+          </div>
+        </div>
+        <div class="kkDetail" id="kkDetail"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- MOBILE VIP LEDGER DRAWER -->
+  <div class="kkDrawer" id="kkDrawer" style="display:none;">
+    <div class="kkDrawerCard" role="dialog" aria-modal="true" aria-label="VIP Ledger">
+      <div class="kkDrawerHdr">
+        <div class="kkDrawerTitle" id="kkDrawerTitle">VIP Ledger</div>
+        <button class="kkClose" id="kkCloseBtn" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="kkDetail" id="kkDrawerDetail"></div>
+    </div>
+  </div>
+
+  <!-- HEAD TO HEAD MODAL -->
+  <div class="kkH2HModal" id="kkH2HModal" style="display:none;">
+    <div class="kkH2HCard" role="dialog" aria-modal="true" aria-label="Head to Head">
+      <div class="kkH2HHdr">
+        <div class="kkH2HTitle" id="kkH2HTitle">Head to Head</div>
+        <button class="kkClose" id="kkH2HCloseBtn" type="button" aria-label="Close">×</button>
+      </div>
+      <div id="kkH2HBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var HOST = "%HOST%";
+  var YEAR = "%YEAR%";
+  var LEAGUE_ID = "%LEAGUEID%";
+  var VIEWER_FRANCHISE_ID = "%FRANCHISEID%";
+
+  // Keep if your weeklyResults needs it inside the embed.
+  var APIKEY = "bhJu2MCQvuWqx0CmPFjJYTAeFbox";
+
+  var POLL_MS = 20000;
+
+  var elLeaderboard   = document.getElementById("kkLeaderboard");
+  var elDetail        = document.getElementById("kkDetail");
+  var elLastUpdated   = document.getElementById("kkLastUpdated");
+  var elStatusPill    = document.getElementById("kkStatusPill");
+  var elSortPill      = document.getElementById("kkSortPill");
+  var elViewToggle    = document.getElementById("kkViewToggle");
+  var elRightModePill = document.getElementById("kkRightModePill");
+
+  var elDrawer        = document.getElementById("kkDrawer");
+  var elDrawerDetail  = document.getElementById("kkDrawerDetail");
+  var elCloseBtn      = document.getElementById("kkCloseBtn");
+  var elDrawerTitle   = document.getElementById("kkDrawerTitle");
+
+  var elH2HModal      = document.getElementById("kkH2HModal");
+  var elH2HBody       = document.getElementById("kkH2HBody");
+  var elH2HTitle      = document.getElementById("kkH2HTitle");
+  var elH2HCloseBtn   = document.getElementById("kkH2HCloseBtn");
+
+  var state = {
+    franchiseById: {},
+    franchiseOrderIndex: {},
+
+    playerById: {},
+
+    liveByFranchiseId: {},
+    liveWeek: "",
+
+    totalByFranchiseId: {},
+    totalPosByFranchiseId: {},
+    totalsLastLoadedAt: 0,
+
+    selectedFranchiseId: null,
+
+    lastLiveGoodAt: 0,
+    viewMode: "LIVE"
+  };
+
+  function isMobile(){
+    return window.matchMedia && window.matchMedia("(max-width: 980px)").matches;
+  }
+  function isPhone(){
+    return window.matchMedia && window.matchMedia("(max-width: 520px)").matches;
+  }
+
+  function mflUrl(type, params){
+    params = params || {};
+    var base = "https://" + HOST + "/" + YEAR + "/export";
+    var u = new URL(base);
+    u.searchParams.set("TYPE", type);
+    u.searchParams.set("L", LEAGUE_ID);
+    u.searchParams.set("JSON", "0");
+    if (APIKEY) u.searchParams.set("APIKEY", APIKEY);
+    for (var k in params){
+      if (params[k] === undefined || params[k] === null) continue;
+      // IMPORTANT: omit parameters entirely when value is special sentinel "__OMIT__"
+      if (params[k] === "__OMIT__") continue;
+      u.searchParams.set(k, String(params[k]));
+    }
+    return u.toString();
+  }
+
+  function fetchText(url){
+    return fetch(url, { cache:"no-store" }).then(function(res){
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      return res.text();
+    });
+  }
+
+  function parseXml(xmlText){
+    var doc = new DOMParser().parseFromString(xmlText, "text/xml");
+    if (doc.querySelector("parsererror")) throw new Error("XML parse error");
+    return doc;
+  }
+
+  function qa(node, sel){ return node ? Array.prototype.slice.call(node.querySelectorAll(sel)) : []; }
+  function attr(node, name, fallback){
+    fallback = (fallback === undefined) ? "" : fallback;
+    if(!node || !node.getAttribute) return fallback;
+    var v = node.getAttribute(name);
+    return (v === null || v === undefined) ? fallback : v;
+  }
+  function toNum(v, fallback){
+    fallback = (fallback === undefined) ? 0 : fallback;
+    var n = Number(v);
+    return isFinite(n) ? n : fallback;
+  }
+  function fmtPts(n){
+    return (Math.round(n * 100) / 100).toFixed(2);
+  }
+  function escapeHtml(s){
+    s = (s===null || s===undefined) ? "" : String(s);
+    return s.replace(/[&<>"']/g, function(ch){
+      return ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      })[ch];
+    });
+  }
+
+  function safeFrOrderIndex(fid){
+    return (state.franchiseOrderIndex && state.franchiseOrderIndex[fid] !== undefined)
+      ? state.franchiseOrderIndex[fid]
+      : 999999;
+  }
+
+  function normalizePos(pos){
+    pos = (pos || "").toUpperCase();
+    if(pos === "PK") return "K";
+    if(pos === "DST" || pos === "DEF" || pos === "D" || pos === "DF") return "DEF";
+    return pos;
+  }
+
+  function formatPlayerShort(name){
+    name = (name || "").trim();
+    if(!name) return "—";
+    // Handle "Last, First"
+    if(name.indexOf(",") >= 0){
+      var parts = name.split(",");
+      var last = (parts[0] || "").trim();
+      var first = (parts[1] || "").trim();
+      var fi = first ? first.charAt(0).toUpperCase() : "";
+      return (fi ? (fi + ". ") : "") + (last || "—");
+    }
+    // Handle "First Last"
+    var toks = name.split(/\s+/).filter(Boolean);
+    if(toks.length === 1) return toks[0];
+    var first2 = toks[0];
+    var last2 = toks[toks.length - 1];
+    return first2.charAt(0).toUpperCase() + ". " + last2;
+  }
+
+  function franchiseUrl(franchiseId){
+    return "https://" + HOST + "/" + YEAR + "/options?L=" + LEAGUE_ID + "&O=01&F=" + franchiseId;
+  }
+
+  /* =========================
+     LOAD: LEAGUE (stable franchise order)
+     ========================= */
+  function loadLeague(){
+    return fetchText(mflUrl("league")).then(function(xml){
+      var doc = parseXml(xml);
+      var franchises = qa(doc, "league > franchises > franchise");
+      var byId = {};
+      var orderIndex = {};
+      for(var i=0;i<franchises.length;i++){
+        var fr = franchises[i];
+        var id = attr(fr, "id");
+        if(!id) continue;
+        var owner = attr(fr, "owner_name") || attr(fr, "owner") || attr(fr, "email") || "";
+        byId[id] = {
+          id: id,
+          name: attr(fr, "name") || id,
+          icon: attr(fr, "icon") || "",
+          owner: owner
+        };
+        orderIndex[id] = i; // stable
+      }
+      state.franchiseById = byId;
+      state.franchiseOrderIndex = orderIndex;
+
+      if(!state.selectedFranchiseId){
+        state.selectedFranchiseId = byId[VIEWER_FRANCHISE_ID] ? VIEWER_FRANCHISE_ID : (Object.keys(byId)[0] || null);
+      }
+    });
+  }
+
+  /* =========================
+     LOAD: PLAYERS
+     ========================= */
+  function loadPlayers(){
+    return fetchText(mflUrl("players", { DETAILS:"" })).then(function(xml){
+      var doc = parseXml(xml);
+      var players = qa(doc, "players > player");
+      var byId = {};
+      players.forEach(function(p){
+        var id = attr(p, "id");
+        if(!id) return;
+        byId[id] = {
+          id: id,
+          name: attr(p, "name") || id,
+          pos: normalizePos(attr(p, "position") || attr(p, "pos") || ""),
+          team: (attr(p, "team") || "").toUpperCase()
+        };
+      });
+      state.playerById = byId;
+    });
+  }
+
+  /* =========================
+     LIVE POLL (NO hard week dependency)
+     ========================= */
+  function pollLive(){
+    // Omit W entirely so MFL can choose current week; we still parse week="20" from response.
+    var url = mflUrl("liveScoring", { DETAILS:"1", W:"__OMIT__" });
+    return fetchText(url).then(function(xml){
+      var doc = parseXml(xml);
+      var root = doc && doc.documentElement;
+      if(root && (root.tagName || "").toLowerCase() === "livescoring"){
+        state.liveWeek = attr(root, "week", state.liveWeek || "");
+      }
+
+      var teams = qa(doc, "liveScoring > franchise");
+      var liveById = {};
+
+      teams.forEach(function(t){
+        var id = attr(t, "id");
+        if(!id) return;
+
+        var starters = qa(t, "players > player").filter(function(p){
+          return attr(p,"status")==="starter";
+        }).map(function(p){
+          return {
+            playerId: attr(p, "id"),
+            points: toNum(attr(p, "score","0"), 0),
+            status: attr(p, "status",""),
+            gameSecondsRemaining: toNum(attr(p, "gameSecondsRemaining","0"), 0)
+          };
+        });
+
+        liveById[id] = {
+          franchiseId: id,
+          score: toNum(attr(t, "score","0"), 0),
+          playersCurrentlyPlaying: toNum(attr(t, "playersCurrentlyPlaying","0"), 0),
+          playersYetToPlay: toNum(attr(t, "playersYetToPlay","0"), 0),
+          gameSecondsRemaining: toNum(attr(t, "gameSecondsRemaining","0"), 0),
+          starters: starters
+        };
+      });
+
+      if(Object.keys(liveById).length > 0){
+        state.liveByFranchiseId = liveById;
+        state.lastLiveGoodAt = Date.now();
+        if(state.viewMode === "LIVE"){
+          elStatusPill.textContent = state.liveWeek ? ("Live W" + state.liveWeek) : "Live";
+        }
+      } else {
+        if(state.viewMode === "LIVE"){
+          elStatusPill.textContent = state.lastLiveGoodAt ? "Stale (last good)" : "No data";
+        }
+      }
+    }).catch(function(){
+      if(state.viewMode === "LIVE"){
+        elStatusPill.textContent = state.lastLiveGoodAt ? "Stale (network)" : "Offline";
+      }
+    });
+  }
+
+  function isParticipatingLive(fid){
+    var live = state.liveByFranchiseId[fid];
+    if(!live) return false;
+    // This is the key fix for Week 20 pre-kickoff:
+    // include teams with "yetToPlay=9" even if score=0 and playing=0.
+    return (
+      toNum(live.playersYetToPlay,0) > 0 ||
+      toNum(live.playersCurrentlyPlaying,0) > 0 ||
+      Math.abs(toNum(live.score,0)) > 0.0001 ||
+      toNum(live.gameSecondsRemaining,0) > 0
+    );
+  }
+
+  /* =========================
+     TOTALS (weeklyResults W=YTD)
+     ========================= */
+  function ensurePosBucket(map, fid){
+    if(!map[fid]) map[fid] = { QB:0, RB:0, WR:0, TE:0, K:0, DEF:0, OTHER:0 };
+    return map[fid];
+  }
+  function addPosScore(bucket, pos, pts){
+    pos = normalizePos(pos || "");
+    if(pos === "QB") bucket.QB += pts;
+    else if(pos === "RB") bucket.RB += pts;
+    else if(pos === "WR") bucket.WR += pts;
+    else if(pos === "TE") bucket.TE += pts;
+    else if(pos === "K") bucket.K += pts;
+    else if(pos === "DEF") bucket.DEF += pts;
+    else bucket.OTHER += pts;
+  }
+
+  function computeTotalsFromWeeklyResults(doc){
+    var totals = {};
+    var posTotals = {};
+
+    var weekNodes = qa(doc, "weeklyResults");
+    if(!weekNodes.length) weekNodes = qa(doc, "allWeeklyResults > weeklyResults");
+    if(!weekNodes.length && doc && doc.documentElement){
+      if(((doc.documentElement.tagName||"").toLowerCase()) === "weeklyresults"){
+        weekNodes = [doc.documentElement];
+      }
+    }
+
+    weekNodes.forEach(function(weekEl){
+      var frs = qa(weekEl, "franchise");
+      frs.forEach(function(fr){
+        var fid = attr(fr, "id") || "";
+        if(!fid) return;
+
+        var fScore = toNum(attr(fr, "score","0"), 0);
+        totals[fid] = (totals[fid] || 0) + fScore;
+
+        var bucket = ensurePosBucket(posTotals, fid);
+        var pnodes = qa(fr, "player");
+        for(var i=0;i<pnodes.length;i++){
+          var p = pnodes[i];
+          var pid = attr(p,"id");
+          var pts = toNum(attr(p,"score","0"), 0);
+
+          var meta = pid ? state.playerById[pid] : null;
+          var pos = meta && meta.pos ? meta.pos : (attr(p,"position") || attr(p,"pos") || "");
+          addPosScore(bucket, pos, pts);
+        }
+      });
+    });
+
+    return { totals: totals, posTotals: posTotals, weeksFound: weekNodes.length };
+  }
+
+  function loadTotals(force){
+    if(!force && state.totalsLastLoadedAt && (Date.now() - state.totalsLastLoadedAt) < 60000){
+      return Promise.resolve();
+    }
+
+    return fetchText(mflUrl("weeklyResults", { W:"YTD", MISSING_AS_BYE:"" }))
+      .then(function(xml){
+        var doc = parseXml(xml);
+        var computed = computeTotalsFromWeeklyResults(doc);
+        state.totalByFranchiseId = computed.totals || {};
+        state.totalPosByFranchiseId = computed.posTotals || {};
+        state.totalsLastLoadedAt = Date.now();
+        if(state.viewMode === "TOTAL") elStatusPill.textContent = "Totals";
+      })
+      .catch(function(){
+        if(state.viewMode === "TOTAL"){
+          elStatusPill.textContent = state.totalsLastLoadedAt ? "Totals (stale)" : "Totals error";
+        }
+      });
+  }
+
+  /* =========================
+     LEADERBOARD BUILD + SORT
+     ========================= */
+  function buildLeaderboardRows(){
+    var ids = Object.keys(state.franchiseById);
+    var rows = ids.map(function(id){
+      var fr = state.franchiseById[id];
+      var live = state.liveByFranchiseId[id] || null;
+
+      if(state.viewMode === "TOTAL"){
+        var tscore = toNum((state.totalByFranchiseId && state.totalByFranchiseId[id]) || 0, 0);
+        return {
+          id: id,
+          name: fr ? fr.name : id,
+          icon: fr ? fr.icon : "",
+          owner: fr ? (fr.owner || "") : "",
+          score: tscore,
+          playing: 0,
+          yet: 0,
+          total: tscore
+        };
+      }
+
+      var liveScore = live ? toNum(live.score,0) : 0;
+      var yet = live ? toNum(live.playersYetToPlay,0) : 0;
+      var playing = live ? toNum(live.playersCurrentlyPlaying,0) : 0;
+
+      var totalFallback = toNum((state.totalByFranchiseId && state.totalByFranchiseId[id]) || 0, 0);
+
+      return {
+        id: id,
+        name: fr ? fr.name : id,
+        icon: fr ? fr.icon : "",
+        owner: fr ? (fr.owner || "") : "",
+        score: liveScore,
+        playing: playing,
+        yet: yet,
+        total: totalFallback
+      };
+    });
+
+    if(state.viewMode === "LIVE"){
+      rows = rows.filter(function(r){ return isParticipatingLive(r.id); });
+    }
+
+    // Decide LIVE sorting mode:
+    // - If anyone has points OR currently playing > 0 => "true live"
+    // - Else pre-kickoff all 0.00 => "interim rank by TOTAL"
+    var hasTrueLive = false;
+    if(state.viewMode === "LIVE"){
+      for(var i=0;i<rows.length;i++){
+        if(Math.abs(toNum(rows[i].score,0)) > 0.0001 || toNum(rows[i].playing,0) > 0){
+          hasTrueLive = true; break;
+        }
+      }
+    }
+
+    if(state.viewMode === "TOTAL"){
+      rows.sort(function(a,b){
+        var d = (toNum(b.score,0) - toNum(a.score,0));
+        if(d) return d;
+        var od = safeFrOrderIndex(a.id) - safeFrOrderIndex(b.id);
+        if(od) return od;
+        return (String(a.id)).localeCompare(String(b.id));
+      });
+      return rows;
+    }
+
+    // LIVE mode sort:
+    // - true live: live score desc, then total desc, then league order
+    // - interim: total desc, then league order (still display live play/yet + live score)
+    rows.sort(function(a,b){
+      if(hasTrueLive){
+        var d1 = (toNum(b.score,0) - toNum(a.score,0));
+        if(d1) return d1;
+        var d2 = (toNum(b.total,0) - toNum(a.total,0));
+        if(d2) return d2;
+        var od1 = safeFrOrderIndex(a.id) - safeFrOrderIndex(b.id);
+        if(od1) return od1;
+        return (String(a.id)).localeCompare(String(b.id));
+      } else {
+        var t = (toNum(b.total,0) - toNum(a.total,0));
+        if(t) return t;
+        var od2 = safeFrOrderIndex(a.id) - safeFrOrderIndex(b.id);
+        if(od2) return od2;
+        return (String(a.id)).localeCompare(String(b.id));
+      }
+    });
+
+    // Update pill to reflect sort behavior
+    if(elSortPill){
+      elSortPill.textContent = hasTrueLive ? "Sorted by live" : "Sorted by total (pre-kickoff)";
+    }
+
+    return rows;
+  }
+
+  /* =========================
+     SLOTS (derived from live starters)
+     ========================= */
+  function buildSlotsForFranchise(fid){
+    var live = state.liveByFranchiseId[fid];
+    if(!live) return [];
+
+    var starters = (live.starters || []).map(function(lp){
+      var p = state.playerById[lp.playerId] || { id: lp.playerId, name: lp.playerId, pos:"", team:"" };
+      var fullName = p.name || lp.playerId;
+      return {
+        playerId: lp.playerId,
+        name: formatPlayerShort(fullName),
+        pos: normalizePos(p.pos || ""),
+        team: (p.team || "").toUpperCase(),
+        points: toNum(lp.points || 0, 0),
+        live: toNum(lp.gameSecondsRemaining || 0, 0) > 0
+      };
+    });
+
+    function takeBest(pos, n, remaining){
+      var picked = [];
+      for(var i=0;i<n;i++){
+        var idx = -1, best = -999999;
+        for(var j=0;j<remaining.length;j++){
+          if(remaining[j].pos !== pos) continue;
+          if(remaining[j].points > best){
+            best = remaining[j].points;
+            idx = j;
+          }
+        }
+        if(idx >= 0) picked.push(remaining.splice(idx,1)[0]);
+        else picked.push(null);
+      }
+      return picked;
+    }
+
+    var rem = starters.slice();
+    var qb = takeBest("QB", 1, rem)[0];
+    var rbs = takeBest("RB", 2, rem);
+    var wrs = takeBest("WR", 2, rem);
+    var te  = takeBest("TE", 1, rem)[0];
+    var k   = takeBest("K",  1, rem)[0];
+    var def = takeBest("DEF",1, rem)[0];
+
+    var flex = null, flexIdx = -1, flexBest = -999999;
+    for(var x=0;x<rem.length;x++){
+      if(rem[x].pos === "RB" || rem[x].pos === "WR" || rem[x].pos === "TE"){
+        if(rem[x].points > flexBest){
+          flexBest = rem[x].points;
+          flexIdx = x;
+        }
+      }
+    }
+    if(flexIdx >= 0) flex = rem.splice(flexIdx,1)[0];
+
+    function slotObj(key, label, player){
+      return {
+        key:key,
+        label:label,
+        playerId: player ? player.playerId : "",
+        playerName: player ? player.name : "—",
+        team: player ? (player.team || "") : "",
+        points: player ? toNum(player.points || 0, 0) : 0,
+        live: player ? !!player.live : false,
+        pos: player ? (player.pos || "") : ""
+      };
+    }
+
+    var flexLabel = "FLEX";
+    if(flex && flex.pos) flexLabel = "FLEX (" + flex.pos + ")";
+
+    return [
+      slotObj("QB",  "QB", qb),
+      slotObj("RB1", "RB1", rbs[0]),
+      slotObj("RB2", "RB2", rbs[1]),
+      slotObj("WR1", "WR1", wrs[0]),
+      slotObj("WR2", "WR2", wrs[1]),
+      slotObj("FLEX", flexLabel, flex),
+      slotObj("TE",  "TE", te),
+      slotObj("K",   "K", k),
+      slotObj("DEF", "DEF", def)
+    ];
+  }
+
+  /* =========================
+     RENDER: LEADERBOARD
+     ========================= */
+  function renderLeaderboard(rows){
+    elLeaderboard.innerHTML = "";
+
+    var updatedAt = (state.viewMode === "TOTAL") ? state.totalsLastLoadedAt : state.lastLiveGoodAt;
+    if(updatedAt){
+      var d = new Date(updatedAt);
+      elLastUpdated.textContent = "Updated " + d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    } else {
+      elLastUpdated.textContent = "—";
+    }
+
+    var anyNonZeroTotals = false;
+    rows.forEach(function(r){
+      if(toNum(r.total,0) > 0.0001) anyNonZeroTotals = true;
+    });
+
+    // Calculate TOTAL rankings for gold/silver/bronze in LIVE view
+    var totalRankMap = {};
+    if(state.viewMode === "LIVE"){
+      var allIds = Object.keys(state.franchiseById);
+      var totalRows = allIds.map(function(id){
+        var fr = state.franchiseById[id];
+        var tscore = toNum((state.totalByFranchiseId && state.totalByFranchiseId[id]) || 0, 0);
+        return { id: id, totalScore: tscore };
+      });
+      totalRows.sort(function(a,b){
+        var d = (toNum(b.totalScore,0) - toNum(a.totalScore,0));
+        if(d) return d;
+        var od = safeFrOrderIndex(a.id) - safeFrOrderIndex(b.id);
+        if(od) return od;
+        return (String(a.id)).localeCompare(String(b.id));
+      });
+      totalRows.forEach(function(tr, i){
+        totalRankMap[tr.id] = i + 1;
+      });
+    }
+
+    rows.forEach(function(r, idx){
+      var rank = idx + 1;
+      var isActive = (r.id === state.selectedFranchiseId);
+      var isMe = (r.id === VIEWER_FRANCHISE_ID);
+
+      var medalClass = "";
+      if(state.viewMode === "LIVE"){
+        var totalRank = totalRankMap[r.id] || 999;
+        if(totalRank === 1) medalClass = " kkGold";
+        else if(totalRank === 2) medalClass = " kkSilver";
+        else if(totalRank === 3) medalClass = " kkBronze";
+      } else {
+        // In TOTAL view, apply same medal styling
+        if(rank === 1) medalClass = " kkGold";
+        else if(rank === 2) medalClass = " kkSilver";
+        else if(rank === 3) medalClass = " kkBronze";
+      }
+
+      var row = document.createElement("div");
+      row.className =
+        "kkRow" +
+        (isActive ? " kkActive" : "") +
+        medalClass +
+        (isMe ? " kkMe" : "");
+
+      row.onclick = function(){
+        state.selectedFranchiseId = r.id;
+        if(isMobile()) showDrawer(true);
+        render();
+      };
+
+      var wm = r.icon ? ('style="background-image:url(\'' + String(r.icon).replace(/'/g,"%27") + '\')"' ) : "";
+
+      var mini = (state.viewMode === "LIVE")
+        ? '<div class="kkMiniMeta"><b>'+toNum(r.playing,0)+'</b> play • <b>'+toNum(r.yet,0)+'</b> yet</div>'
+        : '<div class="kkMiniMeta">Season total</div>';
+
+      row.innerHTML =
+        '<div class="kkRankTile">' +
+          '<div class="kkWM" '+wm+'></div>' +
+          '<div class="kkRankNum">'+rank+'</div>' +
+        '</div>' +
+        '<div class="kkText">' +
+          '<div class="kkFrName">'+escapeHtml(r.name || r.id)+'</div>' +
+          '<div class="kkOwner">'+escapeHtml(r.owner || "")+'</div>' +
+        '</div>' +
+        '<div class="kkScoreCluster">' +
+          '<div class="kkPts">'+fmtPts(toNum(r.score,0))+'</div>' +
+          mini +
+        '</div>';
+
+      elLeaderboard.appendChild(row);
+    });
+
+    if(!rows.length){
+      elLeaderboard.innerHTML = '<div style="padding:14px;color:rgba(242,238,230,.65);">No teams found.</div>';
+      return;
+    }
+
+    if(state.viewMode === "TOTAL" && !anyNonZeroTotals){
+      elLeaderboard.insertAdjacentHTML(
+        "afterbegin",
+        '<div style="padding:10px 10px 0 10px;color:rgba(242,238,230,.75);font-size:12px;">Totals are <b>0.00</b> for everyone. This typically means <b>APIKEY is required</b> for weeklyResults in this embed.</div>'
+      );
+    }
+  }
+
+  /* =========================
+     RENDER: LIVE DETAIL
+     ========================= */
+  function renderLiveDetailInto(targetEl){
+    var fid = state.selectedFranchiseId;
+    var fr = fid ? state.franchiseById[fid] : null;
+    var live = fid ? state.liveByFranchiseId[fid] : null;
+
+    if(!fid || !fr){
+      targetEl.innerHTML = '<div style="padding:14px;border:1px dashed rgba(212,175,55,.22);border-radius:14px;background:rgba(0,0,0,.16);color:rgba(242,238,230,.65);">Pick a team in standings.</div>';
+      return;
+    }
+
+    var logoHtml = fr.icon
+      ? '<img src="'+escapeHtml(fr.icon)+'" alt=""/>'
+      : '<span style="color:rgba(212,175,55,.8);font-weight:900;">'+escapeHtml((fr.name||"").slice(0,1).toUpperCase())+'</span>';
+
+    var score = live ? toNum(live.score,0) : 0;
+    var playing = live ? toNum(live.playersCurrentlyPlaying,0) : 0;
+
+    var slots = buildSlotsForFranchise(fid);
+
+    var tableRowsHtml = slots.map(function(s){
+      var playerLine = escapeHtml(s.playerName) + (s.team ? " \u2022 " + escapeHtml(s.team) : "");
+      var dot = s.live ? 'on' : '';
+      var slotLabel = escapeHtml(s.label);
+      return '' +
+        '<tr>' +
+          '<td class="kkSlot"><div class="kkSlotLine"><span class="kkDot '+dot+'"></span><span>'+slotLabel+'</span></div></td>' +
+          '<td><div class="kkPlayer">'+playerLine+'</div></td>' +
+          '<td class="kkNum them">'+fmtPts(toNum(s.points,0))+'</td>' +
+        '</tr>';
+    }).join("");
+
+    var mobileRowsHtml = slots.map(function(s){
+      var dot = s.live ? 'on' : '';
+      var playerLine = escapeHtml(s.playerName) + (s.team ? " \u2022 " + escapeHtml(s.team) : "");
+      var slotLabel = escapeHtml(s.label);
+      return '' +
+        '<div class="kkMRow" data-ui-normalized="true">' +
+          '<div class="kkMGrid">' +
+            '<div class="kkMLeft">' +
+              '<div class="kkMSlot"><span class="kkDot '+dot+'"></span>'+slotLabel+'</div>' +
+              '<div class="kkMName">'+playerLine+'</div>' +
+            '</div>' +
+            '<div class="kkMNum">'+fmtPts(toNum(s.points,0))+'</div>' +
+          '</div>' +
+        '</div>';
+    }).join("");
+
+    var h2hDisabled = (!fid || fid === VIEWER_FRANCHISE_ID);
+
+    targetEl.innerHTML =
+      '<div class="kkHero">' +
+        '<a href="'+franchiseUrl(fid)+'" target="_blank" rel="noopener noreferrer" class="kkLogo">'+logoHtml+'</a>' +
+        '<div class="kkHeroMain">' +
+          '<div class="kkHeroName">'+escapeHtml(fr.name || fid)+'</div>' +
+          '<div class="kkHeroOwner">'+escapeHtml(fr.owner || "")+'</div>' +
+        '</div>' +
+        '<div class="kkHeroScore">' +
+          '<div class="kkBig">'+fmtPts(score)+'</div>' +
+          '<div class="kkSmall">live points</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="kkMini">' +
+        '<div class="kkBox"><div class="kkK">Playing</div><div class="kkV">'+playing+'</div></div>' +
+        '<button class="kkBtn" id="kkH2HBtn" type="button" '+(h2hDisabled?'disabled':'')+'>Head to Head</button>' +
+      '</div>' +
+      '<table class="kkTable" aria-label="Lineup">' +
+        '<thead class="kkThead">' +
+          '<tr>' +
+            '<th>SLOT</th>' +
+            '<th>PLAYER</th>' +
+            '<th class="num">PTS</th>' +
+          '</tr>' +
+        '</thead>' +
+        '<tbody>'+tableRowsHtml+'</tbody>' +
+      '</table>' +
+      '<div class="kkMobileList">'+mobileRowsHtml+'</div>';
+
+    var b = targetEl.querySelector("#kkH2HBtn");
+    if(b && !h2hDisabled){
+      b.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        openH2H(fid);
+      };
+    }
+  }
+
+  /* =========================
+     RENDER: TOTAL DETAIL
+     ========================= */
+  function renderTotalDetailInto(targetEl){
+    var fid = state.selectedFranchiseId;
+    var fr = fid ? state.franchiseById[fid] : null;
+
+    if(!fid || !fr){
+      targetEl.innerHTML = '<div style="padding:14px;border:1px dashed rgba(212,175,55,.22);border-radius:14px;background:rgba(0,0,0,.16);color:rgba(242,238,230,.65);">Pick a team in standings.</div>';
+      return;
+    }
+
+    var logoHtml = fr.icon
+      ? '<img src="'+escapeHtml(fr.icon)+'" alt=""/>'
+      : '<span style="color:rgba(212,175,55,.8);font-weight:900;">'+escapeHtml((fr.name||"").slice(0,1).toUpperCase())+'</span>';
+
+    var total = toNum((state.totalByFranchiseId && state.totalByFranchiseId[fid]) || 0, 0);
+    var pos = (state.totalPosByFranchiseId && state.totalPosByFranchiseId[fid]) || { QB:0,RB:0,WR:0,TE:0,K:0,DEF:0,OTHER:0 };
+
+    var order = ["QB","RB","WR","TE","K","DEF","OTHER"];
+    var rowsHtml = order.map(function(k){
+      var v = toNum(pos[k] || 0, 0);
+      if(k === "OTHER" && v < 0.0001) return "";
+      return '' +
+        '<tr>' +
+          '<td class="kkSlot"><div class="kkSlotLine"><span>'+escapeHtml(k)+'</span></div></td>' +
+          '<td><div class="kkPlayer" style="font-weight:700;color:rgba(242,238,230,.75);">Position Total</div></td>' +
+          '<td class="kkNum them">'+fmtPts(v)+'</td>' +
+        '</tr>';
+    }).join("");
+
+    var mobileRowsHtml = order.map(function(k){
+      var v = toNum(pos[k] || 0, 0);
+      if(k === "OTHER" && v < 0.0001) return "";
+      return '' +
+        '<div class="kkMRow" data-ui-normalized="true">' +
+          '<div class="kkMGrid">' +
+            '<div class="kkMLeft">' +
+              '<div class="kkMSlot">'+escapeHtml(k)+'</div>' +
+              '<div class="kkMName" style="font-weight:650;color:rgba(242,238,230,.78);">Position Total</div>' +
+            '</div>' +
+            '<div class="kkMNum">'+fmtPts(v)+'</div>' +
+          '</div>' +
+        '</div>';
+    }).join("");
+
+    targetEl.innerHTML =
+      '<div class="kkHero">' +
+        '<a href="'+franchiseUrl(fid)+'" target="_blank" rel="noopener noreferrer" class="kkLogo">'+logoHtml+'</a>' +
+        '<div class="kkHeroMain">' +
+          '<div class="kkHeroName">'+escapeHtml(fr.name || fid)+'</div>' +
+          '<div class="kkHeroOwner">'+escapeHtml(fr.owner || "")+'</div>' +
+        '</div>' +
+        '<div class="kkHeroScore">' +
+          '<div class="kkBig">'+fmtPts(total)+'</div>' +
+          '<div class="kkSmall">total points</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="kkMini">' +
+        '<div class="kkBox"><div class="kkK">Mode</div><div class="kkV">TOTAL</div></div>' +
+        '<div class="kkBox"><div class="kkK">Note</div><div class="kkV" style="font-size:12px;">Totals from weeklyResults</div></div>' +
+      '</div>' +
+      '<table class="kkTable" aria-label="Position totals">' +
+        '<thead class="kkThead">' +
+          '<tr>' +
+            '<th>POS</th>' +
+            '<th>TYPE</th>' +
+            '<th class="num">PTS</th>' +
+          '</tr>' +
+        '</thead>' +
+        '<tbody>'+rowsHtml+'</tbody>' +
+      '</table>' +
+      '<div class="kkMobileList">'+mobileRowsHtml+'</div>';
+  }
+
+  function renderDetailInto(targetEl){
+    if(state.viewMode === "TOTAL") renderTotalDetailInto(targetEl);
+    else renderLiveDetailInto(targetEl);
+  }
+
+  /* =========================
+     H2H (ME vs SELECTED ONLY)
+     Requirements:
+       - Name format: F. Lastname (applied at load time in buildSlotsForFranchise)
+       - Always show player names (API handles upstream control)
+       - Green dot only if playing
+   ========================= */
+  function deltaClass(d){
+    if(d > 0.005) return "pos";
+    if(d < -0.005) return "neg";
+    return "zero";
+  }
+
+  function makeBlankSlots(){
+    return [
+      {key:"QB",label:"QB",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"RB1",label:"RB1",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"RB2",label:"RB2",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"WR1",label:"WR1",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"WR2",label:"WR2",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"FLEX",label:"FLEX",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"TE",label:"TE",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"K",label:"K",playerName:"—",team:"",points:0,live:false,pos:""},
+      {key:"DEF",label:"DEF",playerName:"—",team:"",points:0,live:false,pos:""}
+    ];
+  }
+
+  function byKey(arr){
+    var m = {};
+    for(var i=0;i<arr.length;i++) m[arr[i].key] = arr[i];
+    return m;
+  }
+
+  function teamLogoHtml(fr){
+    if(fr.icon) return '<img src="'+escapeHtml(fr.icon)+'" alt=""/>';
+    return '<span style="color:rgba(212,175,55,.85);font-weight:950;">'+escapeHtml((fr.name||"").slice(0,1).toUpperCase())+'</span>';
+  }
+
+  function renderH2HCompare(selectedId, meId){
+    var aId = meId;        // LEFT = ME
+    var bId = selectedId;  // RIGHT = SELECTED
+
+    var aFr = state.franchiseById[aId] || { name:aId, owner:"", icon:"" };
+    var bFr = state.franchiseById[bId] || { name:bId, owner:"", icon:"" };
+
+    elH2HTitle.textContent = "Head to Head — " + (aFr.name || aId) + " vs " + (bFr.name || bId);
+
+    var aLive = state.liveByFranchiseId[aId] || { score:0 };
+    var bLive = state.liveByFranchiseId[bId] || { score:0 };
+
+    var aSlots = buildSlotsForFranchise(aId);
+    var bSlots = buildSlotsForFranchise(bId);
+    if(!aSlots.length) aSlots = makeBlankSlots();
+    if(!bSlots.length) bSlots = makeBlankSlots();
+
+    var aMap = byKey(aSlots);
+    var bMap = byKey(bSlots);
+
+    var slotOrder = ["QB","RB1","RB2","WR1","WR2","FLEX","TE","K","DEF"];
+    var slotLabels = {};
+    aSlots.forEach(function(s){ slotLabels[s.key] = s.label; });
+    bSlots.forEach(function(s){ if(!slotLabels[s.key]) slotLabels[s.key] = s.label; });
+
+    var summaryHtml =
+      '<div class="kkH2HSummary">' +
+        '<div class="kkH2HTeam left">' +
+          '<div class="kkH2HMiniLogo">'+teamLogoHtml(aFr)+'</div>' +
+          '<div class="kkH2HName">'+escapeHtml(aFr.name || aId)+'</div>' +
+          '<div class="kkH2HSub">'+escapeHtml(aFr.owner || "")+'</div>' +
+        '</div>' +
+        '<div class="kkH2HVersus">' +
+          '<div class="kkH2HScoreLine">' +
+            '<div class="kkH2HScore">'+fmtPts(toNum(aLive.score,0))+'</div>' +
+            '<div class="kkH2HVsLabel">VS</div>' +
+            '<div class="kkH2HScore">'+fmtPts(toNum(bLive.score,0))+'</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="kkH2HTeam right">' +
+          '<div class="kkH2HMiniLogo">'+teamLogoHtml(bFr)+'</div>' +
+          '<div class="kkH2HName">'+escapeHtml(bFr.name || bId)+'</div>' +
+          '<div class="kkH2HSub">'+escapeHtml(bFr.owner || "")+'</div>' +
+        '</div>' +
+      '</div>';
+
+    var hdr =
+      '<div class="kkH2HGrid">' +
+        '<div class="kkH2HCompact">' +
+          '<div class="kkH2HCompactHdr">' +
+            '<div>ME</div>' +
+            '<div class="cMid">PTS</div>' +
+            '<div class="cMid">SLOT</div>' +
+            '<div class="cMid">PTS</div>' +
+            '<div class="cR">SELECTED</div>' +
+          '</div>';
+
+    var rows = slotOrder.map(function(k){
+      var a = aMap[k] || { points:0, playerName:"—", team:"", live:false };
+      var b = bMap[k] || { points:0, playerName:"—", team:"", live:false };
+
+      // ME: always show name (already formatted by buildSlotsForFranchise)
+      var aLine = escapeHtml(a.playerName || "—");
+
+      // SELECTED: show player name (API already handles not showing players who haven't played)
+      var bLine = escapeHtml(b.playerName || "—");
+
+      var d = toNum(a.points,0) - toNum(b.points,0);
+      var dCls = deltaClass(d);
+
+      var dotA = a.live ? 'on' : '';
+      var dotB = b.live ? 'on' : ''; // green ONLY if playing
+
+      return '' +
+        '<div class="kkH2HCompactRow">' +
+          '<div class="kkH2HCell">' +
+            '<span class="kkDot '+dotA+'"></span>' +
+            '<div style="min-width:0;">' +
+              '<div class="kkH2HNameLine">'+aLine+'</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="kkH2HPts">'+fmtPts(toNum(a.points,0))+'</div>' +
+          '<div class="kkSlotMid">'+escapeHtml(slotLabels[k] || k)+'</div>' +
+          '<div class="kkH2HPts">'+fmtPts(toNum(b.points,0))+'</div>' +
+          '<div class="kkH2HCell right">' +
+            '<div style="min-width:0;">' +
+              '<div class="kkH2HNameLine">'+bLine+'</div>' +
+            '</div>' +
+            '<span class="kkDot '+dotB+'"></span>' +
+          '</div>' +
+        '</div>';
+    }).join("");
+
+    var end =
+        '</div>' +
+      '</div>';
+
+    elH2HBody.innerHTML = summaryHtml + hdr + rows + end;
+  }
+
+  function openH2H(selectedId){
+    if(!elH2HModal) return;
+    elH2HModal.style.display = "block";
+    renderH2HCompare(selectedId, VIEWER_FRANCHISE_ID);
+  }
+  function closeH2H(){
+    if(!elH2HModal) return;
+    elH2HModal.style.display = "none";
+  }
+  if(elH2HCloseBtn) elH2HCloseBtn.onclick = function(){ closeH2H(); };
+  if(elH2HModal){
+    elH2HModal.addEventListener("click", function(e){
+      if(e.target === elH2HModal) closeH2H();
+    });
+  }
+
+  /* =========================
+     DRAWER behavior (mobile)
+     ========================= */
+  var hiddenLeagueNodes = [];
+  function setLeagueTabsHidden(hidden){
+    try{
+      if(hidden){
+        hiddenLeagueNodes = [];
+        var candidates = [];
+        candidates = candidates.concat([].slice.call(document.querySelectorAll("#league_tabs, .leagueTabs, .league-tabs, .league_tab, .leagueTabsContainer")));
+        candidates = candidates.concat([].slice.call(document.querySelectorAll("[id*='league'][id*='tab'], [class*='league'][class*='tab']")));
+        var seen = {};
+        candidates.forEach(function(el){
+          if(!el || !el.style) return;
+          var key = el.tagName + "|" + (el.id||"") + "|" + (el.className||"");
+          if(seen[key]) return;
+          seen[key] = true;
+          hiddenLeagueNodes.push({ el: el, prev: el.style.display });
+          el.style.display = "none";
+        });
+      } else {
+        hiddenLeagueNodes.forEach(function(x){
+          if(x && x.el && x.el.style) x.el.style.display = x.prev || "";
+        });
+        hiddenLeagueNodes = [];
+      }
+    } catch(e){}
+  }
+
+  function showDrawer(on){
+    if(!elDrawer) return;
+    if(on){
+      setLeagueTabsHidden(true);
+      elDrawer.style.display = "block";
+      elDrawerTitle.textContent = (state.viewMode === "TOTAL") ? "VIP Ledger — TOTAL" : "VIP Ledger — LIVE";
+      renderDetailInto(elDrawerDetail);
+    } else {
+      elDrawer.style.display = "none";
+      setLeagueTabsHidden(false);
+    }
+  }
+
+  if(elCloseBtn) elCloseBtn.onclick = function(){ showDrawer(false); };
+  if(elDrawer){
+    elDrawer.addEventListener("click", function(e){
+      if(e.target === elDrawer) showDrawer(false);
+    });
+  }
+
+  /* =========================
+     VIEW toggle
+     ========================= */
+  function setViewMode(mode){
+    state.viewMode = (mode === "TOTAL") ? "TOTAL" : "LIVE";
+    if(elViewToggle){
+      elViewToggle.setAttribute("data-value", (state.viewMode === "TOTAL") ? "1" : "0");
+    }
+    elRightModePill.textContent = (state.viewMode === "TOTAL") ? "TOTAL DETAIL" : "LIVE DETAIL";
+    elDrawerTitle.textContent = (state.viewMode === "TOTAL") ? "VIP Ledger — TOTAL" : "VIP Ledger — LIVE";
+
+    if(state.viewMode === "TOTAL"){
+      elStatusPill.textContent = "Totals…";
+      loadTotals(true).then(render).catch(render);
+    } else {
+      elStatusPill.textContent = state.liveWeek ? ("Live W" + state.liveWeek) : "Live…";
+      // Ensure totals are available for interim ranking
+      loadTotals(false).catch(function(){});
+      render();
+    }
+  }
+
+  if(elViewToggle){
+    var vBtns = elViewToggle.querySelectorAll(".kkToggleBtn");
+    for(var vb=0; vb<vBtns.length; vb++){
+      vBtns[vb].onclick = function(){
+        var idx = this.getAttribute("data-idx");
+        setViewMode(idx === "1" ? "TOTAL" : "LIVE");
+      };
+    }
+  }
+
+  /* =========================
+     MAIN render
+     ========================= */
+  function render(){
+    var rows = buildLeaderboardRows();
+
+    if(state.selectedFranchiseId && !rows.some(function(r){ return r.id === state.selectedFranchiseId; })){
+      state.selectedFranchiseId = rows.length ? rows[0].id : null;
+    }
+
+    renderLeaderboard(rows);
+
+    if(elDetail) renderDetailInto(elDetail);
+
+    if(isMobile() && elDrawer && elDrawer.style.display === "block"){
+      renderDetailInto(elDrawerDetail);
+    }
+  }
+
+  /* =========================
+     BOOT
+     ========================= */
+  function boot(){
+    elStatusPill.textContent = "Loading…";
+    elDetail.innerHTML = '<div style="padding:14px;border:1px dashed rgba(212,175,55,.22);border-radius:14px;background:rgba(0,0,0,.16);color:rgba(242,238,230,.65);">Loading league data…</div>';
+
+    setViewMode("LIVE");
+
+    loadLeague().then(function(){
+      render();
+
+      // Load players and totals in background (totals also needed for interim ranking)
+      loadPlayers().catch(function(){});
+      loadTotals(true).catch(function(){});
+
+      // First live poll
+      pollLive().then(function(){
+        render();
+
+        setInterval(function(){
+          pollLive().then(function(){
+            if(state.viewMode === "TOTAL"){
+              loadTotals(false).then(render).catch(render);
+            } else {
+              // refresh totals occasionally so interim ranking stays true
+              loadTotals(false).catch(function(){});
+              render();
+            }
+          }).catch(function(){
+            // status pill set in pollLive catch
+          });
+        }, POLL_MS);
+
+      }).catch(function(){
+        elStatusPill.textContent = "Error";
+        elDetail.innerHTML = '<div style="padding:14px;border:1px dashed rgba(212,175,55,.22);border-radius:14px;background:rgba(0,0,0,.16);color:rgba(242,238,230,.65);">Couldn’t load live scoring. Check host/year/league/APIKEY.</div>';
+      });
+
+    }).catch(function(){
+      elStatusPill.textContent = "Error";
+      elDetail.innerHTML = '<div style="padding:14px;border:1px dashed rgba(212,175,55,.22);border-radius:14px;background:rgba(0,0,0,.16);color:rgba(242,238,230,.65);">Couldn’t load league/franchises. Check host/year/league/APIKEY.</div>';
+    });
+
+    window.addEventListener("resize", function(){
+      if(!isMobile()) showDrawer(false);
+    });
+  }
+
+  boot();
+})();
+</script>
