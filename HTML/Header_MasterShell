@@ -1,0 +1,745 @@
+<!-- AFL MASTER HEADER SHELL — Unified Header + Shared Runtime -->
+<!-- Replaces Header_Logo + Header_Welcome_Scorecard -->
+<style>
+  /* ===== AFL HEADER SHELL ===== */
+  .afl-header-shell {
+    margin: 0 0 12px 0;
+  }
+
+  .afl-welcome-panel {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+
+    background:
+      radial-gradient(900px 240px at 20% 10%, rgba(255,255,255,.07), transparent 60%),
+      linear-gradient(180deg, rgba(22,18,16,.92) 0%, rgba(8,8,10,.90) 100%);
+
+    border-radius: 18px;
+    border: 1px solid rgba(200,162,74,.38);
+
+    box-shadow:
+      0 14px 34px rgba(0,0,0,.62),
+      inset 0 1px 0 rgba(255,255,255,.06),
+      inset 0 0 0 1px rgba(0,0,0,.35);
+
+    position: relative;
+    overflow: hidden;
+  }
+
+  .afl-welcome-panel::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(224,194,122,.9), transparent);
+    opacity: .55;
+  }
+
+  /* ===== LOGO AREA ===== */
+  .afl-logo-area {
+    flex: 0 0 auto;
+  }
+
+  .afl-armchair-wrap {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    border-radius: 999px;
+    padding: 6px;
+
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.22), transparent 45%),
+      linear-gradient(180deg, rgba(200,162,74,.25) 0%, rgba(90,15,20,.25) 100%),
+      rgba(0,0,0,.45);
+
+    border: 1px solid rgba(224,194,122,.55);
+    box-shadow:
+      0 10px 22px rgba(0,0,0,.55),
+      inset 0 1px 0 rgba(255,255,255,.10);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Top Franchise Overlay - positioned in center of logo */
+  /* Exact position can be refined with mockup */
+  .afl-top-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid rgba(212,175,55,.60);
+    background: rgba(0,0,0,.45);
+    box-shadow:
+      0 2px 10px rgba(0,0,0,.55),
+      0 0 8px rgba(212,175,55,.22);
+    display: none;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .afl-top-overlay.active { display: block; }
+  .afl-top-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ===== WELCOME TEXT ===== */
+  .afl-welcome-area {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: 112px;
+    position: relative;
+  }
+
+  .afl-welcome-title {
+    margin: 0 0 4px 0;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: .25px;
+    color: #E9E3D4;
+    text-shadow: 0 1px 0 rgba(0,0,0,.65);
+  }
+
+  .afl-welcome-tagline {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(233,227,212,.78);
+  }
+
+  .afl-welcome-sub {
+    margin: 6px 0 0 0;
+    font-size: 12px;
+    color: rgba(233,227,212,.88);
+  }
+
+  /* ===== SCORECARD ===== */
+  .afl-scorecard {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+
+    width: 92px;
+    padding: 9px 10px;
+    border-radius: 12px;
+
+    background:
+      radial-gradient(140px 80px at 20% 25%, rgba(255,255,255,.10), transparent 62%),
+      linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.30));
+
+    border: 1px solid rgba(224,194,122,.55);
+
+    box-shadow:
+      0 12px 26px rgba(0,0,0,.58),
+      inset 0 1px 0 rgba(255,255,255,.08);
+
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .afl-scorecard:hover {
+    border-color: rgba(224,194,122,.82);
+    box-shadow:
+      0 16px 30px rgba(0,0,0,.62),
+      inset 0 1px 0 rgba(255,255,255,.10);
+  }
+
+  .afl-score-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    line-height: 1;
+  }
+
+  .afl-score-row + .afl-score-row { margin-top: 6px; }
+
+  .afl-score-kicker {
+    font-size: 9px;
+    letter-spacing: .20em;
+    text-transform: uppercase;
+    color: rgba(224,194,122,.92);
+  }
+
+  .afl-rank-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .afl-score-rank {
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: .3px;
+    color: #E9E3D4;
+    text-shadow: 0 1px 0 rgba(0,0,0,.65);
+  }
+
+  .afl-score-pts {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: .2px;
+    color: rgba(233,227,212,.96);
+    text-shadow: 0 1px 0 rgba(0,0,0,.65);
+  }
+
+  .afl-score-divider {
+    height: 1px;
+    margin: 7px 0 6px 0;
+    background: linear-gradient(90deg, transparent, rgba(224,194,122,.35), transparent);
+    opacity: .9;
+  }
+
+  /* Rank arrow */
+  .afl-rank-arrow {
+    font-size: 10px;
+    line-height: 1;
+    position: relative;
+    top: -1px;
+    opacity: .95;
+  }
+  .afl-rank-up { color: #3fb950; }
+  .afl-rank-down { color: #f85149; }
+  .afl-rank-flat { color: rgba(233,227,212,.45); }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 520px) {
+    .afl-welcome-panel {
+      padding: 10px 12px;
+      gap: 10px;
+      border-radius: 14px;
+    }
+
+    .afl-armchair-wrap {
+      width: 44px;
+      height: 44px;
+      padding: 5px;
+    }
+
+    .afl-top-overlay {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+
+    .afl-welcome-title {
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    .afl-welcome-tagline {
+      font-size: 10px;
+      letter-spacing: .14em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .afl-welcome-sub {
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .afl-welcome-area {
+      padding-right: 100px;
+    }
+
+    .afl-scorecard {
+      width: 86px;
+      padding: 8px 9px;
+      border-radius: 11px;
+    }
+
+    .afl-score-rank { font-size: 17px; }
+    .afl-score-pts { font-size: 12px; }
+    .afl-rank-arrow { font-size: 9px; }
+  }
+</style>
+
+<!-- ===== HTML STRUCTURE ===== -->
+<div id="afl-header" class="afl-header-shell">
+  <div class="afl-welcome-panel">
+
+    <!-- Logo Area with Top Franchise Overlay -->
+    <div id="afl-logo-area" class="afl-logo-area">
+      <div class="afl-armchair-wrap">
+        <module name="MY_LOGO"/>
+        <div id="afl-top-franchise-overlay" class="afl-top-overlay" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Welcome Scorecard Area -->
+    <div id="afl-welcome-area" class="afl-welcome-area">
+      <div class="afl-welcome-text">
+        <div class="afl-welcome-title">
+          Welcome, <span id="afl-franchise-name" style="color:#E0C27A;">%FRANCHISENAME%</span>
+        </div>
+        <div class="afl-welcome-tagline">HIGH STAKES. ONE BULLET. PLAY IT ONCE.</div>
+        <div class="afl-welcome-sub">Armchair 2026 is underway.</div>
+      </div>
+
+      <!-- Rank/Live Scorecard -->
+      <a id="afl-scorecard" class="afl-scorecard" href="#" title="Open Live Scoring" aria-label="Open Live Scoring">
+        <div class="afl-score-row">
+          <span class="afl-score-kicker">RANK</span>
+          <span class="afl-rank-value">
+            <span id="afl-rank-arrow" class="afl-rank-arrow"></span>
+            <span id="afl-rank-num" class="afl-score-rank">--</span>
+          </span>
+        </div>
+        <div class="afl-score-divider"></div>
+        <div class="afl-score-row">
+          <span class="afl-score-kicker">LIVE</span>
+          <span id="afl-live-pts" class="afl-score-pts">--</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== AFL SHARED RUNTIME ===== -->
+<script>
+(function() {
+  "use strict";
+
+  // ===== INIT GUARD =====
+  if (window.AFL && window.AFL.__headerInit) return;
+
+  // ===== CREATE NAMESPACE =====
+  window.AFL = window.AFL || {};
+  AFL.__headerInit = true;
+
+  // ===== AFL.cfg =====
+  AFL.cfg = {
+    host: "%HOST%" || "www46.myfantasyleague.com",
+    year: "%YEAR%" || "2025",
+    leagueId: "%LEAGUEID%" || "41802",
+    franchiseId: "%FRANCHISEID%" || "0001",
+    apiKey: "bhJu2MCQvuWqx0CmPFjJYTAeFbox",
+    cacheTtlMs: 120000,
+    apiHost: "api.myfantasyleague.com"
+  };
+
+  // ===== AFL.cache =====
+  AFL.cache = {
+    _mem: {},
+    _ts: {},
+
+    get: function(key) {
+      if (!this._mem[key]) return null;
+      if (Date.now() > this._ts[key]) {
+        delete this._mem[key];
+        delete this._ts[key];
+        return null;
+      }
+      return this._mem[key];
+    },
+
+    set: function(key, value, ttl) {
+      ttl = ttl || AFL.cfg.cacheTtlMs;
+      this._mem[key] = value;
+      this._ts[key] = Date.now() + ttl;
+    },
+
+    clear: function(key) {
+      if (key) {
+        delete this._mem[key];
+        delete this._ts[key];
+      } else {
+        this._mem = {};
+        this._ts = {};
+      }
+    }
+  };
+
+  // ===== AFL.api =====
+  AFL.api = {
+    mflUrl: function(type, params) {
+      params = params || {};
+      var base = "https://" + AFL.cfg.host + "/" + AFL.cfg.year + "/export";
+      var u = new URL(base);
+      u.searchParams.set("TYPE", type);
+      u.searchParams.set("L", AFL.cfg.leagueId);
+      u.searchParams.set("JSON", "0");
+      if (AFL.cfg.apiKey) u.searchParams.set("APIKEY", AFL.cfg.apiKey);
+      for (var k in params) {
+        if (params.hasOwnProperty(k)) {
+          if (params[k] === undefined || params[k] === null || params[k] === "__OMIT__") continue;
+          u.searchParams.set(k, String(params[k]));
+        }
+      }
+      return u.toString();
+    },
+
+    nflUrl: function(type, params) {
+      params = params || {};
+      var base = "https://" + AFL.cfg.apiHost + "/" + AFL.cfg.year + "/export";
+      var u = new URL(base);
+      u.searchParams.set("TYPE", type);
+      u.searchParams.set("JSON", "0");
+      for (var k in params) {
+        if (params.hasOwnProperty(k)) {
+          if (params[k] === undefined || params[k] === null) continue;
+          u.searchParams.set(k, String(params[k]));
+        }
+      }
+      return u.toString();
+    },
+
+    mflStatusUrl: function() {
+      return "https://" + AFL.cfg.apiHost + "/fflnetdynamic" + AFL.cfg.year + "/mfl_status.xml";
+    },
+
+    fetch: function(url, opts) {
+      opts = opts || {};
+      var cacheKey = url;
+
+      // Check cache first (unless explicitly bypassed)
+      if (!opts.noCache) {
+        var cached = AFL.cache.get(cacheKey);
+        if (cached) return Promise.resolve(cached);
+      }
+
+      return fetch(url, { cache: "no-store" })
+        .then(function(res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.text();
+        })
+        .then(function(text) {
+          AFL.cache.set(cacheKey, text, opts.ttl || AFL.cfg.cacheTtlMs);
+          return text;
+        });
+    },
+
+    fetchXml: function(url, opts) {
+      return AFL.api.fetch(url, opts).then(function(text) {
+        var doc = new DOMParser().parseFromString(text, "text/xml");
+        if (doc.querySelector("parsererror")) throw new Error("XML parse error");
+        return doc;
+      });
+    }
+  };
+
+  // ===== AFL.state =====
+  AFL.state = {
+    currentWeek: null,
+    liveWeek: null,
+    topFranchise: null,
+    franchiseById: {},
+    playerById: {},
+    ytdByFranchiseId: {},
+    liveByFranchiseId: {}
+  };
+
+  // ===== AFL.modules =====
+  AFL.modules = {};
+
+  // ===== WELCOME SCORECARD MODULE =====
+  AFL.modules.welcomeScorecard = {
+    _lastRank: null,
+    _lastPts: null,
+    _arrowTimer: null,
+    ARROW_HOLD_MS: 60000,
+
+    init: function() {
+      try {
+        var scorecard = document.getElementById("afl-scorecard");
+        if (scorecard) {
+          scorecard.href = "https://" + AFL.cfg.host + "/" + AFL.cfg.year +
+                           "/ajax_ls?L=" + AFL.cfg.leagueId;
+        }
+
+        this.poll();
+        var self = this;
+        setInterval(function() { self.poll(); }, 3000);
+      } catch (e) {
+        console.error("[AFL] welcomeScorecard.init error:", e);
+      }
+    },
+
+    poll: function() {
+      var self = this;
+      AFL.api.fetchXml(AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" }), { ttl: 5000 })
+        .then(function(doc) { self.render(doc); })
+        .catch(function() {});
+    },
+
+    render: function(doc) {
+      try {
+        var lsEl = doc.querySelector("liveScoring");
+        if (lsEl) {
+          AFL.state.liveWeek = lsEl.getAttribute("week") || null;
+        }
+
+        var franchises = doc.querySelectorAll("franchise");
+        var entries = [];
+
+        franchises.forEach(function(f) {
+          var id = f.getAttribute("id");
+          var score = parseFloat(f.getAttribute("score") || "0");
+          if (id) {
+            entries.push({ id: id, score: score });
+            AFL.state.liveByFranchiseId[id] = score;
+          }
+        });
+
+        entries.sort(function(a, b) {
+          if (b.score !== a.score) return b.score - a.score;
+          return a.id.localeCompare(b.id);
+        });
+
+        var myIdx = -1;
+        var myEntry = null;
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].id === AFL.cfg.franchiseId) {
+            myIdx = i;
+            myEntry = entries[i];
+            break;
+          }
+        }
+
+        var myRank = myIdx >= 0 ? (myIdx + 1) : null;
+        this.updateDisplay(myRank, myEntry ? myEntry.score : null);
+
+        AFL.modules.topFranchiseOverlay.render();
+      } catch (e) {
+        console.error("[AFL] welcomeScorecard.render error:", e);
+      }
+    },
+
+    updateDisplay: function(rank, pts) {
+      try {
+        var rankEl = document.getElementById("afl-rank-num");
+        var ptsEl = document.getElementById("afl-live-pts");
+        var arrowEl = document.getElementById("afl-rank-arrow");
+
+        if (ptsEl && pts !== null) {
+          var ptsStr = pts.toFixed(2);
+          if (ptsStr !== this._lastPts) {
+            this._lastPts = ptsStr;
+            ptsEl.textContent = ptsStr;
+          }
+        }
+
+        if (rankEl && rank !== null) {
+          rankEl.textContent = "#" + rank;
+
+          if (arrowEl && this._lastRank !== null) {
+            if (rank < this._lastRank) {
+              this.setArrow(arrowEl, "\u25B2", "afl-rank-up");
+            } else if (rank > this._lastRank) {
+              this.setArrow(arrowEl, "\u25BC", "afl-rank-down");
+            } else {
+              this.setArrow(arrowEl, "\u2013", "afl-rank-flat");
+            }
+          } else if (arrowEl) {
+            arrowEl.textContent = "";
+            arrowEl.className = "afl-rank-arrow";
+          }
+
+          this._lastRank = rank;
+        }
+      } catch (e) {
+        console.error("[AFL] welcomeScorecard.updateDisplay error:", e);
+      }
+    },
+
+    setArrow: function(el, symbol, cls) {
+      el.textContent = symbol;
+      el.className = "afl-rank-arrow " + cls;
+
+      var self = this;
+      if (this._arrowTimer) clearTimeout(this._arrowTimer);
+      this._arrowTimer = setTimeout(function() {
+        el.textContent = "";
+        el.className = "afl-rank-arrow";
+      }, this.ARROW_HOLD_MS);
+    }
+  };
+
+  // ===== TOP FRANCHISE OVERLAY MODULE =====
+  AFL.modules.topFranchiseOverlay = {
+    calculateTopFranchise: function() {
+      try {
+        var ytdByFid = AFL.state.ytdByFranchiseId || {};
+        var liveByFid = AFL.state.liveByFranchiseId || {};
+        var currentWeek = AFL.state.currentWeek;
+        var liveWeek = AFL.state.liveWeek;
+
+        var entries = [];
+        for (var fid in AFL.state.franchiseById) {
+          if (!AFL.state.franchiseById.hasOwnProperty(fid)) continue;
+
+          var ytd = ytdByFid[fid] || 0;
+          var live = (currentWeek === liveWeek) ? (liveByFid[fid] || 0) : 0;
+          var total = ytd + live;
+
+          entries.push({
+            id: fid,
+            ytd: ytd,
+            live: live,
+            total: total
+          });
+        }
+
+        entries.sort(function(a, b) {
+          if (b.total !== a.total) return b.total - a.total;
+          return a.id.localeCompare(b.id);
+        });
+
+        return entries.length > 0 ? entries[0] : null;
+      } catch (e) {
+        console.error("[AFL] topFranchiseOverlay.calculateTopFranchise error:", e);
+        return null;
+      }
+    },
+
+    render: function() {
+      try {
+        var overlay = document.getElementById("afl-top-franchise-overlay");
+        if (!overlay) return;
+
+        var top = this.calculateTopFranchise();
+        if (!top || !top.id) {
+          overlay.classList.remove("active");
+          return;
+        }
+
+        AFL.state.topFranchise = top;
+
+        var franchise = AFL.state.franchiseById[top.id];
+        if (!franchise || !franchise.icon) {
+          overlay.classList.remove("active");
+          return;
+        }
+
+        overlay.innerHTML = '<img src="' + this.escapeAttr(franchise.icon) + '" alt="Top Franchise" onerror="this.parentElement.classList.remove(\'active\')" />';
+        overlay.title = franchise.name + " - " + top.total.toFixed(2) + " pts";
+        overlay.classList.add("active");
+      } catch (e) {
+        console.error("[AFL] topFranchiseOverlay.render error:", e);
+      }
+    },
+
+    escapeAttr: function(s) {
+      return String(s || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+  };
+
+  // ===== DATA LOADERS =====
+  function loadLeague() {
+    return AFL.api.fetchXml(AFL.api.mflUrl("league")).then(function(doc) {
+      doc.querySelectorAll("franchise").forEach(function(f) {
+        var id = f.getAttribute("id");
+        if (id) {
+          AFL.state.franchiseById[id] = {
+            id: id,
+            name: f.getAttribute("name") || id,
+            icon: f.getAttribute("icon") || "",
+            owner: f.getAttribute("owner_name") || f.getAttribute("owner") || ""
+          };
+        }
+      });
+    });
+  }
+
+  function loadYtdTotals() {
+    return AFL.api.fetchXml(AFL.api.mflUrl("weeklyResults", { W: "YTD", MISSING_AS_BYE: "" }))
+      .then(function(doc) {
+        doc.querySelectorAll("franchise").forEach(function(f) {
+          var fid = f.getAttribute("id");
+          var pts = parseFloat(f.getAttribute("score") || f.getAttribute("pf") || "0");
+          if (fid && !isNaN(pts)) {
+            AFL.state.ytdByFranchiseId[fid] = pts;
+          }
+        });
+      })
+      .catch(function(e) {
+        console.warn("[AFL] loadYtdTotals failed:", e.message);
+      });
+  }
+
+  function loadMflStatus() {
+    return AFL.api.fetchXml(AFL.api.mflStatusUrl())
+      .then(function(doc) {
+        var status = doc.querySelector("status");
+        if (status) {
+          AFL.state.currentWeek = status.getAttribute("week") || null;
+        }
+      })
+      .catch(function(e) {
+        console.warn("[AFL] loadMflStatus failed:", e.message);
+      });
+  }
+
+  function loadLiveScoring() {
+    return AFL.api.fetchXml(AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" }))
+      .then(function(doc) {
+        var ls = doc.querySelector("liveScoring");
+        if (ls) {
+          AFL.state.liveWeek = ls.getAttribute("week") || null;
+        }
+
+        doc.querySelectorAll("franchise").forEach(function(f) {
+          var fid = f.getAttribute("id");
+          var score = parseFloat(f.getAttribute("score") || "0");
+          if (fid && !isNaN(score)) {
+            AFL.state.liveByFranchiseId[fid] = score;
+          }
+        });
+      })
+      .catch(function(e) {
+        console.warn("[AFL] loadLiveScoring failed:", e.message);
+      });
+  }
+
+  // ===== MAIN INIT =====
+  function init() {
+    Promise.all([
+      loadLeague(),
+      loadYtdTotals(),
+      loadMflStatus()
+    ])
+    .then(function() {
+      return loadLiveScoring();
+    })
+    .then(function() {
+      AFL.modules.welcomeScorecard.init();
+      AFL.modules.topFranchiseOverlay.render();
+
+      document.dispatchEvent(new CustomEvent("AFL:ready", { detail: AFL }));
+      console.log("[AFL] Header initialized successfully");
+    })
+    .catch(function(e) {
+      console.error("[AFL] Init failed:", e);
+      document.dispatchEvent(new CustomEvent("AFL:ready", { detail: AFL }));
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>

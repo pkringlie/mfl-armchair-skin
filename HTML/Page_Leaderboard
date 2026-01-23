@@ -973,13 +973,48 @@
 
 <script>
 (function(){
-  var HOST = "%HOST%";
-  var YEAR = "%YEAR%";
-  var LEAGUE_ID = "%LEAGUEID%";
-  var VIEWER_FRANCHISE_ID = "%FRANCHISEID%";
+  "use strict";
 
-  // Keep if your weeklyResults needs it inside the embed.
-  var APIKEY = "bhJu2MCQvuWqx0CmPFjJYTAeFbox";
+  // ===== AFL INTEGRATION =====
+  // Check if value is valid (not an unreplaced MFL template variable)
+  function isValidCfgValue(val) {
+    return val && typeof val === "string" && val.indexOf("%") === -1 && val.length > 0;
+  }
+
+  // Only use AFL if it's fully initialized with valid (replaced) values
+  function getConfig() {
+    if (window.AFL && AFL.cfg &&
+        isValidCfgValue(AFL.cfg.host) &&
+        isValidCfgValue(AFL.cfg.year) &&
+        isValidCfgValue(AFL.cfg.leagueId)) {
+      console.log("[Leaderboard] Using AFL config");
+      return {
+        HOST: AFL.cfg.host,
+        YEAR: AFL.cfg.year,
+        LEAGUE_ID: AFL.cfg.leagueId,
+        VIEWER_FRANCHISE_ID: AFL.cfg.franchiseId || "%FRANCHISEID%",
+        APIKEY: AFL.cfg.apiKey || "bhJu2MCQvuWqx0CmPFjJYTAeFbox"
+      };
+    }
+    // Fallback - use MFL template variables directly
+    console.log("[Leaderboard] Using MFL direct config");
+    return {
+      HOST: "%HOST%",
+      YEAR: "%YEAR%",
+      LEAGUE_ID: "%LEAGUEID%",
+      VIEWER_FRANCHISE_ID: "%FRANCHISEID%",
+      APIKEY: "bhJu2MCQvuWqx0CmPFjJYTAeFbox"
+    };
+  }
+
+  var cfg = getConfig();
+  var HOST = cfg.HOST;
+  var YEAR = cfg.YEAR;
+  var LEAGUE_ID = cfg.LEAGUE_ID;
+  var VIEWER_FRANCHISE_ID = cfg.VIEWER_FRANCHISE_ID;
+  var APIKEY = cfg.APIKEY;
+
+  console.log("[Leaderboard] Resolved config:", { HOST: HOST, YEAR: YEAR, LEAGUE_ID: LEAGUE_ID });
 
   var POLL_MS = 20000;
 
@@ -1025,7 +1060,19 @@
     return window.matchMedia && window.matchMedia("(max-width: 520px)").matches;
   }
 
+  // Check if AFL has valid config (reuse validation logic)
+  function aflHasValidConfig() {
+    return window.AFL && AFL.cfg &&
+           isValidCfgValue(AFL.cfg.host) &&
+           isValidCfgValue(AFL.cfg.year) &&
+           isValidCfgValue(AFL.cfg.leagueId);
+  }
+
+  // Use AFL.api.mflUrl only if AFL has valid config, otherwise local implementation
   function mflUrl(type, params){
+    if (aflHasValidConfig() && AFL.api && AFL.api.mflUrl) {
+      return AFL.api.mflUrl(type, params);
+    }
     params = params || {};
     var base = "https://" + HOST + "/" + YEAR + "/export";
     var u = new URL(base);
@@ -1042,7 +1089,12 @@
     return u.toString();
   }
 
-  function fetchText(url){
+  // Use AFL.api.fetch only if AFL has valid config (with caching), otherwise direct fetch
+  function fetchText(url, opts){
+    opts = opts || {};
+    if (aflHasValidConfig() && AFL.api && AFL.api.fetch && !opts.noCache) {
+      return AFL.api.fetch(url, opts);
+    }
     return fetch(url, { cache:"no-store" }).then(function(res){
       if(!res.ok) throw new Error("HTTP " + res.status);
       return res.text();
@@ -1121,8 +1173,30 @@
 
   /* =========================
      LOAD: LEAGUE (stable franchise order)
+     Reuses AFL.state.franchiseById if available
      ========================= */
   function loadLeague(){
+    // Only reuse AFL data if AFL has valid config
+    if (aflHasValidConfig() && AFL.state && AFL.state.franchiseById && Object.keys(AFL.state.franchiseById).length > 0) {
+      console.log("[Leaderboard] Reusing AFL franchise data");
+      var byId = {};
+      var orderIndex = {};
+      var idx = 0;
+      for (var fid in AFL.state.franchiseById) {
+        if (AFL.state.franchiseById.hasOwnProperty(fid)) {
+          byId[fid] = AFL.state.franchiseById[fid];
+          orderIndex[fid] = idx++;
+        }
+      }
+      state.franchiseById = byId;
+      state.franchiseOrderIndex = orderIndex;
+      if(!state.selectedFranchiseId){
+        state.selectedFranchiseId = byId[VIEWER_FRANCHISE_ID] ? VIEWER_FRANCHISE_ID : (Object.keys(byId)[0] || null);
+      }
+      return Promise.resolve();
+    }
+
+    console.log("[Leaderboard] Fetching league data directly");
     return fetchText(mflUrl("league")).then(function(xml){
       var doc = parseXml(xml);
       var franchises = qa(doc, "league > franchises > franchise");

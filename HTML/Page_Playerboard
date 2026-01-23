@@ -526,13 +526,36 @@ window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
 (function(){
   "use strict";
 
-  // ============ CONFIGURATION ============
-  // When served by MFL, these get replaced. For local testing, hardcode values.
-  var HOST = "%HOST%";
-  var YEAR = "%YEAR%";
-  var LEAGUE_ID = "%LEAGUEID%";
-  var VIEWER_FRANCHISE_ID = "%FRANCHISEID%";
-  var APIKEY = "";
+  // ============ AFL INTEGRATION ============
+  // Wait for AFL header to initialize, or use fallback config
+  function getConfig() {
+    if (window.AFL && AFL.cfg) {
+      return {
+        HOST: AFL.cfg.host,
+        YEAR: AFL.cfg.year,
+        LEAGUE_ID: AFL.cfg.leagueId,
+        VIEWER_FRANCHISE_ID: AFL.cfg.franchiseId,
+        APIKEY: AFL.cfg.apiKey || "",
+        API_HOST: AFL.cfg.apiHost || "api.myfantasyleague.com"
+      };
+    }
+    // Fallback if AFL not available
+    return {
+      HOST: "%HOST%",
+      YEAR: "%YEAR%",
+      LEAGUE_ID: "%LEAGUEID%",
+      VIEWER_FRANCHISE_ID: "%FRANCHISEID%",
+      APIKEY: "",
+      API_HOST: "api.myfantasyleague.com"
+    };
+  }
+
+  var cfg = getConfig();
+  var HOST = cfg.HOST;
+  var YEAR = cfg.YEAR;
+  var LEAGUE_ID = cfg.LEAGUE_ID;
+  var VIEWER_FRANCHISE_ID = cfg.VIEWER_FRANCHISE_ID;
+  var APIKEY = cfg.APIKEY;
 
   // Playoff weeks to fetch (NFL playoffs: Wild Card=18, Divisional=19, Conf=20, SB=21)
   var PLAYOFF_WEEKS = [18, 19, 20, 21, 22];
@@ -571,7 +594,11 @@ window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
   // ============ HELPERS ============
   function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 980px)").matches; }
 
+  // Use AFL.api.mflUrl if available, otherwise local implementation
   function mflUrl(type, params){
+    if (window.AFL && AFL.api && AFL.api.mflUrl) {
+      return AFL.api.mflUrl(type, params);
+    }
     params = params || {};
     var base = "https://" + HOST + "/" + YEAR + "/export";
     var qs = "?TYPE=" + encodeURIComponent(type) + "&L=" + encodeURIComponent(LEAGUE_ID) + "&JSON=0";
@@ -582,9 +609,13 @@ window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
 
   // NFL-specific endpoints (no league ID required) - always use api.myfantasyleague.com
   // The HOST variable from MFL is server-specific (e.g., www72) but these endpoints need the api host
-  var API_HOST = "api.myfantasyleague.com";
+  var API_HOST = cfg.API_HOST;
 
+  // Use AFL.api.nflUrl if available
   function nflUrl(type, params){
+    if (window.AFL && AFL.api && AFL.api.nflUrl) {
+      return AFL.api.nflUrl(type, params);
+    }
     params = params || {};
     var base = "https://" + API_HOST + "/" + YEAR + "/export";
     var qs = "?TYPE=" + encodeURIComponent(type) + "&JSON=0";
@@ -594,10 +625,18 @@ window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
 
   // MFL status endpoint (e.g., https://api.myfantasyleague.com/fflnetdynamic2025/mfl_status.xml)
   function mflStatusUrl(){
+    if (window.AFL && AFL.api && AFL.api.mflStatusUrl) {
+      return AFL.api.mflStatusUrl();
+    }
     return "https://" + API_HOST + "/fflnetdynamic" + YEAR + "/mfl_status.xml";
   }
 
-  function fetchXml(url){
+  // Use AFL.api.fetchXml if available (with caching), otherwise direct fetch
+  function fetchXml(url, opts){
+    opts = opts || {};
+    if (window.AFL && AFL.api && AFL.api.fetchXml && !opts.noCache) {
+      return AFL.api.fetchXml(url, opts);
+    }
     return fetch(url, { cache: "no-store" })
       .then(function(r){
         if(!r.ok) throw new Error("HTTP " + r.status);
@@ -627,8 +666,20 @@ window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
 
   // ============ LOADERS ============
 
-  // Load franchise info
+  // Load franchise info - reuses AFL.state.franchiseById if available
   function loadLeague(){
+    // If AFL already loaded franchise data, reuse it
+    if (window.AFL && AFL.state && AFL.state.franchiseById && Object.keys(AFL.state.franchiseById).length > 0) {
+      state.franchiseById = {};
+      for (var fid in AFL.state.franchiseById) {
+        if (AFL.state.franchiseById.hasOwnProperty(fid)) {
+          state.franchiseById[fid] = AFL.state.franchiseById[fid];
+        }
+      }
+      console.log("[PB] Reused " + Object.keys(state.franchiseById).length + " franchises from AFL");
+      return Promise.resolve();
+    }
+
     return fetchXml(mflUrl("league")).then(function(doc){
       state.franchiseById = {};
       qa(doc, "franchise").forEach(function(f){
