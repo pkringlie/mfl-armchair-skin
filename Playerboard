@@ -1,0 +1,1120 @@
+<!-- KING KRING | PLAYERBOARD (YTD) — SIMPLE FILTERS: HIDE OUT + ONLY AVAILABLE (MFL-SAFE BLOCK) -->
+<style>
+  :root{
+    --bg0:#060504;
+    --bg1:#0c0a07;
+    --card:#120f0b;
+    --card2:#15120d;
+    --line:rgba(212,175,55,.18);
+    --gold:#d4af37;
+    --text:#f2eee6;
+    --muted:rgba(242,238,230,.68);
+    --shadow: 0 20px 70px rgba(0,0,0,.55);
+    --radius: 18px;
+    --ox:#5A0F14;
+    --ok:#3fb950;
+    --bad:#f85149;
+  }
+  *{box-sizing:border-box}
+
+  .pbRoot{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 900px at 20% -10%, rgba(212,175,55,.12), transparent 60%),
+      radial-gradient(900px 700px at 120% 20%, rgba(212,175,55,.08), transparent 50%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    border-radius: 20px;
+    border: 1px solid rgba(212,175,55,.16);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .pbWrap{ max-width: 1250px; margin: 0 auto; padding: 12px; }
+  .pbShell{ display:grid; grid-template-columns: 1.05fr .95fr; gap: 14px; }
+
+  .pbPanel{
+    background: linear-gradient(180deg, rgba(255,255,255,.04), transparent 45%),
+                linear-gradient(180deg, var(--card), var(--card2));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    position:relative;
+  }
+  .pbPanel:before{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    background: radial-gradient(800px 240px at 30% 0%, rgba(212,175,55,.10), transparent 60%);
+    opacity:.9;
+  }
+
+  .pbHdr{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 12px 10px 12px;
+    border-bottom: 1px solid rgba(212,175,55,.12);
+    gap:10px;
+  }
+  .pbHdrLeft{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+    flex: 1 1 auto;
+    flex-wrap:wrap;
+  }
+  .pbTitle{
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size: 12px;
+    font-weight: 950;
+    color: rgba(212,175,55,.92);
+    margin-right:6px;
+    white-space:nowrap;
+  }
+
+  .pbSearch{
+    flex: 1 1 320px;
+    min-width: 220px;
+    border: 1px solid rgba(212,175,55,.25);
+    background: linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.18));
+    color: rgba(242,238,230,.95);
+    border-radius: 999px;
+    padding: 10px 16px;
+    outline: none;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.03);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .pbSearch:focus{
+    border-color: rgba(212,175,55,.45);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,.25), 0 0 0 3px rgba(212,175,55,.12);
+  }
+  .pbSearch::placeholder{ color: rgba(242,238,230,.42); font-weight: 400; }
+
+  .pbPill{
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(0,0,0,.25);
+    padding: 6px 10px;
+    border-radius: 999px;
+    white-space:nowrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .pbPill strong{ color: rgba(242,238,230,.92); font-weight:950; }
+
+  /* 3-Level Toggle (ALL / ALIVE / AVAILABLE) */
+  .pbToggle{
+    position:relative;
+    border:1px solid rgba(212,175,55,.20);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.22));
+    border-radius: 999px;
+    padding: 4px;
+    height: 40px;
+    width: 240px;
+    overflow:hidden;
+    -webkit-tap-highlight-color: transparent;
+    flex: 0 0 auto;
+  }
+  .pbToggle::before{
+    content:"";
+    position:absolute;
+    top:4px; bottom:4px;
+    left:4px;
+    width: calc(33.333% - 3px);
+    border-radius: 999px;
+    background: rgba(90,15,20,.92);
+    box-shadow: 0 10px 24px rgba(0,0,0,.35);
+    transform: translateX(0%);
+    transition: transform .18s ease;
+    pointer-events: none;
+  }
+  .pbToggle[data-value="1"]::before{ transform: translateX(100%); }
+  .pbToggle[data-value="2"]::before{ transform: translateX(200%); }
+  .pbToggleRow{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height:100%;
+  }
+  .pbToggleBtn{
+    border:0 !important;
+    background: transparent !important;
+    cursor:pointer;
+    font-weight: 900;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-size: 10px;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 999px;
+    color: rgba(242,238,230,.62);
+    user-select:none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: color .18s ease;
+  }
+  .pbToggle[data-value="0"] .pbToggleBtn[data-idx="0"]{ color: rgba(242,238,230,.95); }
+  .pbToggle[data-value="1"] .pbToggleBtn[data-idx="1"]{ color: rgba(242,238,230,.95); }
+  .pbToggle[data-value="2"] .pbToggleBtn[data-idx="2"]{ color: rgba(242,238,230,.95); }
+
+  /* List */
+  .pbList{
+    position:relative;
+    padding: 10px;
+    max-height: 78vh;
+    overflow:auto;
+  }
+  .pbRow{
+    display:grid;
+    grid-template-columns: 50px 1fr 112px;
+    gap: 10px;
+    align-items:center;
+    padding: 10px 10px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    cursor:pointer;
+    user-select:none;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  }
+  .pbRow:hover{
+    transform: translateY(-1px);
+    background: rgba(212,175,55,.06);
+    border-color: rgba(212,175,55,.18);
+  }
+  .pbRow.pbActive{
+    background: rgba(212,175,55,.10);
+    border-color: rgba(212,175,55,.28);
+    box-shadow: 0 0 0 1px rgba(212,175,55,.10) inset;
+  }
+  .pbRankTile{
+    width: 46px; height: 46px;
+    border-radius: 10px;
+    border: 1px solid rgba(212,175,55,.22);
+    background: rgba(0,0,0,.22);
+    display:grid;
+    place-items:center;
+    font-weight: 950;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pbRankTile .pbRankBg{
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    opacity: 0.35;
+    z-index: 0;
+  }
+  .pbRankTile .pbRankNum{
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 3px rgba(0,0,0,.7);
+  }
+
+  .pbText{ min-width:0; }
+  .pbName{
+    font-weight: 900;
+    letter-spacing:.01em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+  .pbMeta{
+    margin-top:4px;
+    font-size: 12px;
+    color: rgba(242,238,230,.62);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.12;
+  }
+
+  .pbAvail{
+    margin-top:6px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid rgba(212,175,55,.16);
+    background: rgba(0,0,0,.14);
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    color: rgba(242,238,230,.75);
+    white-space:nowrap;
+  }
+  .pbDot{
+    width:7px; height:7px; border-radius:999px;
+    background: transparent;
+    border:1px solid rgba(242,238,230,.18);
+  }
+  .pbDot.ok{ background: rgba(63,185,80,.92); border-color: rgba(63,185,80,.92); box-shadow:0 0 0 3px rgba(63,185,80,.10); }
+  .pbDot.bad{ background: rgba(248,81,73,.92); border-color: rgba(248,81,73,.92); box-shadow:0 0 0 3px rgba(248,81,73,.10); }
+
+  .pbScoreCluster{ text-align:right; min-width:0; }
+  .pbPts{
+    font-variant-numeric: tabular-nums;
+    font-size: 16px;
+    font-weight: 950;
+    color: rgba(242,238,230,.96);
+    white-space:nowrap;
+    line-height:1;
+  }
+  .pbPtsLabel{
+    margin-top:4px;
+    font-size:11px;
+    color: rgba(242,238,230,.55);
+    white-space:nowrap;
+  }
+
+  /* Detail */
+  .pbDetail{
+    position:relative;
+    padding: 12px;
+    max-height: 78vh;
+    overflow:auto;
+  }
+  .pbHero{
+    display:flex;
+    gap: 12px;
+    align-items:center;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(212,175,55,.18);
+    background: rgba(0,0,0,.20);
+  }
+  .pbIcon{
+    width: 72px; height: 72px;
+    border-radius: 16px;
+    border: 1px solid rgba(212,175,55,.20);
+    background: rgba(0,0,0,.26);
+    display:grid; place-items:center;
+    overflow:hidden;
+    flex: 0 0 auto;
+    font-weight:950;
+    color: rgba(212,175,55,.92);
+  }
+  .pbIcon img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .pbHeroMain{ min-width:0; }
+  .pbHeroName{
+    margin:0;
+    font-size: 16px;
+    font-weight: 950;
+    letter-spacing:.02em;
+    color: rgba(212,175,55,.92);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+  .pbHeroSub{
+    margin-top:4px;
+    font-size: 12px;
+    color: rgba(242,238,230,.72);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    line-height:1.12;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .pbHeroScore{
+    margin-left:auto;
+    text-align:right;
+    flex:0 0 auto;
+  }
+  .pbHeroScore .big{
+    font-size: 26px;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    line-height:1;
+  }
+  .pbHeroScore .small{
+    font-size: 11px;
+    color: var(--muted);
+    margin-top:3px;
+  }
+
+  .pbSectionTitle{
+    margin: 12px 2px 8px 2px;
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    color: rgba(212,175,55,.92);
+  }
+
+  .pbTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border-radius: 14px;
+    border: 1px solid rgba(212,175,55,.14);
+  }
+  .pbThead th{
+    text-align:left;
+    font-size: 11px;
+    color: rgba(242,238,230,.60);
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    padding: 9px 10px;
+    background: rgba(0,0,0,.18);
+    border-bottom: 1px solid rgba(212,175,55,.10);
+    white-space:nowrap;
+  }
+  .pbThead th.num{ text-align:right; }
+  .pbTable tr{ background: rgba(0,0,0,.14); }
+  .pbTable tr + tr td{ border-top: 1px solid rgba(212,175,55,.08); }
+  .pbTable td{
+    padding: 9px 10px;
+    font-size: 13px;
+    color: rgba(242,238,230,.88);
+    vertical-align:middle;
+  }
+  .pbFrCell{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .pbFrLogo{
+    width: 34px; height: 34px;
+    border-radius: 12px;
+    border: 1px solid rgba(212,175,55,.18);
+    background: rgba(0,0,0,.22);
+    overflow:hidden;
+    flex:0 0 auto;
+    display:grid; place-items:center;
+  }
+  .pbFrLogo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .pbFrName{
+    min-width:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    font-weight: 850;
+    color: rgba(242,238,230,.92);
+  }
+  .pbNum{ text-align:right; font-variant-numeric: tabular-nums; white-space:nowrap; font-weight:950; }
+
+  /* Mobile Drawer */
+  .pbDrawer{
+    display:none;
+    position:fixed;
+    left:0; right:0; bottom:0; top:0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px);
+    z-index: 2147482000;
+    padding: 12px;
+  }
+  .pbDrawerCard{
+    max-width: 980px;
+    margin: 0 auto;
+    border-radius: 18px;
+    border: 1px solid rgba(212,175,55,.18);
+    background:
+      radial-gradient(900px 240px at 20% 10%, rgba(255,255,255,.05), transparent 60%),
+      linear-gradient(180deg, rgba(22,18,16,.92) 0%, rgba(8,8,10,.90) 100%);
+    box-shadow: 0 24px 70px rgba(0,0,0,.70);
+    overflow:hidden;
+    position:relative;
+    z-index: 2147482001;
+  }
+  .pbDrawerHdr{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 12px 12px 10px 12px;
+    border-bottom: 1px solid rgba(212,175,55,.10);
+  }
+  .pbClose{
+    border:1px solid rgba(212,175,55,.18);
+    background: rgba(90,15,20,.55);
+    color: rgba(242,238,230,.92);
+    font-weight: 900;
+    width: 34px; height: 34px;
+    border-radius: 12px;
+    cursor:pointer;
+  }
+
+  @media (max-width: 980px){
+    .pbShell{ grid-template-columns: 1fr; }
+    .pbPanel.pbRightPanel{ display:none; }
+    .pbList{ max-height: none; }
+  }
+  @media (max-width: 520px){
+    .pbHdrLeft{ gap:8px; }
+    .pbSearch{ flex: 1 1 100%; min-width: 0; }
+
+    .pbRow{ grid-template-columns: 44px 1fr 82px; padding: 10px 9px; gap: 9px; }
+    .pbRankTile{ width:42px; height:42px; }
+    .pbName{ font-size: 13px; }
+    .pbMeta{ font-size: 11px; }
+    .pbAvail{ font-size: 10px; padding: 4px 7px; }
+    .pbPts{ font-size: 13px; }
+    .pbPtsLabel{ font-size: 10px; }
+    .pbHeroScore .big{ font-size: 22px; }
+  }
+
+  .pbList::-webkit-scrollbar, .pbDetail::-webkit-scrollbar{ width: 10px; }
+  .pbList::-webkit-scrollbar-thumb, .pbDetail::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+  }
+</style>
+
+<div class="pbRoot" id="pbRoot">
+  <div class="pbWrap">
+    <div class="pbShell">
+
+      <section class="pbPanel pbLeftPanel">
+        <div class="pbHdr">
+          <div class="pbHdrLeft">
+            <span class="pbTitle">PLAYERBOARD</span>
+            <input id="pbSearch" class="pbSearch" type="search" placeholder="Search player (name / pos / team)" />
+            <span class="pbPill" id="pbContendersPill">Contenders: <strong>—</strong></span>
+
+            <div class="pbToggle" id="pbFilterToggle" data-value="1" title="Filter players: ALL / ALIVE / AVAILABLE">
+              <div class="pbToggleRow">
+                <button type="button" class="pbToggleBtn" data-idx="0" onclick="window.pbSetFilter('ALL')">ALL</button>
+                <button type="button" class="pbToggleBtn" data-idx="1" onclick="window.pbSetFilter('ALIVE')">ALIVE</button>
+                <button type="button" class="pbToggleBtn" data-idx="2" onclick="window.pbSetFilter('AVAILABLE')">AVAIL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pbList" id="pbList"></div>
+      </section>
+
+      <section class="pbPanel pbRightPanel">
+        <div class="pbHdr">
+          <div class="pbHdrLeft">
+            <span class="pbTitle">DETAIL</span>
+            <span class="pbPill" id="pbDetailHint">Click a player</span>
+          </div>
+        </div>
+        <div class="pbDetail" id="pbDetail"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- MOBILE DETAIL DRAWER -->
+  <div class="pbDrawer" id="pbDrawer" style="display:none;">
+    <div class="pbDrawerCard" role="dialog" aria-modal="true" aria-label="Player Detail">
+      <div class="pbDrawerHdr">
+        <div class="pbTitle">DETAIL</div>
+        <button class="pbClose" id="pbDrawerClose" type="button">×</button>
+      </div>
+      <div class="pbDetail" id="pbDrawerDetail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Global function for inline onclick handlers
+window.pbSetFilter = function(mode){ /* set after IIFE loads */ };
+
+(function(){
+  "use strict";
+
+  // ============ CONFIGURATION ============
+  // When served by MFL, these get replaced. For local testing, hardcode values.
+  var HOST = "%HOST%";
+  var YEAR = "%YEAR%";
+  var LEAGUE_ID = "%LEAGUEID%";
+  var VIEWER_FRANCHISE_ID = "%FRANCHISEID%";
+  var APIKEY = "";
+
+  // Playoff weeks to fetch (NFL playoffs: Wild Card=18, Divisional=19, Conf=20, SB=21)
+  var PLAYOFF_WEEKS = [18, 19, 20, 21, 22];
+  var POLL_MS = 60000;
+
+  // ============ DOM REFS ============
+  var elList = document.getElementById("pbList");
+  var elDetail = document.getElementById("pbDetail");
+  var elDrawer = document.getElementById("pbDrawer");
+  var elDrawerDetail = document.getElementById("pbDrawerDetail");
+  var elDrawerClose = document.getElementById("pbDrawerClose");
+  var elSearch = document.getElementById("pbSearch");
+  var elContendersPill = document.getElementById("pbContendersPill");
+  var elFilterToggle = document.getElementById("pbFilterToggle");
+  var elDetailHint = document.getElementById("pbDetailHint");
+
+  // ============ STATE ============
+  var state = {
+    filterMode: "ALIVE",
+    query: "",
+    franchiseById: {},
+    playerById: {},
+    playerScoreById: {},
+    sortedPlayerIds: [],
+    contendersCount: 0,
+    usedByPlayer: {},        // pid -> Set(fid) - which franchises used this player
+    usedRowsByPlayer: {},    // pid -> [{fid, week, pts}]
+    usedByViewer: {},        // pid -> true if viewer used this player
+    activeFranchises: {},    // fid -> true if franchise has played (non-zero results)
+    franchiseRanks: {},      // fid -> rank (1 = highest scorer)
+    aliveTeams: {},          // NFL team abbreviation -> true if still in playoffs
+    eliminatedTeams: {},     // NFL team abbreviation -> true if eliminated (fallback)
+    selectedPlayerId: null
+  };
+
+  // ============ HELPERS ============
+  function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 980px)").matches; }
+
+  function mflUrl(type, params){
+    params = params || {};
+    var base = "https://" + HOST + "/" + YEAR + "/export";
+    var qs = "?TYPE=" + encodeURIComponent(type) + "&L=" + encodeURIComponent(LEAGUE_ID) + "&JSON=0";
+    if(APIKEY) qs += "&APIKEY=" + encodeURIComponent(APIKEY);
+    for(var k in params) qs += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+    return base + qs;
+  }
+
+  // NFL-specific endpoints (no league ID required) - always use api.myfantasyleague.com
+  // The HOST variable from MFL is server-specific (e.g., www72) but these endpoints need the api host
+  var API_HOST = "api.myfantasyleague.com";
+
+  function nflUrl(type, params){
+    params = params || {};
+    var base = "https://" + API_HOST + "/" + YEAR + "/export";
+    var qs = "?TYPE=" + encodeURIComponent(type) + "&JSON=0";
+    for(var k in params) qs += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+    return base + qs;
+  }
+
+  // MFL status endpoint (e.g., https://api.myfantasyleague.com/fflnetdynamic2025/mfl_status.xml)
+  function mflStatusUrl(){
+    return "https://" + API_HOST + "/fflnetdynamic" + YEAR + "/mfl_status.xml";
+  }
+
+  function fetchXml(url){
+    return fetch(url, { cache: "no-store" })
+      .then(function(r){
+        if(!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function(txt){
+        var doc = new DOMParser().parseFromString(txt, "text/xml");
+        if(doc.querySelector("parsererror")) throw new Error("XML parse error");
+        return doc;
+      });
+  }
+
+  function qa(node, sel){ return Array.prototype.slice.call((node||document).querySelectorAll(sel)); }
+  function attr(el, name){ return el && el.getAttribute ? (el.getAttribute(name) || "") : ""; }
+  function toNum(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+  function fmtPts(n){ return n.toFixed(2); }
+
+  function playerPhotoUrl(pid){
+    return "https://www46.myfantasyleague.com/player_photos_2014/" + pid + "_thumb.jpg";
+  }
+
+  function escapeHtml(s){
+    return String(s||"").replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  // ============ LOADERS ============
+
+  // Load franchise info
+  function loadLeague(){
+    return fetchXml(mflUrl("league")).then(function(doc){
+      state.franchiseById = {};
+      qa(doc, "franchise").forEach(function(f){
+        var id = attr(f, "id");
+        if(id) state.franchiseById[id] = { id: id, name: attr(f, "name") || id, icon: attr(f, "icon") };
+      });
+      console.log("[PB] Loaded " + Object.keys(state.franchiseById).length + " franchises");
+    });
+  }
+
+  // Load player names/positions/teams
+  function loadPlayers(){
+    return fetchXml(mflUrl("players", { DETAILS: "1" })).then(function(doc){
+      state.playerById = {};
+      qa(doc, "player").forEach(function(p){
+        var id = attr(p, "id");
+        if(id){
+          state.playerById[id] = {
+            id: id,
+            name: attr(p, "name") || id,
+            pos: (attr(p, "position") || attr(p, "pos") || "").toUpperCase(),
+            team: (attr(p, "team") || "").toUpperCase()
+          };
+        }
+      });
+      console.log("[PB] Loaded " + Object.keys(state.playerById).length + " players");
+    });
+  }
+
+  // Load YTD player scores
+  function loadPlayerScores(){
+    return fetchXml(mflUrl("playerScores", { W: "YTD", COUNT: "500" })).then(function(doc){
+      state.playerScoreById = {};
+      state.sortedPlayerIds = [];
+
+      qa(doc, "playerScore").forEach(function(ps){
+        var id = attr(ps, "id");
+        var score = toNum(attr(ps, "score"));
+        if(id && score > 0){
+          state.playerScoreById[id] = score;
+          state.sortedPlayerIds.push(id);
+        }
+      });
+
+      // Sort by score descending
+      state.sortedPlayerIds.sort(function(a, b){
+        return (state.playerScoreById[b] || 0) - (state.playerScoreById[a] || 0);
+      });
+
+      console.log("[PB] Loaded scores for " + state.sortedPlayerIds.length + " players");
+    });
+  }
+
+  // Load weekly results for a single week
+  function loadWeeklyResults(week){
+    return fetchXml(mflUrl("weeklyResults", { W: String(week) })).then(function(doc){
+      qa(doc, "franchise").forEach(function(fr){
+        var fid = attr(fr, "id");
+        if(!fid) return;
+
+        qa(fr, "player").forEach(function(pl){
+          var pid = attr(pl, "id");
+          var pts = toNum(attr(pl, "score"));
+          if(!pid) return;
+
+          // Track which franchises used this player
+          if(!state.usedByPlayer[pid]) state.usedByPlayer[pid] = new Set();
+          state.usedByPlayer[pid].add(fid);
+
+          // Track usage rows for detail view
+          if(!state.usedRowsByPlayer[pid]) state.usedRowsByPlayer[pid] = [];
+          state.usedRowsByPlayer[pid].push({ fid: fid, week: week, pts: pts });
+
+          // Track if viewer used this player
+          if(fid === VIEWER_FRANCHISE_ID){
+            state.usedByViewer[pid] = true;
+          }
+        });
+      });
+    }).catch(function(e){
+      console.log("[PB] Week " + week + " not available: " + e.message);
+    });
+  }
+
+  // Load all playoff weeks
+  function loadAllWeeklyResults(){
+    state.usedByPlayer = {};
+    state.usedRowsByPlayer = {};
+    state.usedByViewer = {};
+    state.activeFranchises = {};
+    var franchiseTotals = {}; // fid -> total points
+
+    var promises = PLAYOFF_WEEKS.map(function(w){ return loadWeeklyResults(w); });
+    return Promise.all(promises).then(function(){
+      // Calculate active franchises (those with weekly results) and their totals
+      Object.keys(state.usedByPlayer).forEach(function(pid){
+        var rows = state.usedRowsByPlayer[pid] || [];
+        rows.forEach(function(r){
+          if(r.pts > 0){
+            state.activeFranchises[r.fid] = true;
+            franchiseTotals[r.fid] = (franchiseTotals[r.fid] || 0) + r.pts;
+          }
+        });
+      });
+
+      // Calculate ranks based on total points
+      var sortedFids = Object.keys(franchiseTotals).sort(function(a, b){
+        return franchiseTotals[b] - franchiseTotals[a];
+      });
+      state.franchiseRanks = {};
+      sortedFids.forEach(function(fid, idx){
+        state.franchiseRanks[fid] = idx + 1;
+      });
+
+      state.contendersCount = Object.keys(state.activeFranchises).length;
+      console.log("[PB] Loaded usage for " + Object.keys(state.usedByPlayer).length + " players");
+      console.log("[PB] Active contenders: " + state.contendersCount);
+    });
+  }
+
+  // Load NFL schedule to determine which teams are still alive
+  // Strategy: Get current week from MFL status, then fetch that week's schedule
+  // Teams playing in current week = ALIVE
+  function loadNflSchedule(){
+    state.aliveTeams = {};
+    state.eliminatedTeams = {};
+
+    // First, get MFL status to find current/upcoming week
+    return fetchXml(mflStatusUrl()).then(function(statusDoc){
+      var weeksEl = statusDoc.querySelector("weeks");
+      var upcomingWeek = toNum(attr(weeksEl, "UpcomingWeek")) || toNum(attr(weeksEl, "CurrentWeek")) || 21;
+      console.log("[PB] MFL Status - Upcoming week: " + upcomingWeek);
+
+      // Fetch the current week's NFL schedule (no league ID needed)
+      return fetchXml(nflUrl("nflSchedule", { W: String(upcomingWeek) })).then(function(doc){
+        console.log("[PB] Fetched week " + upcomingWeek + " schedule");
+
+        qa(doc, "matchup").forEach(function(mu){
+          var teams = qa(mu, "team");
+          if(teams.length < 2) return;
+
+          var t0 = attr(teams[0], "id").toUpperCase();
+          var t1 = attr(teams[1], "id").toUpperCase();
+
+          // Teams playing this week are alive
+          if(t0) state.aliveTeams[t0] = true;
+          if(t1) state.aliveTeams[t1] = true;
+
+          console.log("[PB] Week " + upcomingWeek + " matchup: " + t0 + " vs " + t1);
+        });
+
+        console.log("[PB] Alive teams: " + Object.keys(state.aliveTeams).join(", "));
+      });
+    }).catch(function(e){
+      console.log("[PB] Error fetching MFL status, trying fallback:", e.message);
+      return loadNflScheduleFallback();
+    });
+  }
+
+  // Fallback: scan playoff weeks to find teams still playing
+  function loadNflScheduleFallback(){
+    var weekPromises = PLAYOFF_WEEKS.map(function(w){
+      return fetchXml(nflUrl("nflSchedule", { W: String(w) })).then(function(doc){
+        var weekData = { week: w, matchups: [], hasUnplayedGames: false };
+
+        qa(doc, "matchup").forEach(function(mu){
+          var teams = qa(mu, "team");
+          if(teams.length < 2) return;
+
+          var t0 = attr(teams[0], "id").toUpperCase();
+          var t1 = attr(teams[1], "id").toUpperCase();
+          var s0 = toNum(attr(teams[0], "score"));
+          var s1 = toNum(attr(teams[1], "score"));
+          var gameSecondsRemaining = attr(mu, "gameSecondsRemaining");
+
+          var gameComplete = gameSecondsRemaining === "0" && (s0 > 0 || s1 > 0);
+
+          weekData.matchups.push({
+            team1: t0, score1: s0,
+            team2: t1, score2: s1,
+            gameComplete: gameComplete,
+            winner: gameComplete ? (s0 > s1 ? t0 : t1) : null,
+            loser: gameComplete ? (s0 < s1 ? t0 : t1) : null
+          });
+
+          if(!gameComplete) weekData.hasUnplayedGames = true;
+        });
+
+        return weekData;
+      }).catch(function(){ return { week: w, matchups: [], hasUnplayedGames: false }; });
+    });
+
+    return Promise.all(weekPromises).then(function(allWeeks){
+      allWeeks.sort(function(a, b){ return b.week - a.week; });
+
+      // Find week with unplayed games (current round)
+      var currentWeek = null;
+      for(var i = 0; i < allWeeks.length; i++){
+        if(allWeeks[i].matchups.length > 0 && allWeeks[i].hasUnplayedGames){
+          currentWeek = allWeeks[i];
+          break;
+        }
+      }
+
+      if(currentWeek){
+        console.log("[PB] Fallback - Current week: " + currentWeek.week);
+        currentWeek.matchups.forEach(function(m){
+          if(m.team1) state.aliveTeams[m.team1] = true;
+          if(m.team2) state.aliveTeams[m.team2] = true;
+        });
+      } else {
+        // All complete - winners of latest week are alive
+        var latestWeek = null;
+        for(var j = 0; j < allWeeks.length; j++){
+          if(allWeeks[j].matchups.length > 0){
+            latestWeek = allWeeks[j];
+            break;
+          }
+        }
+        if(latestWeek){
+          console.log("[PB] Fallback - Latest complete week: " + latestWeek.week);
+          latestWeek.matchups.forEach(function(m){
+            if(m.winner) state.aliveTeams[m.winner] = true;
+          });
+        }
+      }
+
+      console.log("[PB] Fallback - Alive teams: " + Object.keys(state.aliveTeams).join(", "));
+    });
+  }
+
+  // ============ FILTER LOGIC ============
+
+  function getUsedCount(pid){
+    var set = state.usedByPlayer[pid];
+    return set ? set.size : 0;
+  }
+
+  function getUsedPct(pid){
+    if(state.contendersCount === 0) return 0;
+    var used = getUsedCount(pid);
+    return Math.round((used / state.contendersCount) * 100);
+  }
+
+  function isTeamEliminated(pid){
+    var p = state.playerById[pid];
+    if(!p || !p.team) return false;
+
+    // If we have aliveTeams data (primary method), team is eliminated if NOT in that list
+    if(Object.keys(state.aliveTeams || {}).length > 0){
+      return !state.aliveTeams[p.team];
+    }
+
+    // Fallback: check eliminatedTeams list
+    return !!state.eliminatedTeams[p.team];
+  }
+
+  function isOut(pid){
+    // Player is OUT if their NFL team is eliminated OR 100% of contenders used them
+    if(isTeamEliminated(pid)) return true;
+    if(getUsedPct(pid) === 100) return true;
+    return false;
+  }
+
+  function isAvailableToViewer(pid){
+    if(isOut(pid)) return false;
+    return !state.usedByViewer[pid];
+  }
+
+  function getVisiblePlayerIds(){
+    var ids = state.sortedPlayerIds.slice();
+
+    // Apply search filter
+    var q = (state.query || "").toLowerCase().trim();
+    if(q){
+      ids = ids.filter(function(pid){
+        var p = state.playerById[pid] || {};
+        return (p.name || "").toLowerCase().indexOf(q) >= 0 ||
+               (p.pos || "").toLowerCase().indexOf(q) >= 0 ||
+               (p.team || "").toLowerCase().indexOf(q) >= 0;
+      });
+    }
+
+    // Apply mode filter
+    if(state.filterMode === "ALIVE"){
+      ids = ids.filter(function(pid){ return !isOut(pid); });
+    } else if(state.filterMode === "AVAILABLE"){
+      ids = ids.filter(isAvailableToViewer);
+    }
+
+    return ids;
+  }
+
+  // ============ RENDER ============
+
+  function renderList(){
+    var ids = getVisiblePlayerIds();
+
+    if(!ids.length){
+      elList.innerHTML = '<div style="padding:20px;color:rgba(242,238,230,.6);">No players found.</div>';
+      return;
+    }
+
+    var html = ids.map(function(pid, idx){
+      var p = state.playerById[pid] || { name: pid, pos: "", team: "" };
+      var pts = state.playerScoreById[pid] || 0;
+      var out = isOut(pid);
+      var teamEliminated = isTeamEliminated(pid);
+      var usedPct = getUsedPct(pid);
+      var viewerUsed = !!state.usedByViewer[pid];
+
+      // Build status text: "XX% Used Total - Alive/Out - Used/Unused"
+      var statusText = usedPct + "% Used Total - " + (teamEliminated ? "Out" : "Alive") + " - " + (viewerUsed ? "Used" : "Unused");
+
+      // Red dot if OUT or viewer used, Green only if alive AND unused
+      var dotClass = (out || viewerUsed) ? "bad" : "ok";
+
+      var opacity = (out && state.filterMode === "ALL") ? "opacity:0.5;" : "";
+      var active = (pid === state.selectedPlayerId) ? " pbActive" : "";
+
+      var photoUrl = playerPhotoUrl(pid);
+
+      return '<div class="pbRow' + active + '" style="' + opacity + '" onclick="window.pbSelectPlayer(\'' + pid + '\')">' +
+        '<div class="pbRankTile"><div class="pbRankBg" style="background-image:url(\'' + photoUrl + '\')"></div><span class="pbRankNum">' + (idx + 1) + '</span></div>' +
+        '<div class="pbText">' +
+          '<div class="pbName">' + escapeHtml(p.name) + '</div>' +
+          '<div class="pbMeta">' + escapeHtml(p.pos + (p.team ? " • " + p.team : "")) + '</div>' +
+          '<div class="pbAvail"><span class="pbDot ' + dotClass + '"></span>' + escapeHtml(statusText) + '</div>' +
+        '</div>' +
+        '<div class="pbScoreCluster">' +
+          '<div class="pbPts">' + fmtPts(pts) + '</div>' +
+          '<div class="pbPtsLabel">YTD points</div>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    elList.innerHTML = html;
+  }
+
+  function renderDetail(){
+    var pid = state.selectedPlayerId;
+    elDetailHint.textContent = pid ? "Selected" : "Click a player";
+
+    if(!pid){
+      elDetail.innerHTML = '<div style="padding:20px;border:1px dashed rgba(212,175,55,.2);border-radius:14px;color:rgba(242,238,230,.6);">Select a player to see which franchises used them.</div>';
+      return;
+    }
+
+    var p = state.playerById[pid] || { name: pid, pos: "", team: "" };
+    var pts = state.playerScoreById[pid] || 0;
+    var out = isOut(pid);
+    var teamEliminated = isTeamEliminated(pid);
+    var usedPct = getUsedPct(pid);
+    var viewerUsed = !!state.usedByViewer[pid];
+    var rows = state.usedRowsByPlayer[pid] || [];
+
+    // Sort rows by week
+    rows = rows.slice().sort(function(a, b){ return a.week - b.week; });
+
+    // Build status text: "XX% Used - OUT - Used/Unused"
+    var statusParts = [];
+    statusParts.push(usedPct + "% Used");
+    if(teamEliminated) statusParts.push("OUT");
+    statusParts.push(viewerUsed ? "Used" : "Unused");
+    var statusText = statusParts.join(" - ");
+    var dotClass = (out || viewerUsed) ? "bad" : "ok";
+
+    var tableHtml;
+    if(rows.length === 0){
+      tableHtml = '<div style="padding:14px;color:rgba(242,238,230,.6);">No franchise has used this player yet.</div>';
+    } else {
+      // Sort rows by franchise rank (best ranked first)
+      var sortedRows = rows.slice().sort(function(a, b){
+        var rankA = state.franchiseRanks[a.fid] || 9999;
+        var rankB = state.franchiseRanks[b.fid] || 9999;
+        return rankA - rankB;
+      });
+
+      tableHtml = '<table class="pbTable"><thead class="pbThead"><tr><th>FRANCHISE</th><th class="num">RANK</th><th class="num">WEEK</th><th class="num">PTS</th></tr></thead><tbody>' +
+        sortedRows.map(function(r){
+          var fr = state.franchiseById[r.fid] || { name: r.fid, icon: "" };
+          var rank = state.franchiseRanks[r.fid] || "-";
+          var logoHtml = fr.icon ? '<img src="' + fr.icon + '" alt=""/>' : '<span style="font-weight:900;color:rgba(212,175,55,.9);">' + (fr.name||"?").charAt(0) + '</span>';
+          return '<tr><td><div class="pbFrCell"><div class="pbFrLogo">' + logoHtml + '</div><div class="pbFrName">' + escapeHtml(fr.name) + '</div></div></td><td class="pbNum">#' + rank + '</td><td class="pbNum">' + r.week + '</td><td class="pbNum">' + fmtPts(r.pts) + '</td></tr>';
+        }).join("") +
+      '</tbody></table>';
+    }
+
+    var detailPhotoUrl = playerPhotoUrl(pid);
+
+    elDetail.innerHTML =
+      '<div class="pbHero">' +
+        '<div class="pbIcon"><img src="' + detailPhotoUrl + '" alt="" onerror="this.style.display=\'none\';this.parentNode.innerHTML=\'' + (p.name||"?").charAt(0).toUpperCase() + '\';"/></div>' +
+        '<div class="pbHeroMain">' +
+          '<div class="pbHeroName">' + escapeHtml(p.name) + '</div>' +
+          '<div class="pbHeroSub">' + escapeHtml(p.pos + (p.team ? " • " + p.team : "")) +
+            ' <span class="pbAvail" style="margin-left:8px;"><span class="pbDot ' + dotClass + '"></span>' + statusText + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="pbHeroScore"><div class="big">' + fmtPts(pts) + '</div><div class="small">YTD points</div></div>' +
+      '</div>' +
+      '<div class="pbSectionTitle">Franchises That Used Them</div>' +
+      tableHtml;
+
+    // Also update drawer if open
+    if(elDrawer && elDrawer.style.display === "block"){
+      elDrawerDetail.innerHTML = elDetail.innerHTML;
+    }
+  }
+
+  function renderAll(){
+    renderList();
+    renderDetail();
+    elContendersPill.innerHTML = 'Contenders: <strong>' + state.contendersCount + '</strong>';
+  }
+
+  // ============ CONTROLS ============
+
+  function setFilterMode(mode){
+    state.filterMode = mode;
+    var idx = { "ALL": 0, "ALIVE": 1, "AVAILABLE": 2 }[mode] || 0;
+    elFilterToggle.setAttribute("data-value", String(idx));
+    renderAll();
+  }
+  window.pbSetFilter = setFilterMode;
+
+  window.pbSelectPlayer = function(pid){
+    state.selectedPlayerId = pid;
+    renderList(); // Update active state
+    renderDetail();
+    if(isMobile()) showDrawer(true);
+  };
+
+  function showDrawer(on){
+    if(!elDrawer) return;
+    elDrawer.style.display = on ? "block" : "none";
+    if(on) renderDetail();
+  }
+
+  // Search handler
+  if(elSearch){
+    elSearch.addEventListener("input", function(){
+      state.query = this.value;
+      renderList();
+    });
+  }
+
+  // Drawer close
+  if(elDrawerClose){
+    elDrawerClose.onclick = function(){ showDrawer(false); };
+  }
+  if(elDrawer){
+    elDrawer.onclick = function(e){ if(e.target === elDrawer) showDrawer(false); };
+  }
+
+  // ============ BOOT ============
+
+  function loadAll(){
+    return loadLeague()
+      .then(loadPlayers)
+      .then(loadPlayerScores)
+      .then(loadAllWeeklyResults)
+      .then(loadNflSchedule)
+      .then(function(){
+        renderAll();
+      });
+  }
+
+  function boot(){
+    setFilterMode("ALIVE");
+
+    loadAll().catch(function(err){
+      console.error("[PB] Error:", err);
+      elList.innerHTML = '<div style="padding:20px;color:#f85149;">Failed to load data. Check console for details.<br><br>If testing locally, CORS may be blocking requests. This widget must be served from MFL.</div>';
+    });
+
+    // Refresh periodically
+    setInterval(function(){
+      loadPlayerScores()
+        .then(loadAllWeeklyResults)
+        .then(loadNflSchedule)
+        .then(renderAll)
+        .catch(function(){ console.log("[PB] Refresh failed"); });
+    }, POLL_MS);
+  }
+
+  boot();
+})();
+</script>
