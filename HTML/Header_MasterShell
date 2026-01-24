@@ -6,11 +6,62 @@
     margin: 0 0 12px 0;
   }
 
+  /* ===== LOGO BANNER (above welcome panel, SEPARATE) ===== */
+  .afl-logo-banner {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px; /* Gap between banner and panel - NO overlap */
+  }
+
+  .afl-logo-banner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+  }
+
+  /* Top Franchise Overlay - positioned in chair seat */
+  .afl-top-overlay {
+    position: absolute;
+    /* Position in the chair seat - adjust these values as needed */
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid rgba(212,175,55,.70);
+    background: rgba(0,0,0,.50);
+    box-shadow:
+      0 4px 16px rgba(0,0,0,.65),
+      0 0 12px rgba(212,175,55,.30),
+      inset 0 1px 0 rgba(255,255,255,.10);
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .afl-top-overlay.active {
+    display: block;
+  }
+  .afl-top-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ===== WELCOME PANEL (SEPARATE from logo banner) ===== */
   .afl-welcome-panel {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 14px 16px;
+    position: relative;
 
     background:
       radial-gradient(900px 240px at 20% 10%, rgba(255,255,255,.07), transparent 60%),
@@ -24,28 +75,15 @@
       inset 0 1px 0 rgba(255,255,255,.06),
       inset 0 0 0 1px rgba(0,0,0,.35);
 
-    position: relative;
     overflow: hidden;
   }
 
-  .afl-welcome-panel::before {
-    content: "";
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    top: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(224,194,122,.9), transparent);
-    opacity: .55;
-  }
-
-  /* ===== LOGO AREA ===== */
-  .afl-logo-area {
+  /* ===== USER LOGO CIRCLE (left side of welcome panel) ===== */
+  .afl-user-logo {
     flex: 0 0 auto;
   }
 
-  .afl-armchair-wrap {
-    position: relative;
+  .afl-user-logo-wrap {
     width: 58px;
     height: 58px;
     border-radius: 999px;
@@ -64,34 +102,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 
-  /* Top Franchise Overlay - positioned in center of logo */
-  /* Exact position can be refined with mockup */
-  .afl-top-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 26px;
-    height: 26px;
-    border-radius: 5px;
-    overflow: hidden;
-    border: 1px solid rgba(212,175,55,.60);
-    background: rgba(0,0,0,.45);
-    box-shadow:
-      0 2px 10px rgba(0,0,0,.55),
-      0 0 8px rgba(212,175,55,.22);
-    display: none;
-    pointer-events: none;
-    z-index: 2;
-  }
-  .afl-top-overlay.active { display: block; }
-  .afl-top-overlay img {
+  .afl-user-logo-wrap img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
+    border-radius: 999px;
+  }
+
+  /* Fallback initial for user logo */
+  .afl-user-logo-initial {
+    font-weight: 900;
+    font-size: 20px;
+    color: rgba(224,194,122,.85);
+    text-shadow: 0 1px 0 rgba(0,0,0,.5);
+  }
+
+  .afl-welcome-panel::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(224,194,122,.9), transparent);
+    opacity: .55;
   }
 
   /* ===== WELCOME TEXT ===== */
@@ -222,23 +259,52 @@
   .afl-rank-flat { color: rgba(233,227,212,.45); }
 
   /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 980px) {
+    .afl-logo-banner {
+      margin-bottom: 10px;
+    }
+    .afl-logo-banner img {
+      max-height: 150px;
+    }
+    .afl-top-overlay {
+      width: 42px;
+      height: 42px;
+      top: 56%;
+    }
+    .afl-user-logo-wrap {
+      width: 52px;
+      height: 52px;
+      padding: 5px;
+    }
+  }
+
   @media (max-width: 520px) {
+    .afl-logo-banner {
+      margin-bottom: 8px;
+    }
+    .afl-logo-banner img {
+      max-height: 120px;
+    }
+    .afl-top-overlay {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border-width: 1.5px;
+      top: 54%;
+    }
     .afl-welcome-panel {
       padding: 10px 12px;
       gap: 10px;
       border-radius: 14px;
     }
 
-    .afl-armchair-wrap {
+    .afl-user-logo-wrap {
       width: 44px;
       height: 44px;
       padding: 5px;
     }
-
-    .afl-top-overlay {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
+    .afl-user-logo-initial {
+      font-size: 16px;
     }
 
     .afl-welcome-title {
@@ -277,17 +343,28 @@
 
 <!-- ===== HTML STRUCTURE ===== -->
 <div id="afl-header" class="afl-header-shell">
+
+  <!-- Logo Banner with Top Franchise Overlay in Chair Seat -->
+  <div class="afl-logo-banner">
+    <img src="https://pkringlie.github.io/mfl-armchair-skin/Armchair-Football-League.png"
+         alt="Armchair Football League"
+         id="afl-logo-img" />
+    <!-- Top franchise icon sits in the chair seat -->
+    <div id="afl-top-franchise-overlay" class="afl-top-overlay" aria-hidden="true"></div>
+  </div>
+
+  <!-- Welcome Panel (below logo, SEPARATE) -->
   <div class="afl-welcome-panel">
 
-    <!-- Logo Area with Top Franchise Overlay -->
-    <div id="afl-logo-area" class="afl-logo-area">
-      <div class="afl-armchair-wrap">
-        <module name="MY_LOGO"/>
-        <div id="afl-top-franchise-overlay" class="afl-top-overlay" aria-hidden="true"></div>
+    <!-- LEFT: Current user's franchise logo circle -->
+    <div class="afl-user-logo">
+      <div class="afl-user-logo-wrap">
+        <img id="afl-user-icon" src="" alt="Your Team" style="display:none;" />
+        <span id="afl-user-initial" class="afl-user-logo-initial"></span>
       </div>
     </div>
 
-    <!-- Welcome Scorecard Area -->
+    <!-- MIDDLE: Welcome Scorecard Area -->
     <div id="afl-welcome-area" class="afl-welcome-area">
       <div class="afl-welcome-text">
         <div class="afl-welcome-title">
@@ -297,7 +374,7 @@
         <div class="afl-welcome-sub">Armchair 2026 is underway.</div>
       </div>
 
-      <!-- Rank/Live Scorecard -->
+      <!-- RIGHT: Rank/Live Scorecard -->
       <a id="afl-scorecard" class="afl-scorecard" href="#" title="Open Live Scoring" aria-label="Open Live Scoring">
         <div class="afl-score-row">
           <span class="afl-score-kicker">RANK</span>
@@ -617,10 +694,16 @@
     render: function() {
       try {
         var overlay = document.getElementById("afl-top-franchise-overlay");
-        if (!overlay) return;
+        if (!overlay) {
+          console.warn("[AFL] topFranchiseOverlay - overlay element not found");
+          return;
+        }
 
         var top = this.calculateTopFranchise();
+        console.log("[AFL] topFranchiseOverlay - calculated top:", top);
+
         if (!top || !top.id) {
+          console.log("[AFL] topFranchiseOverlay - no top franchise calculated");
           overlay.classList.remove("active");
           return;
         }
@@ -628,11 +711,15 @@
         AFL.state.topFranchise = top;
 
         var franchise = AFL.state.franchiseById[top.id];
+        console.log("[AFL] topFranchiseOverlay - top franchise data:", franchise);
+
         if (!franchise || !franchise.icon) {
+          console.log("[AFL] topFranchiseOverlay - top franchise has no icon");
           overlay.classList.remove("active");
           return;
         }
 
+        console.log("[AFL] topFranchiseOverlay - showing icon for:", franchise.name, "icon:", franchise.icon.substring(0, 50));
         overlay.innerHTML = '<img src="' + this.escapeAttr(franchise.icon) + '" alt="Top Franchise" onerror="this.parentElement.classList.remove(\'active\')" />';
         overlay.title = franchise.name + " - " + top.total.toFixed(2) + " pts";
         overlay.classList.add("active");
@@ -648,31 +735,111 @@
 
   // ===== DATA LOADERS =====
   function loadLeague() {
-    return AFL.api.fetchXml(AFL.api.mflUrl("league")).then(function(doc) {
-      doc.querySelectorAll("franchise").forEach(function(f) {
+    var url = AFL.api.mflUrl("league");
+    console.log("[AFL] Loading league from:", url);
+
+    return AFL.api.fetchXml(url).then(function(doc) {
+      var franchises = doc.querySelectorAll("franchise");
+      console.log("[AFL] Found", franchises.length, "franchises");
+
+      franchises.forEach(function(f) {
         var id = f.getAttribute("id");
         if (id) {
+          var icon = f.getAttribute("icon") || "";
           AFL.state.franchiseById[id] = {
             id: id,
             name: f.getAttribute("name") || id,
-            icon: f.getAttribute("icon") || "",
+            icon: icon,
             owner: f.getAttribute("owner_name") || f.getAttribute("owner") || ""
           };
+          // Debug: log franchise with icon
+          if (icon) {
+            console.log("[AFL] Franchise", id, "has icon:", icon.substring(0, 50) + "...");
+          }
         }
       });
+
+      console.log("[AFL] Loaded franchises:", Object.keys(AFL.state.franchiseById).length);
+      console.log("[AFL] Current user franchiseId:", AFL.cfg.franchiseId);
     });
   }
 
+  // Set current user's franchise icon in the left circle
+  function setUserIcon() {
+    try {
+      var fid = AFL.cfg.franchiseId;
+      console.log("[AFL] setUserIcon - Looking for franchiseId:", fid);
+      console.log("[AFL] setUserIcon - Available franchise IDs:", Object.keys(AFL.state.franchiseById).join(", "));
+
+      var userFranchise = AFL.state.franchiseById[fid];
+      var userIconEl = document.getElementById("afl-user-icon");
+      var userInitialEl = document.getElementById("afl-user-initial");
+
+      if (!userFranchise) {
+        console.warn("[AFL] setUserIcon - Franchise not found for ID:", fid);
+        // Try to show initial from franchise name template variable
+        if (userInitialEl) {
+          var nameEl = document.getElementById("afl-franchise-name");
+          if (nameEl && nameEl.textContent) {
+            userInitialEl.textContent = nameEl.textContent.trim().charAt(0).toUpperCase();
+            userInitialEl.style.display = "block";
+          }
+        }
+        return;
+      }
+
+      console.log("[AFL] setUserIcon - Found franchise:", userFranchise.name, "icon:", userFranchise.icon ? "yes" : "no");
+
+      if (userFranchise.icon && userIconEl) {
+        console.log("[AFL] setUserIcon - Setting icon src:", userFranchise.icon);
+        userIconEl.src = userFranchise.icon;
+        userIconEl.alt = userFranchise.name || "Your Team";
+        userIconEl.style.display = "block";
+        userIconEl.onerror = function() {
+          console.warn("[AFL] setUserIcon - Icon failed to load, showing initial");
+          this.style.display = "none";
+          if (userInitialEl && userFranchise.name) {
+            userInitialEl.textContent = userFranchise.name.charAt(0).toUpperCase();
+            userInitialEl.style.display = "block";
+          }
+        };
+        if (userInitialEl) {
+          userInitialEl.style.display = "none";
+        }
+      } else if (userInitialEl && userFranchise.name) {
+        console.log("[AFL] setUserIcon - No icon, showing initial for:", userFranchise.name);
+        userInitialEl.textContent = userFranchise.name.charAt(0).toUpperCase();
+        userInitialEl.style.display = "block";
+        if (userIconEl) {
+          userIconEl.style.display = "none";
+        }
+      }
+    } catch (e) {
+      console.error("[AFL] setUserIcon failed:", e);
+    }
+  }
+
   function loadYtdTotals() {
-    return AFL.api.fetchXml(AFL.api.mflUrl("weeklyResults", { W: "YTD", MISSING_AS_BYE: "" }))
+    var url = AFL.api.mflUrl("weeklyResults", { W: "YTD", MISSING_AS_BYE: "" });
+    console.log("[AFL] Loading YTD totals from:", url);
+
+    return AFL.api.fetchXml(url)
       .then(function(doc) {
-        doc.querySelectorAll("franchise").forEach(function(f) {
+        var franchises = doc.querySelectorAll("franchise");
+        console.log("[AFL] YTD - found", franchises.length, "franchise entries");
+
+        franchises.forEach(function(f) {
           var fid = f.getAttribute("id");
           var pts = parseFloat(f.getAttribute("score") || f.getAttribute("pf") || "0");
           if (fid && !isNaN(pts)) {
             AFL.state.ytdByFranchiseId[fid] = pts;
           }
         });
+
+        console.log("[AFL] YTD totals loaded for", Object.keys(AFL.state.ytdByFranchiseId).length, "franchises");
+        // Log top 3 by YTD
+        var sorted = Object.entries(AFL.state.ytdByFranchiseId).sort(function(a, b) { return b[1] - a[1]; });
+        console.log("[AFL] Top 3 by YTD:", sorted.slice(0, 3));
       })
       .catch(function(e) {
         console.warn("[AFL] loadYtdTotals failed:", e.message);
@@ -680,11 +847,15 @@
   }
 
   function loadMflStatus() {
-    return AFL.api.fetchXml(AFL.api.mflStatusUrl())
+    var url = AFL.api.mflStatusUrl();
+    console.log("[AFL] Loading MFL status from:", url);
+
+    return AFL.api.fetchXml(url)
       .then(function(doc) {
         var status = doc.querySelector("status");
         if (status) {
           AFL.state.currentWeek = status.getAttribute("week") || null;
+          console.log("[AFL] MFL status - current week:", AFL.state.currentWeek);
         }
       })
       .catch(function(e) {
@@ -693,20 +864,29 @@
   }
 
   function loadLiveScoring() {
-    return AFL.api.fetchXml(AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" }))
+    var url = AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" });
+    console.log("[AFL] Loading live scoring from:", url);
+
+    return AFL.api.fetchXml(url)
       .then(function(doc) {
         var ls = doc.querySelector("liveScoring");
         if (ls) {
           AFL.state.liveWeek = ls.getAttribute("week") || null;
+          console.log("[AFL] Live scoring - week:", AFL.state.liveWeek);
         }
 
-        doc.querySelectorAll("franchise").forEach(function(f) {
+        var franchises = doc.querySelectorAll("franchise");
+        console.log("[AFL] Live scoring - found", franchises.length, "franchises");
+
+        franchises.forEach(function(f) {
           var fid = f.getAttribute("id");
           var score = parseFloat(f.getAttribute("score") || "0");
           if (fid && !isNaN(score)) {
             AFL.state.liveByFranchiseId[fid] = score;
           }
         });
+
+        console.log("[AFL] Live scores loaded for", Object.keys(AFL.state.liveByFranchiseId).length, "franchises");
       })
       .catch(function(e) {
         console.warn("[AFL] loadLiveScoring failed:", e.message);
@@ -724,6 +904,10 @@
       return loadLiveScoring();
     })
     .then(function() {
+      // Set the current user's franchise icon
+      setUserIcon();
+
+      // Initialize modules
       AFL.modules.welcomeScorecard.init();
       AFL.modules.topFranchiseOverlay.render();
 
