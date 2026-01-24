@@ -26,12 +26,12 @@
   /* Top Franchise Overlay - positioned in chair seat */
   .afl-top-overlay {
     position: absolute;
-    /* Position in the chair seat - adjust these values as needed */
-    top: 58%;
-    left: 50%;
+    /* Position in the chair seat - shifted slightly right and larger */
+    top: 56%;
+    left: 52%;
     transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: 8px;
     overflow: hidden;
     border: 2px solid rgba(212,175,55,.70);
@@ -267,9 +267,10 @@
       max-height: 150px;
     }
     .afl-top-overlay {
-      width: 42px;
-      height: 42px;
-      top: 56%;
+      width: 48px;
+      height: 48px;
+      top: 54%;
+      left: 52%;
     }
     .afl-user-logo-wrap {
       width: 52px;
@@ -286,11 +287,12 @@
       max-height: 120px;
     }
     .afl-top-overlay {
-      width: 32px;
-      height: 32px;
+      width: 38px;
+      height: 38px;
       border-radius: 6px;
       border-width: 1.5px;
-      top: 54%;
+      top: 52%;
+      left: 52%;
     }
     .afl-welcome-panel {
       padding: 10px 12px;
@@ -660,15 +662,19 @@
       try {
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
         var liveByFid = AFL.state.liveByFranchiseId || {};
-        var currentWeek = AFL.state.currentWeek;
-        var liveWeek = AFL.state.liveWeek;
+        var currentWeek = String(AFL.state.currentWeek || "");
+        var liveWeek = String(AFL.state.liveWeek || "");
+
+        // Check if we should include live scores (same week or if no week data, include anyway)
+        var includeLive = (currentWeek === liveWeek) || (!currentWeek && liveWeek);
+        console.log("[AFL] calculateTopFranchise - currentWeek:", currentWeek, "liveWeek:", liveWeek, "includeLive:", includeLive);
 
         var entries = [];
         for (var fid in AFL.state.franchiseById) {
           if (!AFL.state.franchiseById.hasOwnProperty(fid)) continue;
 
           var ytd = ytdByFid[fid] || 0;
-          var live = (currentWeek === liveWeek) ? (liveByFid[fid] || 0) : 0;
+          var live = includeLive ? (liveByFid[fid] || 0) : 0;
           var total = ytd + live;
 
           entries.push({
@@ -820,26 +826,28 @@
   }
 
   function loadYtdTotals() {
-    var url = AFL.api.mflUrl("weeklyResults", { W: "YTD", MISSING_AS_BYE: "" });
-    console.log("[AFL] Loading YTD totals from:", url);
+    // Use leagueStandings for cumulative points (more reliable than weeklyResults W=YTD)
+    var url = AFL.api.mflUrl("leagueStandings");
+    console.log("[AFL] Loading standings from:", url);
 
     return AFL.api.fetchXml(url)
       .then(function(doc) {
         var franchises = doc.querySelectorAll("franchise");
-        console.log("[AFL] YTD - found", franchises.length, "franchise entries");
+        console.log("[AFL] Standings - found", franchises.length, "franchise entries");
 
         franchises.forEach(function(f) {
           var fid = f.getAttribute("id");
-          var pts = parseFloat(f.getAttribute("score") || f.getAttribute("pf") || "0");
+          // leagueStandings uses "pf" for points-for (cumulative)
+          var pts = parseFloat(f.getAttribute("pf") || "0");
           if (fid && !isNaN(pts)) {
             AFL.state.ytdByFranchiseId[fid] = pts;
           }
         });
 
-        console.log("[AFL] YTD totals loaded for", Object.keys(AFL.state.ytdByFranchiseId).length, "franchises");
-        // Log top 3 by YTD
+        console.log("[AFL] Standings loaded for", Object.keys(AFL.state.ytdByFranchiseId).length, "franchises");
+        // Log top 3 by standings
         var sorted = Object.entries(AFL.state.ytdByFranchiseId).sort(function(a, b) { return b[1] - a[1]; });
-        console.log("[AFL] Top 3 by YTD:", sorted.slice(0, 3));
+        console.log("[AFL] Top 3 by standings:", sorted.slice(0, 3));
       })
       .catch(function(e) {
         console.warn("[AFL] loadYtdTotals failed:", e.message);
