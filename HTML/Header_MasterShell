@@ -26,9 +26,9 @@
   /* Top Franchise Overlay - positioned in chair seat */
   .afl-top-overlay {
     position: absolute;
-    /* Position in the chair seat - shifted slightly right and larger */
+    /* Position in the chair seat - centered */
     top: 56%;
-    left: 52%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 56px;
     height: 56px;
@@ -270,7 +270,7 @@
       width: 48px;
       height: 48px;
       top: 54%;
-      left: 52%;
+      left: 50%;
     }
     .afl-user-logo-wrap {
       width: 52px;
@@ -292,7 +292,7 @@
       border-radius: 6px;
       border-width: 1.5px;
       top: 52%;
-      left: 52%;
+      left: 50%;
     }
     .afl-welcome-panel {
       padding: 10px 12px;
@@ -550,7 +550,8 @@
 
         this.poll();
         var self = this;
-        setInterval(function() { self.poll(); }, 3000);
+        // Poll every 10 seconds (reduces flickering and server load)
+        setInterval(function() { self.poll(); }, 10000);
       } catch (e) {
         console.error("[AFL] welcomeScorecard.init error:", e);
       }
@@ -558,7 +559,7 @@
 
     poll: function() {
       var self = this;
-      AFL.api.fetchXml(AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" }), { ttl: 5000 })
+      AFL.api.fetchXml(AFL.api.mflUrl("liveScoring", { DETAILS: "1", W: "__OMIT__" }), { ttl: 8000 })
         .then(function(doc) { self.render(doc); })
         .catch(function() {});
     },
@@ -570,23 +571,38 @@
           AFL.state.liveWeek = lsEl.getAttribute("week") || null;
         }
 
+        // Update live scores in state
         var franchises = doc.querySelectorAll("franchise");
-        var entries = [];
-
         franchises.forEach(function(f) {
           var id = f.getAttribute("id");
           var score = parseFloat(f.getAttribute("score") || "0");
           if (id) {
-            entries.push({ id: id, score: score });
             AFL.state.liveByFranchiseId[id] = score;
           }
         });
 
+        // Calculate OVERALL rank using YTD + Live (same logic as top franchise)
+        var ytdByFid = AFL.state.ytdByFranchiseId || {};
+        var liveByFid = AFL.state.liveByFranchiseId || {};
+        var currentWeek = String(AFL.state.currentWeek || "");
+        var liveWeek = String(AFL.state.liveWeek || "");
+        var includeLive = (currentWeek === liveWeek) || (!currentWeek && liveWeek);
+
+        var entries = [];
+        for (var fid in AFL.state.franchiseById) {
+          if (!AFL.state.franchiseById.hasOwnProperty(fid)) continue;
+          var ytd = ytdByFid[fid] || 0;
+          var live = includeLive ? (liveByFid[fid] || 0) : 0;
+          var total = ytd + live;
+          entries.push({ id: fid, ytd: ytd, live: live, total: total });
+        }
+
         entries.sort(function(a, b) {
-          if (b.score !== a.score) return b.score - a.score;
+          if (b.total !== a.total) return b.total - a.total;
           return a.id.localeCompare(b.id);
         });
 
+        // Find my rank and total
         var myIdx = -1;
         var myEntry = null;
         for (var i = 0; i < entries.length; i++) {
@@ -598,7 +614,9 @@
         }
 
         var myRank = myIdx >= 0 ? (myIdx + 1) : null;
-        this.updateDisplay(myRank, myEntry ? myEntry.score : null);
+        // RANK uses overall (YTD + Live), LIVE shows current week score only
+        var myLiveScore = myEntry ? myEntry.live : null;
+        this.updateDisplay(myRank, myLiveScore);
 
         AFL.modules.topFranchiseOverlay.render();
       } catch (e) {
@@ -658,6 +676,9 @@
 
   // ===== TOP FRANCHISE OVERLAY MODULE =====
   AFL.modules.topFranchiseOverlay = {
+    _lastTopId: null,
+    _lastTopIcon: null,
+
     calculateTopFranchise: function() {
       try {
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
@@ -706,26 +727,42 @@
         }
 
         var top = this.calculateTopFranchise();
-        console.log("[AFL] topFranchiseOverlay - calculated top:", top);
 
         if (!top || !top.id) {
-          console.log("[AFL] topFranchiseOverlay - no top franchise calculated");
-          overlay.classList.remove("active");
+          if (this._lastTopId !== null) {
+            console.log("[AFL] topFranchiseOverlay - no top franchise, hiding");
+            overlay.classList.remove("active");
+            this._lastTopId = null;
+            this._lastTopIcon = null;
+          }
           return;
         }
 
         AFL.state.topFranchise = top;
 
         var franchise = AFL.state.franchiseById[top.id];
-        console.log("[AFL] topFranchiseOverlay - top franchise data:", franchise);
 
         if (!franchise || !franchise.icon) {
-          console.log("[AFL] topFranchiseOverlay - top franchise has no icon");
-          overlay.classList.remove("active");
+          if (this._lastTopId !== null) {
+            console.log("[AFL] topFranchiseOverlay - top franchise has no icon, hiding");
+            overlay.classList.remove("active");
+            this._lastTopId = null;
+            this._lastTopIcon = null;
+          }
           return;
         }
 
-        console.log("[AFL] topFranchiseOverlay - showing icon for:", franchise.name, "icon:", franchise.icon.substring(0, 50));
+        // Only update DOM if the top franchise changed (prevents flickering)
+        if (this._lastTopId === top.id && this._lastTopIcon === franchise.icon) {
+          // Just update the title for points change
+          overlay.title = franchise.name + " - " + top.total.toFixed(2) + " pts";
+          return;
+        }
+
+        console.log("[AFL] topFranchiseOverlay - showing icon for:", franchise.name);
+        this._lastTopId = top.id;
+        this._lastTopIcon = franchise.icon;
+
         overlay.innerHTML = '<img src="' + this.escapeAttr(franchise.icon) + '" alt="Top Franchise" onerror="this.parentElement.classList.remove(\'active\')" />';
         overlay.title = franchise.name + " - " + top.total.toFixed(2) + " pts";
         overlay.classList.add("active");
