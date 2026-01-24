@@ -32,14 +32,13 @@
     transform: translate(-50%, -50%);
     width: 56px;
     height: 56px;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    border: 2px solid rgba(212,175,55,.70);
-    background: rgba(0,0,0,.50);
+    border: none;
+    background: transparent;
     box-shadow:
-      0 4px 16px rgba(0,0,0,.65),
-      0 0 12px rgba(212,175,55,.30),
-      inset 0 1px 0 rgba(255,255,255,.10);
+      0 6px 20px rgba(0,0,0,.85),
+      0 2px 8px rgba(0,0,0,.60);
     display: none;
     pointer-events: none;
     z-index: 10;
@@ -289,8 +288,7 @@
     .afl-top-overlay {
       width: 38px;
       height: 38px;
-      border-radius: 6px;
-      border-width: 1.5px;
+      border-radius: 8px;
       top: 52%;
       left: 50%;
     }
@@ -545,7 +543,7 @@
         var scorecard = document.getElementById("afl-scorecard");
         if (scorecard) {
           scorecard.href = "https://" + AFL.cfg.host + "/" + AFL.cfg.year +
-                           "/ajax_ls?L=" + AFL.cfg.leagueId;
+                           "/home/" + AFL.cfg.leagueId + "#2";
         }
 
         this.poll();
@@ -581,12 +579,17 @@
           }
         });
 
-        // Calculate OVERALL rank using YTD + Live (same logic as top franchise)
+        // Calculate OVERALL rank using YTD + Live
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
         var liveByFid = AFL.state.liveByFranchiseId || {};
-        var currentWeek = String(AFL.state.currentWeek || "");
-        var liveWeek = String(AFL.state.liveWeek || "");
-        var includeLive = (currentWeek === liveWeek) || (!currentWeek && liveWeek);
+
+        // Always include live scores if there are any non-zero scores (games happening)
+        // The week comparison was too strict for playoff contests
+        var hasLiveGames = Object.keys(liveByFid).some(function(fid) {
+          return liveByFid[fid] > 0;
+        });
+        var includeLive = hasLiveGames;
+        console.log("[AFL] Scorecard - hasLiveGames:", hasLiveGames, "includeLive:", includeLive);
 
         var entries = [];
         for (var fid in AFL.state.franchiseById) {
@@ -616,6 +619,16 @@
         var myRank = myIdx >= 0 ? (myIdx + 1) : null;
         // RANK uses overall (YTD + Live), LIVE shows current week score only
         var myLiveScore = myEntry ? myEntry.live : null;
+
+        // Debug: Log my franchise's calculation
+        if (myEntry) {
+          console.log("[AFL] My franchise:", AFL.cfg.franchiseId,
+            "YTD:", myEntry.ytd.toFixed(2),
+            "Live:", myEntry.live.toFixed(2),
+            "Total:", myEntry.total.toFixed(2),
+            "Rank:", myRank);
+        }
+
         this.updateDisplay(myRank, myLiveScore);
 
         AFL.modules.topFranchiseOverlay.render();
@@ -683,12 +696,12 @@
       try {
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
         var liveByFid = AFL.state.liveByFranchiseId || {};
-        var currentWeek = String(AFL.state.currentWeek || "");
-        var liveWeek = String(AFL.state.liveWeek || "");
 
-        // Check if we should include live scores (same week or if no week data, include anyway)
-        var includeLive = (currentWeek === liveWeek) || (!currentWeek && liveWeek);
-        console.log("[AFL] calculateTopFranchise - currentWeek:", currentWeek, "liveWeek:", liveWeek, "includeLive:", includeLive);
+        // Always include live scores if there are any non-zero scores (games happening)
+        var hasLiveGames = Object.keys(liveByFid).some(function(fid) {
+          return liveByFid[fid] > 0;
+        });
+        var includeLive = hasLiveGames;
 
         var entries = [];
         for (var fid in AFL.state.franchiseById) {
