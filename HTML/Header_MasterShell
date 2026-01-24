@@ -385,7 +385,7 @@
         </div>
         <div class="afl-score-divider"></div>
         <div class="afl-score-row">
-          <span class="afl-score-kicker">LIVE</span>
+          <span class="afl-score-kicker">SCORE</span>
           <span id="afl-live-pts" class="afl-score-pts">--</span>
         </div>
       </a>
@@ -520,7 +520,8 @@
   // ===== AFL.state =====
   AFL.state = {
     currentWeek: null,
-    liveWeek: null,
+    completedWeek: null,  // Week whose scores are already in standings
+    liveWeek: null,       // Week from liveScoring API
     topFranchise: null,
     franchiseById: {},
     playerById: {},
@@ -579,17 +580,16 @@
           }
         });
 
-        // Calculate OVERALL rank using YTD + Live
+        // Calculate OVERALL rank using YTD + Live (only if live is for a NEW week)
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
         var liveByFid = AFL.state.liveByFranchiseId || {};
 
-        // Always include live scores if there are any non-zero scores (games happening)
-        // The week comparison was too strict for playoff contests
-        var hasLiveGames = Object.keys(liveByFid).some(function(fid) {
-          return liveByFid[fid] > 0;
-        });
-        var includeLive = hasLiveGames;
-        console.log("[AFL] Scorecard - hasLiveGames:", hasLiveGames, "includeLive:", includeLive);
+        // Only add live scores if they're for a week NOT yet in standings
+        // If liveWeek <= completedWeek, those scores are already in standings (don't double count)
+        var liveWeekNum = parseInt(AFL.state.liveWeek, 10) || 0;
+        var completedWeekNum = parseInt(AFL.state.completedWeek, 10) || 0;
+        var includeLive = liveWeekNum > completedWeekNum;
+        console.log("[AFL] Scorecard - liveWeek:", liveWeekNum, "completedWeek:", completedWeekNum, "includeLive:", includeLive);
 
         var entries = [];
         for (var fid in AFL.state.franchiseById) {
@@ -617,8 +617,8 @@
         }
 
         var myRank = myIdx >= 0 ? (myIdx + 1) : null;
-        // RANK uses overall (YTD + Live), LIVE shows current week score only
-        var myLiveScore = myEntry ? myEntry.live : null;
+        // SCORE shows total points (YTD + live if applicable)
+        var myTotal = myEntry ? myEntry.total : null;
 
         // Debug: Log my franchise's calculation
         if (myEntry) {
@@ -626,10 +626,11 @@
             "YTD:", myEntry.ytd.toFixed(2),
             "Live:", myEntry.live.toFixed(2),
             "Total:", myEntry.total.toFixed(2),
-            "Rank:", myRank);
+            "Rank:", myRank,
+            "includeLive:", includeLive);
         }
 
-        this.updateDisplay(myRank, myLiveScore);
+        this.updateDisplay(myRank, myTotal);
 
         AFL.modules.topFranchiseOverlay.render();
       } catch (e) {
@@ -697,11 +698,10 @@
         var ytdByFid = AFL.state.ytdByFranchiseId || {};
         var liveByFid = AFL.state.liveByFranchiseId || {};
 
-        // Always include live scores if there are any non-zero scores (games happening)
-        var hasLiveGames = Object.keys(liveByFid).some(function(fid) {
-          return liveByFid[fid] > 0;
-        });
-        var includeLive = hasLiveGames;
+        // Only add live scores if they're for a week NOT yet in standings
+        var liveWeekNum = parseInt(AFL.state.liveWeek, 10) || 0;
+        var completedWeekNum = parseInt(AFL.state.completedWeek, 10) || 0;
+        var includeLive = liveWeekNum > completedWeekNum;
 
         var entries = [];
         for (var fid in AFL.state.franchiseById) {
@@ -913,7 +913,10 @@
         var status = doc.querySelector("status");
         if (status) {
           AFL.state.currentWeek = status.getAttribute("week") || null;
-          console.log("[AFL] MFL status - current week:", AFL.state.currentWeek);
+          // CompletedWeek = week whose scores are already in standings
+          AFL.state.completedWeek = status.getAttribute("CompletedWeek") || null;
+          console.log("[AFL] MFL status - currentWeek:", AFL.state.currentWeek,
+                      "completedWeek:", AFL.state.completedWeek);
         }
       })
       .catch(function(e) {
